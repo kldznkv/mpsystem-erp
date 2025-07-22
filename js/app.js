@@ -222,9 +222,224 @@
     }
     
     // Placeholder page loaders (to be implemented)
+    // Orders Page Implementation
+    let ordersState = {
+        currentPage: 1,
+        itemsPerPage: 10,
+        sortBy: 'dueDate',
+        sortOrder: 'asc',
+        filters: {}
+    };
+    
     function loadOrdersPage() {
-        console.log('Loading orders page...');
-        // TODO: Implement full orders management
+        updateOrdersSummary();
+        renderOrdersTable();
+        initOrdersEventListeners();
+    }
+    
+    function updateOrdersSummary() {
+        // In real app, calculate from filtered data
+        const summaryData = {
+            total: DEMO_DATA.orders.length,
+            inProduction: DEMO_DATA.orders.filter(o => o.status === 'in-production').length,
+            scheduled: DEMO_DATA.orders.filter(o => o.status === 'scheduled').length,
+            completedToday: 4,
+            totalValue: DEMO_DATA.orders.reduce((sum, o) => sum + o.value, 0)
+        };
+        
+        // Update summary cards (would be dynamic in real app)
+        const summaryCards = document.querySelectorAll('.summary-card .summary-value');
+        if (summaryCards[0]) summaryCards[0].textContent = summaryData.total;
+        if (summaryCards[1]) summaryCards[1].textContent = summaryData.inProduction;
+        if (summaryCards[2]) summaryCards[2].textContent = summaryData.scheduled;
+        if (summaryCards[3]) summaryCards[3].textContent = summaryData.completedToday;
+        if (summaryCards[4]) summaryCards[4].textContent = '€' + Math.round(summaryData.totalValue) + 'k';
+    }
+    
+    function renderOrdersTable() {
+        const tbody = document.getElementById('ordersTableBody');
+        if (!tbody) return;
+        
+        // Filter and sort orders
+        let filteredOrders = filterOrders(DEMO_DATA.orders);
+        let sortedOrders = sortOrdersData(filteredOrders);
+        
+        // Pagination
+        const totalPages = Math.ceil(sortedOrders.length / ordersState.itemsPerPage);
+        const startIndex = (ordersState.currentPage - 1) * ordersState.itemsPerPage;
+        const paginatedOrders = sortedOrders.slice(startIndex, startIndex + ordersState.itemsPerPage);
+        
+        // Clear and populate table
+        tbody.innerHTML = '';
+        paginatedOrders.forEach(order => {
+            const row = createDetailedOrderRow(order);
+            tbody.appendChild(row);
+        });
+        
+        // Update pagination info
+        document.getElementById('currentOrderPage').textContent = ordersState.currentPage;
+        document.getElementById('totalOrderPages').textContent = totalPages;
+    }
+    
+    function createDetailedOrderRow(order) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="order-id">${order.id}</td>
+            <td>${order.customer}</td>
+            <td>${order.product}</td>
+            <td>${order.quantity.toLocaleString()} ${order.unit}</td>
+            <td>€${order.value.toLocaleString()}</td>
+            <td>${formatDate(order.dueDate)}</td>
+            <td><span class="priority-badge priority-${order.priority}">${order.priority.toUpperCase()}</span></td>
+            <td><span class="status-badge ${getStatusClass(order.status)}">${formatStatus(order.status)}</span></td>
+            <td>
+                <div class="progress-cell">
+                    <div class="progress-mini">
+                        <div class="progress-mini-fill" style="width: ${order.progress}%"></div>
+                    </div>
+                    <span>${order.progress}%</span>
+                </div>
+            </td>
+            <td>
+                <div class="table-actions">
+                    <button class="btn-action" onclick="viewOrder('${order.id}')" title="View">👁️</button>
+                    <button class="btn-action" onclick="editOrderItem('${order.id}')" title="Edit">✏️</button>
+                    <button class="btn-action" onclick="printOrder('${order.id}')" title="Print">🖨️</button>
+                </div>
+            </td>
+        `;
+        
+        row.style.cursor = 'pointer';
+        row.addEventListener('click', (e) => {
+            if (!e.target.closest('.table-actions')) {
+                showOrderDetails(order);
+            }
+        });
+        
+        return row;
+    }
+    
+    function filterOrders(orders) {
+        return orders.filter(order => {
+            if (ordersState.filters.status && order.status !== ordersState.filters.status) return false;
+            if (ordersState.filters.priority && order.priority !== ordersState.filters.priority) return false;
+            if (ordersState.filters.customer && order.customer !== ordersState.filters.customer) return false;
+            if (ordersState.filters.dateFrom && new Date(order.dueDate) < new Date(ordersState.filters.dateFrom)) return false;
+            if (ordersState.filters.dateTo && new Date(order.dueDate) > new Date(ordersState.filters.dateTo)) return false;
+            return true;
+        });
+    }
+    
+    function sortOrdersData(orders) {
+        return orders.sort((a, b) => {
+            let aVal = a[ordersState.sortBy];
+            let bVal = b[ordersState.sortBy];
+            
+            if (ordersState.sortBy === 'dueDate') {
+                aVal = new Date(aVal);
+                bVal = new Date(bVal);
+            }
+            
+            if (aVal < bVal) return ordersState.sortOrder === 'asc' ? -1 : 1;
+            if (aVal > bVal) return ordersState.sortOrder === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }
+    
+    function initOrdersEventListeners() {
+        // Add event listeners for filters if they don't exist
+        const statusFilter = document.getElementById('orderStatusFilter');
+        if (statusFilter && !statusFilter.hasListener) {
+            statusFilter.addEventListener('change', (e) => {
+                ordersState.filters.status = e.target.value;
+            });
+            statusFilter.hasListener = true;
+        }
+    }
+    
+    // Global functions for orders
+    window.sortOrders = function(field) {
+        if (ordersState.sortBy === field) {
+            ordersState.sortOrder = ordersState.sortOrder === 'asc' ? 'desc' : 'asc';
+        } else {
+            ordersState.sortBy = field;
+            ordersState.sortOrder = 'asc';
+        }
+        
+        // Update sort indicators
+        document.querySelectorAll('.sortable').forEach(th => {
+            th.classList.remove('sorted-asc', 'sorted-desc');
+        });
+        
+        const currentTh = document.querySelector(`.sortable[onclick*="${field}"]`);
+        if (currentTh) {
+            currentTh.classList.add('sorted-' + ordersState.sortOrder);
+        }
+        
+        renderOrdersTable();
+    }
+    
+    window.applyOrderFilters = function() {
+        ordersState.filters = {
+            status: document.getElementById('orderStatusFilter').value,
+            priority: document.getElementById('orderPriorityFilter').value,
+            customer: document.getElementById('orderCustomerFilter').value,
+            dateFrom: document.getElementById('orderDateFrom').value,
+            dateTo: document.getElementById('orderDateTo').value
+        };
+        ordersState.currentPage = 1;
+        renderOrdersTable();
+    }
+    
+    window.resetOrderFilters = function() {
+        document.getElementById('orderStatusFilter').value = '';
+        document.getElementById('orderPriorityFilter').value = '';
+        document.getElementById('orderCustomerFilter').value = '';
+        document.getElementById('orderDateFrom').value = '';
+        document.getElementById('orderDateTo').value = '';
+        ordersState.filters = {};
+        ordersState.currentPage = 1;
+        renderOrdersTable();
+    }
+    
+    window.previousOrdersPage = function() {
+        if (ordersState.currentPage > 1) {
+            ordersState.currentPage--;
+            renderOrdersTable();
+        }
+    }
+    
+    window.nextOrdersPage = function() {
+        const totalPages = Math.ceil(filterOrders(DEMO_DATA.orders).length / ordersState.itemsPerPage);
+        if (ordersState.currentPage < totalPages) {
+            ordersState.currentPage++;
+            renderOrdersTable();
+        }
+    }
+    
+    window.viewOrder = function(orderId) {
+        const order = DEMO_DATA.orders.find(o => o.id === orderId);
+        if (order) showOrderDetails(order);
+    }
+    
+    window.editOrderItem = function(orderId) {
+        alert('Edit order ' + orderId + ' feature coming soon!');
+    }
+    
+    window.printOrder = function(orderId) {
+        alert('Print order ' + orderId + ' feature coming soon!');
+    }
+    
+    window.exportOrders = function() {
+        alert('Export orders to CSV feature coming soon!');
+    }
+    
+    window.createNewOrder = function() {
+        alert('Create new order feature coming soon!');
+    }
+    
+    window.toggleTimelineView = function() {
+        alert('Timeline view toggle feature coming soon!');
     }
     
     function loadProductionPage() {
