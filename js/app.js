@@ -1187,9 +1187,297 @@
         // TODO: Implement quality control
     }
     
+    // Reports Page Implementation
+    let reportsState = {
+        currentPeriod: 'week',
+        activeTab: 'production',
+        data: {
+            production: {},
+            financial: {},
+            quality: {},
+            efficiency: {}
+        }
+    };
+    
     function loadReportsPage() {
-        console.log('Loading reports page...');
-        // TODO: Implement reporting
+        updateReportDate();
+        loadReportData();
+        animateReportMetrics();
+        renderCharts();
+    }
+    
+    function updateReportDate() {
+        const now = new Date();
+        const dateElement = document.getElementById('reportDate');
+        if (dateElement) {
+            dateElement.textContent = now.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        // Update period display
+        updatePeriodDisplay();
+    }
+    
+    function updatePeriodDisplay() {
+        const periodElement = document.getElementById('reportPeriod');
+        if (!periodElement) return;
+        
+        const now = new Date();
+        let periodText = '';
+        
+        switch(reportsState.currentPeriod) {
+            case 'today':
+                periodText = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                break;
+            case 'week':
+                const weekStart = new Date(now);
+                weekStart.setDate(now.getDate() - now.getDay());
+                const weekEnd = new Date(weekStart);
+                weekEnd.setDate(weekStart.getDate() + 6);
+                periodText = `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+                break;
+            case 'month':
+                periodText = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                break;
+            case 'quarter':
+                const quarter = Math.floor(now.getMonth() / 3) + 1;
+                periodText = `Q${quarter} ${now.getFullYear()}`;
+                break;
+            case 'year':
+                periodText = now.getFullYear().toString();
+                break;
+        }
+        
+        periodElement.textContent = periodText;
+    }
+    
+    function loadReportData() {
+        // In real app, fetch data based on period
+        // For demo, use static data
+        reportsState.data = {
+            production: {
+                totalUnits: 847350,
+                weeklyGrowth: 12.3,
+                lineOutputs: [287, 264, 152, 311],
+                topProducts: [
+                    { name: 'Cheese Packaging 250×450mm', customer: 'MLEKOVITA', volume: 127350 },
+                    { name: 'Food Wrap 230×475mm', customer: 'AGRONA', volume: 98200 },
+                    { name: 'Barrier Laminate 425×750mm', customer: 'LACPOL', volume: 65400 }
+                ]
+            },
+            financial: {
+                revenue: 458700,
+                revenueGrowth: 8.5,
+                costs: {
+                    material: 215300,
+                    labor: 98700,
+                    overhead: 68500,
+                    energy: 45200,
+                    other: 31000
+                }
+            }
+        };
+    }
+    
+    function animateReportMetrics() {
+        // Animate summary metrics
+        const metrics = [
+            { selector: '.summary-item:nth-child(1) .metric-main', value: 847350, format: 'number' },
+            { selector: '.summary-item:nth-child(2) .metric-main', value: 458.7, format: 'currency' },
+            { selector: '.summary-item:nth-child(3) .metric-main', value: 86.7, format: 'percent' },
+            { selector: '.summary-item:nth-child(4) .metric-main', value: 99.2, format: 'percent' }
+        ];
+        
+        metrics.forEach((metric, index) => {
+            setTimeout(() => {
+                const element = document.querySelector(metric.selector);
+                if (element) {
+                    animateReportValue(element, 0, metric.value, 1500, metric.format);
+                }
+            }, index * 200);
+        });
+        
+        // Animate fulfillment cards
+        animateFulfillmentCards();
+    }
+    
+    function animateReportValue(element, start, end, duration, format) {
+        const startTime = performance.now();
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = start + (end - start) * progress;
+            
+            let displayValue;
+            switch(format) {
+                case 'currency':
+                    displayValue = '€' + current.toFixed(1) + 'k';
+                    break;
+                case 'percent':
+                    displayValue = current.toFixed(1) + '%';
+                    break;
+                case 'number':
+                    displayValue = Math.floor(current).toLocaleString();
+                    break;
+                default:
+                    displayValue = current.toFixed(0);
+            }
+            
+            element.textContent = displayValue;
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+        
+        requestAnimationFrame(update);
+    }
+    
+    function animateFulfillmentCards() {
+        const cards = document.querySelectorAll('.fulfillment-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+                card.style.transition = 'all 0.3s ease';
+                
+                // Animate the value inside
+                const valueElement = card.querySelector('.fulfillment-value');
+                if (valueElement) {
+                    const value = parseInt(valueElement.textContent);
+                    animateReportValue(valueElement, 0, value, 1000, 'number');
+                }
+            }, 1000 + index * 100);
+        });
+    }
+    
+    function renderCharts() {
+        // Animate bar charts
+        setTimeout(() => {
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach((bar, index) => {
+                const currentHeight = bar.style.height;
+                bar.style.height = '0%';
+                setTimeout(() => {
+                    bar.style.height = currentHeight;
+                    bar.style.transition = 'height 0.8s ease';
+                }, index * 100);
+            });
+        }, 500);
+        
+        // In real app, would initialize Chart.js here
+    }
+    
+    // Global functions for reports
+    window.setPeriod = function(period) {
+        reportsState.currentPeriod = period;
+        
+        // Update button states
+        document.querySelectorAll('.period-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        // Update display and reload data
+        updatePeriodDisplay();
+        loadReportData();
+        animateReportMetrics();
+        
+        // Show loading animation
+        showReportLoading();
+    }
+    
+    window.switchReportTab = function(tab) {
+        reportsState.activeTab = tab;
+        
+        // Update tab states
+        document.querySelectorAll('.report-tab').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        // Update content
+        document.querySelectorAll('.report-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.getElementById(tab + '-report').classList.add('active');
+        
+        // Load tab-specific data
+        switch(tab) {
+            case 'production':
+                renderCharts();
+                break;
+            case 'financial':
+                renderFinancialCharts();
+                break;
+            case 'quality':
+                console.log('Loading quality reports...');
+                break;
+            case 'efficiency':
+                console.log('Loading efficiency reports...');
+                break;
+            case 'inventory':
+                console.log('Loading inventory reports...');
+                break;
+        }
+    }
+    
+    function renderFinancialCharts() {
+        // Animate donut chart segments
+        const circles = document.querySelectorAll('.donut-chart circle[stroke-dasharray]');
+        circles.forEach((circle, index) => {
+            const dashArray = circle.getAttribute('stroke-dasharray');
+            circle.setAttribute('stroke-dasharray', '0 502.4');
+            setTimeout(() => {
+                circle.setAttribute('stroke-dasharray', dashArray);
+                circle.style.transition = 'stroke-dasharray 1s ease';
+            }, index * 200);
+        });
+    }
+    
+    function showReportLoading() {
+        // Quick loading effect
+        const content = document.querySelector('.report-content.active');
+        if (content) {
+            content.style.opacity = '0.5';
+            setTimeout(() => {
+                content.style.opacity = '1';
+                content.style.transition = 'opacity 0.3s ease';
+            }, 300);
+        }
+    }
+    
+    window.refreshReports = function() {
+        showReportLoading();
+        setTimeout(() => {
+            loadReportData();
+            animateReportMetrics();
+            alert('Reports refreshed with latest data!');
+        }, 500);
+    }
+    
+    window.exportReport = function() {
+        alert('Exporting report to PDF...\n\nReport will include:\n- Executive summary\n- All active report tabs\n- Charts and visualizations\n- Data tables');
+    }
+    
+    window.printReport = function() {
+        alert('Opening print dialog...\n\nReport will be formatted for A4 paper with proper page breaks.');
+    }
+    
+    window.emailReport = function() {
+        alert('Email report feature coming soon!\n\nYou will be able to:\n- Select recipients\n- Add custom message\n- Schedule delivery');
+    }
+    
+    window.scheduleReport = function() {
+        alert('Schedule report feature coming soon!\n\nOptions will include:\n- Daily/Weekly/Monthly reports\n- Custom recipients\n- Automated delivery');
     }
     
     // Event listeners
