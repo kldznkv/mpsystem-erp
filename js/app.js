@@ -237,10 +237,22 @@
     };
     
     function loadOrdersPage() {
-        updateOrdersSummary();
-        renderOrdersTable();
-        initOrdersEventListeners();
+    // Check if there's a pending order from BOM
+    if (state.pendingOrder) {
+        const { bomId, bomData } = state.pendingOrder;
+        showNotification(`Creating order based on ${bomData.name}`, 'info');
+        // Clear pending order
+        state.pendingOrder = null;
+        // Open create order dialog with pre-filled data
+        setTimeout(() => {
+            createNewOrder(bomData);
+        }, 500);
     }
+    
+    updateOrdersSummary();
+    renderOrdersTable();
+    initOrdersEventListeners();
+}
     
     function updateOrdersSummary() {
         // In real app, calculate from filtered data
