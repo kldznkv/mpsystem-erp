@@ -901,9 +901,285 @@
         alert('Add new material feature coming soon!');
     }
     
+    // BOM Page Implementation
+    let bomState = {
+        selectedBOM: null,
+        searchQuery: '',
+        filters: {}
+    };
+    
     function loadBOMPage() {
-        console.log('Loading BOM page...');
-        // TODO: Implement BOM management
+        updateBOMStats();
+        renderBOMList();
+        initBOMEventListeners();
+        initCostCalculator();
+    }
+    
+    function updateBOMStats() {
+        // Animate BOM statistics
+        const stats = [
+            { selector: '.bom-stat-card:nth-child(1) .bom-stat-value', value: 47, suffix: '' },
+            { selector: '.bom-stat-card:nth-child(2) .bom-stat-value', value: 38.22, prefix: '€', suffix: '' },
+            { selector: '.bom-stat-card:nth-child(3) .bom-stat-value', value: 96.2, suffix: '%' },
+            { selector: '.bom-stat-card:nth-child(4) .bom-stat-value', value: 12, suffix: '' }
+        ];
+        
+        stats.forEach(stat => {
+            const element = document.querySelector(stat.selector);
+            if (element) {
+                animateBOMValue(element, 0, stat.value, 1000, stat.prefix, stat.suffix);
+            }
+        });
+    }
+    
+    function animateBOMValue(element, start, end, duration, prefix = '', suffix = '') {
+        const startTime = performance.now();
+        const isDecimal = end % 1 !== 0;
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = start + (end - start) * progress;
+            
+            let displayValue = isDecimal ? current.toFixed(2) : Math.floor(current);
+            element.textContent = prefix + displayValue + suffix;
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+        
+        requestAnimationFrame(update);
+    }
+    
+    function renderBOMList() {
+        // Get all BOM templates from data
+        const bomTemplates = DEMO_DATA.bomTemplates || [];
+        
+        // For demo, add more BOMs
+        const additionalBOMs = [
+            {
+                id: 'BOM-002',
+                name: 'Barrier Laminate',
+                customer: 'LACPOL',
+                version: '1.3',
+                active: true,
+                structure: {
+                    material: 'PE/PE/EVOH',
+                    thickness: 120,
+                    width: 425,
+                    length: 750,
+                    weightPer1000: 12.4
+                },
+                cost: {
+                    material: 45.20,
+                    labor: 15.45,
+                    overhead: 7.20,
+                    total: 67.85
+                }
+            },
+            {
+                id: 'BOM-003',
+                name: 'Premium Print Package',
+                customer: "Sainsbury's",
+                version: '3.0',
+                active: true,
+                structure: {
+                    material: 'PE/Print',
+                    thickness: 90,
+                    width: 320,
+                    length: 480,
+                    weightPer1000: 9.6
+                },
+                cost: {
+                    material: 28.50,
+                    labor: 18.20,
+                    overhead: 5.70,
+                    total: 52.40
+                }
+            }
+        ];
+        
+        // Animate BOM cards
+        const bomCards = document.querySelectorAll('.bom-card');
+        bomCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+                card.style.transition = 'all 0.3s ease';
+            }, index * 100);
+        });
+    }
+    
+    function initBOMEventListeners() {
+        // Search functionality
+        const searchInput = document.getElementById('bomSearch');
+        if (searchInput && !searchInput.hasListener) {
+            searchInput.addEventListener('input', (e) => {
+                bomState.searchQuery = e.target.value;
+                filterBOMs();
+            });
+            searchInput.hasListener = true;
+        }
+        
+        // Filter listeners
+        const customerFilter = document.getElementById('bomCustomerFilter');
+        if (customerFilter && !customerFilter.hasListener) {
+            customerFilter.addEventListener('change', (e) => {
+                bomState.filters.customer = e.target.value;
+                filterBOMs();
+            });
+            customerFilter.hasListener = true;
+        }
+        
+        const typeFilter = document.getElementById('bomTypeFilter');
+        if (typeFilter && !typeFilter.hasListener) {
+            typeFilter.addEventListener('change', (e) => {
+                bomState.filters.type = e.target.value;
+                filterBOMs();
+            });
+            typeFilter.hasListener = true;
+        }
+    }
+    
+    function initCostCalculator() {
+        // Set initial values for calculator
+        calculateCost();
+    }
+    
+    function filterBOMs() {
+        const cards = document.querySelectorAll('.bom-card');
+        cards.forEach(card => {
+            const name = card.querySelector('.bom-name').textContent.toLowerCase();
+            const customer = card.querySelector('.bom-customer').textContent.toLowerCase();
+            
+            let show = true;
+            
+            // Search filter
+            if (bomState.searchQuery && !name.includes(bomState.searchQuery.toLowerCase()) && 
+                !customer.includes(bomState.searchQuery.toLowerCase())) {
+                show = false;
+            }
+            
+            // Customer filter
+            if (bomState.filters.customer && !customer.includes(bomState.filters.customer.toLowerCase())) {
+                show = false;
+            }
+            
+            // Type filter
+            if (bomState.filters.type) {
+                // Would check actual BOM type in real implementation
+                show = show && true;
+            }
+            
+            card.style.display = show ? 'flex' : 'none';
+        });
+    }
+    
+    // Global functions for BOM
+    window.showBOMDetails = function(bomId) {
+        // For demo, show alert with BOM details
+        const bomData = {
+            'BOM-001': {
+                name: 'Standard Cheese Packaging',
+                details: 'PE-LD Monolayer, 80μm, 250×450mm\nTotal cost: €38.22/1000pcs\nLead time: 2 days'
+            },
+            'BOM-002': {
+                name: 'Barrier Laminate',
+                details: 'PE/PE/EVOH, 120μm, 425×750mm\nTotal cost: €67.85/1000pcs\nLead time: 3 days'
+            },
+            'BOM-003': {
+                name: 'Premium Print Package',
+                details: 'PE/Print, 90μm, 320×480mm\nTotal cost: €52.40/1000pcs\nLead time: 4 days'
+            }
+        };
+        
+        const bom = bomData[bomId];
+        if (bom) {
+            alert(`BOM Details: ${bom.name}\n\n${bom.details}`);
+        }
+    }
+    
+    window.createNewBOM = function() {
+        alert('Create new BOM feature coming soon!\n\nThis will open a form to:\n- Define product specifications\n- Add materials and quantities\n- Set up production route\n- Calculate costs');
+    }
+    
+    window.editBOM = function(bomId, event) {
+        event.stopPropagation();
+        alert(`Edit BOM ${bomId} feature coming soon!`);
+    }
+    
+    window.copyBOM = function(bomId, event) {
+        event.stopPropagation();
+        alert(`Creating copy of BOM ${bomId}...\n\nThis will duplicate all specifications and allow you to modify for a new product.`);
+    }
+    
+    window.viewHistory = function(bomId, event) {
+        event.stopPropagation();
+        alert(`BOM ${bomId} History:\n\nv2.1 - Current (15.03.2025)\n- Optimized ink usage -8%\n\nv2.0 - (01.03.2025)\n- Added antiblock for better performance\n\nv1.9 - (15.02.2025)\n- Changed thickness from 75 to 80μm`);
+    }
+    
+    window.exportBOMs = function() {
+        alert('Exporting all BOMs to Excel...\n\nFile will include:\n- Product specifications\n- Material lists\n- Cost breakdowns\n- Routing information');
+    }
+    
+    window.calculateCost = function() {
+        // Get input values
+        const bomSelect = document.getElementById('calcBOM');
+        const quantityInput = document.getElementById('calcQuantity');
+        const priceChangeInput = document.getElementById('calcPriceChange');
+        
+        if (!bomSelect || !quantityInput) return;
+        
+        const bomId = bomSelect.value;
+        const quantity = parseFloat(quantityInput.value) || 0;
+        const priceChange = parseFloat(priceChangeInput.value) || 0;
+        
+        // Base costs per 1000 units
+        const baseCosts = {
+            'BOM-001': { material: 20.09, labor: 11.35, overhead: 6.78 },
+            'BOM-002': { material: 45.20, labor: 15.45, overhead: 7.20 },
+            'BOM-003': { material: 28.50, labor: 18.20, overhead: 5.70 }
+        };
+        
+        const costs = baseCosts[bomId] || baseCosts['BOM-001'];
+        
+        // Calculate with price change
+        const materialCost = costs.material * (1 + priceChange / 100) * (quantity / 1000);
+        const laborCost = costs.labor * (quantity / 1000);
+        const overheadCost = costs.overhead * (quantity / 1000);
+        const totalCost = materialCost + laborCost + overheadCost;
+        
+        // Update display with animation
+        animateCostResult('resultMaterial', materialCost);
+        animateCostResult('resultLabor', laborCost);
+        animateCostResult('resultOverhead', overheadCost);
+        animateCostResult('resultTotal', totalCost);
+    }
+    
+    function animateCostResult(elementId, value) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        
+        const currentValue = parseFloat(element.textContent.replace('€', '').replace(',', '')) || 0;
+        const startTime = performance.now();
+        const duration = 500;
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = currentValue + (value - currentValue) * progress;
+            
+            element.textContent = '€' + current.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+        
+        requestAnimationFrame(update);
     }
     
     function loadQualityPage() {
