@@ -31,28 +31,33 @@
         });
     }
     
-    function navigateToPage(pageId) {
-        // Update navigation
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
-        
-        // Update content
-        document.querySelectorAll('.page').forEach(page => {
-            page.classList.remove('active');
-        });
-        document.getElementById(pageId).classList.add('active');
-        
-        // Update header
-        updatePageHeader(pageId);
-        
-        // Load page data
-        loadPageData(pageId);
-        
-        // Update state
-        state.currentPage = pageId;
+   function navigateToPage(pageId) {
+    // Update navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+    
+    // Update content
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+    document.getElementById(pageId).classList.add('active');
+    
+    // Update header
+    updatePageHeader(pageId);
+    
+    // Load page data
+    loadPageData(pageId);
+    
+    // Cleanup when leaving production page (ДО обновления state!)
+    if (state.currentPage === 'production' && pageId !== 'production') {
+        cleanupProduction();
     }
+    
+    // Update state (это должно быть ПОСЛЕ cleanup!)
+    state.currentPage = pageId;
+}
     
     function updatePageHeader(pageId) {
         const pageConfigs = {
@@ -442,9 +447,224 @@
         alert('Timeline view toggle feature coming soon!');
     }
     
+    // Production Page Implementation
+    let productionState = {
+        viewMode: 'grid',
+        selectedLine: null,
+        refreshInterval: null
+    };
+    
     function loadProductionPage() {
-        console.log('Loading production page...');
-        // TODO: Implement production monitoring
+        updateProductionOverview();
+        renderProductionLines();
+        renderProductionAlerts();
+        initProductionCharts();
+        startProductionRefresh();
+    }
+    
+    function updateProductionOverview() {
+        // Calculate OEE metrics (in real app, from API)
+        const oeeData = {
+            availability: 92.5,
+            performance: 94.8,
+            quality: 99.2,
+            totalOEE: (92.5 * 94.8 * 99.2) / 10000
+        };
+        
+        // Update OEE displays
+        const oeeMetrics = document.querySelectorAll('.oee-metric');
+        if (oeeMetrics.length >= 4) {
+            oeeMetrics[0].querySelector('.oee-value').textContent = oeeData.availability.toFixed(1) + '%';
+            oeeMetrics[0].querySelector('.oee-fill').style.width = oeeData.availability + '%';
+            
+            oeeMetrics[1].querySelector('.oee-value').textContent = oeeData.performance.toFixed(1) + '%';
+            oeeMetrics[1].querySelector('.oee-fill').style.width = oeeData.performance + '%';
+            
+            oeeMetrics[2].querySelector('.oee-value').textContent = oeeData.quality.toFixed(1) + '%';
+            oeeMetrics[2].querySelector('.oee-fill').style.width = oeeData.quality + '%';
+            
+            oeeMetrics[3].querySelector('.oee-value').textContent = oeeData.totalOEE.toFixed(1) + '%';
+            oeeMetrics[3].querySelector('.oee-fill').style.width = oeeData.totalOEE + '%';
+        }
+        
+        // Update quick stats with animation
+        animateQuickStats();
+    }
+    
+    function animateQuickStats() {
+        const stats = [
+            { selector: '.stat-card:nth-child(1) .stat-value', value: 5847 },
+            { selector: '.stat-card:nth-child(2) .stat-value', value: 127350 },
+            { selector: '.stat-card:nth-child(3) .stat-value', value: 1.2 },
+            { selector: '.stat-card:nth-child(4) .stat-value', value: 98.7 }
+        ];
+        
+        stats.forEach(stat => {
+            const element = document.querySelector(stat.selector);
+            if (element) {
+                animateValue(element, 0, stat.value, 1000);
+            }
+        });
+    }
+    
+    function animateValue(element, start, end, duration) {
+        const startTime = performance.now();
+        const isDecimal = end % 1 !== 0;
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = start + (end - start) * progress;
+            
+            element.textContent = isDecimal ? current.toFixed(1) : Math.floor(current).toLocaleString();
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+        
+        requestAnimationFrame(update);
+    }
+    
+    function renderProductionLines() {
+        // Update production lines based on current data
+        // In real app, this would fetch fresh data
+        
+        // Simulate real-time updates
+        const lines = document.querySelectorAll('.line-card');
+        lines.forEach((card, index) => {
+            // Add slight animation on data refresh
+            card.style.opacity = '0.8';
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transition = 'opacity 0.3s ease';
+            }, index * 100);
+        });
+    }
+    
+    function renderProductionAlerts() {
+        // In real app, fetch new alerts
+        // For demo, just animate existing ones
+        const alerts = document.querySelectorAll('.alert-card');
+        alerts.forEach((alert, index) => {
+            alert.style.transform = 'translateX(-20px)';
+            alert.style.opacity = '0';
+            setTimeout(() => {
+                alert.style.transform = 'translateX(0)';
+                alert.style.opacity = '1';
+                alert.style.transition = 'all 0.3s ease';
+            }, index * 150);
+        });
+    }
+    
+    function initProductionCharts() {
+        // Initialize placeholder charts
+        // In real app, use Chart.js or similar
+        const outputChart = document.getElementById('outputChart');
+        const efficiencyChart = document.getElementById('efficiencyChart');
+        
+        if (outputChart) {
+            // Would initialize real chart here
+            outputChart.parentElement.innerHTML = '<div style="padding: 60px 20px; text-align: center; color: #64748b;">Output trend chart would display here</div>';
+        }
+        
+        if (efficiencyChart) {
+            // Would initialize real chart here
+            efficiencyChart.parentElement.innerHTML = '<div style="padding: 60px 20px; text-align: center; color: #64748b;">Efficiency comparison chart would display here</div>';
+        }
+    }
+    
+    function startProductionRefresh() {
+        // Clear any existing interval
+        if (productionState.refreshInterval) {
+            clearInterval(productionState.refreshInterval);
+        }
+        
+        // Refresh production data every 10 seconds
+        if (CONFIG.PRODUCTION_REFRESH) {
+            productionState.refreshInterval = setInterval(() => {
+                if (state.currentPage === 'production') {
+                    updateProductionMetrics();
+                }
+            }, CONFIG.PRODUCTION_REFRESH);
+        }
+    }
+    
+    function updateProductionMetrics() {
+        // Simulate real-time metric updates
+        const progressBars = document.querySelectorAll('.line-card .progress-fill');
+        progressBars.forEach(bar => {
+            const currentWidth = parseFloat(bar.style.width);
+            const change = (Math.random() - 0.3) * 5; // Random change
+            const newWidth = Math.max(0, Math.min(100, currentWidth + change));
+            bar.style.width = newWidth + '%';
+            
+            // Update progress text
+            const progressText = bar.closest('.line-progress').querySelector('.progress-header span:last-child');
+            if (progressText) {
+                progressText.textContent = Math.round(newWidth) + '%';
+            }
+        });
+        
+        // Update efficiency values
+        const efficiencyValues = document.querySelectorAll('.mini-metric .metric-value');
+        efficiencyValues.forEach(val => {
+            if (val.textContent.includes('%')) {
+                const current = parseFloat(val.textContent);
+                const change = (Math.random() - 0.5) * 2;
+                const newVal = Math.max(0, Math.min(100, current + change));
+                val.textContent = newVal.toFixed(1) + '%';
+            }
+        });
+    }
+    
+    // Global functions for production
+    window.setProductionView = function(mode) {
+        productionState.viewMode = mode;
+        
+        // Update button states
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        // In real app, would change layout
+        alert('View mode: ' + mode + ' - Layout change coming soon!');
+    }
+    
+    window.showLineDetails = function(lineId) {
+        const line = DEMO_DATA.productionLines.find(l => l.id === lineId);
+        if (line) {
+            showProductionDetails(line);
+        }
+    }
+    
+    window.handleAlert = function(type) {
+        switch(type) {
+            case 'material':
+                alert('Opening material requisition form...');
+                break;
+            case 'quality':
+                alert('Opening quality check interface...');
+                break;
+            case 'shift':
+                alert('Shift change acknowledged');
+                break;
+            default:
+                alert('Alert handled');
+        }
+    }
+    
+    window.viewAllAlerts = function() {
+        alert('Opening alerts dashboard...');
+    }
+    
+    // Cleanup on page change
+    function cleanupProduction() {
+        if (productionState.refreshInterval) {
+            clearInterval(productionState.refreshInterval);
+            productionState.refreshInterval = null;
+        }
     }
     
     function loadInventoryPage() {
