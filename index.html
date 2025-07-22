@@ -1537,11 +1537,360 @@
                     </div>
                 </div>
                 
+                <!-- Reports Page -->
                 <div id="reports" class="page">
-                    <div class="empty-state">
-                        <span class="empty-icon">📈</span>
-                        <h3>Reports & Analytics</h3>
-                        <p>Detailed reports and analytics will be displayed here</p>
+                    <!-- Reports Header -->
+                    <div class="reports-header">
+                        <div class="period-selector">
+                            <button class="period-btn" onclick="setPeriod('today')">Today</button>
+                            <button class="period-btn active" onclick="setPeriod('week')">This Week</button>
+                            <button class="period-btn" onclick="setPeriod('month')">This Month</button>
+                            <button class="period-btn" onclick="setPeriod('quarter')">Quarter</button>
+                            <button class="period-btn" onclick="setPeriod('year')">Year</button>
+                            <button class="period-btn" onclick="setPeriod('custom')">
+                                <span>📅</span> Custom
+                            </button>
+                        </div>
+                        <div class="report-actions">
+                            <button class="btn-secondary" onclick="refreshReports()">
+                                <span>🔄</span> Refresh
+                            </button>
+                            <button class="btn-primary" onclick="exportReport()">
+                                <span>📥</span> Export PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Summary -->
+                    <div class="executive-summary">
+                        <h2 class="summary-title">Executive Summary - Week of March 15-22, 2025</h2>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <div class="summary-metric">
+                                    <div class="metric-title">Total Production</div>
+                                    <div class="metric-main">847,350</div>
+                                    <div class="metric-sub">units produced</div>
+                                    <div class="metric-trend positive">
+                                        <span class="trend-icon">↑</span>
+                                        <span class="trend-value">12.3%</span>
+                                        <span class="trend-label">vs last week</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-metric">
+                                    <div class="metric-title">Revenue</div>
+                                    <div class="metric-main">€458.7k</div>
+                                    <div class="metric-sub">total revenue</div>
+                                    <div class="metric-trend positive">
+                                        <span class="trend-icon">↑</span>
+                                        <span class="trend-value">8.5%</span>
+                                        <span class="trend-label">vs last week</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-metric">
+                                    <div class="metric-title">Overall OEE</div>
+                                    <div class="metric-main">86.7%</div>
+                                    <div class="metric-sub">efficiency rate</div>
+                                    <div class="metric-trend positive">
+                                        <span class="trend-icon">↑</span>
+                                        <span class="trend-value">2.1%</span>
+                                        <span class="trend-label">improvement</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-metric">
+                                    <div class="metric-title">Quality Rate</div>
+                                    <div class="metric-main">99.2%</div>
+                                    <div class="metric-sub">first pass yield</div>
+                                    <div class="metric-trend neutral">
+                                        <span class="trend-icon">→</span>
+                                        <span class="trend-value">0.1%</span>
+                                        <span class="trend-label">stable</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Report Tabs -->
+                    <div class="report-tabs">
+                        <button class="report-tab active" onclick="switchReportTab('production')">
+                            Production
+                        </button>
+                        <button class="report-tab" onclick="switchReportTab('financial')">
+                            Financial
+                        </button>
+                        <button class="report-tab" onclick="switchReportTab('quality')">
+                            Quality
+                        </button>
+                        <button class="report-tab" onclick="switchReportTab('efficiency')">
+                            Efficiency
+                        </button>
+                        <button class="report-tab" onclick="switchReportTab('inventory')">
+                            Inventory
+                        </button>
+                    </div>
+                    
+                    <!-- Production Report Tab -->
+                    <div id="production-report" class="report-content active">
+                        <div class="report-section">
+                            <h3 class="report-section-title">Production Output by Line</h3>
+                            <div class="chart-container">
+                                <canvas id="productionChart" height="300"></canvas>
+                                <div class="chart-placeholder">
+                                    <div class="chart-bars">
+                                        <div class="bar" style="height: 85%">
+                                            <span class="bar-value">287kg/h</span>
+                                            <span class="bar-label">Line 1</span>
+                                        </div>
+                                        <div class="bar" style="height: 78%">
+                                            <span class="bar-value">264kg/h</span>
+                                            <span class="bar-label">Line 2</span>
+                                        </div>
+                                        <div class="bar" style="height: 45%">
+                                            <span class="bar-value">152kg/h</span>
+                                            <span class="bar-label">Line 3</span>
+                                        </div>
+                                        <div class="bar" style="height: 92%">
+                                            <span class="bar-value">311kg/h</span>
+                                            <span class="bar-label">Print 1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="report-grid">
+                            <div class="report-section">
+                                <h3 class="report-section-title">Top Products by Volume</h3>
+                                <div class="top-products">
+                                    <div class="product-item">
+                                        <div class="product-rank">1</div>
+                                        <div class="product-info">
+                                            <div class="product-name">Cheese Packaging 250×450mm</div>
+                                            <div class="product-customer">MLEKOVITA</div>
+                                        </div>
+                                        <div class="product-volume">
+                                            <div class="volume-value">127,350</div>
+                                            <div class="volume-label">units</div>
+                                        </div>
+                                    </div>
+                                    <div class="product-item">
+                                        <div class="product-rank">2</div>
+                                        <div class="product-info">
+                                            <div class="product-name">Food Wrap 230×475mm</div>
+                                            <div class="product-customer">AGRONA</div>
+                                        </div>
+                                        <div class="product-volume">
+                                            <div class="volume-value">98,200</div>
+                                            <div class="volume-label">units</div>
+                                        </div>
+                                    </div>
+                                    <div class="product-item">
+                                        <div class="product-rank">3</div>
+                                        <div class="product-info">
+                                            <div class="product-name">Barrier Laminate 425×750mm</div>
+                                            <div class="product-customer">LACPOL</div>
+                                        </div>
+                                        <div class="product-volume">
+                                            <div class="volume-value">65,400</div>
+                                            <div class="volume-label">units</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3 class="report-section-title">Production Trends</h3>
+                                <div class="trend-chart">
+                                    <canvas id="trendChart"></canvas>
+                                    <div class="chart-placeholder">
+                                        <svg viewBox="0 0 400 200" style="width: 100%; height: 200px;">
+                                            <polyline 
+                                                points="20,150 80,120 140,100 200,110 260,80 320,60 380,40" 
+                                                fill="none" 
+                                                stroke="#2563eb" 
+                                                stroke-width="3"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            />
+                                            <polyline 
+                                                points="20,150 80,120 140,100 200,110 260,80 320,60 380,40" 
+                                                fill="url(#gradient)" 
+                                                opacity="0.3"
+                                            />
+                                            <defs>
+                                                <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                    <stop offset="0%" style="stop-color:#2563eb;stop-opacity:0.5" />
+                                                    <stop offset="100%" style="stop-color:#2563eb;stop-opacity:0" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                        <div style="text-align: center; color: #64748b; margin-top: 10px;">
+                                            Weekly production trend showing 15% growth
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="report-section">
+                            <h3 class="report-section-title">Order Fulfillment Status</h3>
+                            <div class="fulfillment-grid">
+                                <div class="fulfillment-card">
+                                    <div class="fulfillment-icon completed">✓</div>
+                                    <div class="fulfillment-data">
+                                        <div class="fulfillment-value">24</div>
+                                        <div class="fulfillment-label">Completed</div>
+                                    </div>
+                                </div>
+                                <div class="fulfillment-card">
+                                    <div class="fulfillment-icon production">⚙</div>
+                                    <div class="fulfillment-data">
+                                        <div class="fulfillment-value">12</div>
+                                        <div class="fulfillment-label">In Production</div>
+                                    </div>
+                                </div>
+                                <div class="fulfillment-card">
+                                    <div class="fulfillment-icon scheduled">📅</div>
+                                    <div class="fulfillment-data">
+                                        <div class="fulfillment-value">8</div>
+                                        <div class="fulfillment-label">Scheduled</div>
+                                    </div>
+                                </div>
+                                <div class="fulfillment-card">
+                                    <div class="fulfillment-icon delayed">⚠</div>
+                                    <div class="fulfillment-data">
+                                        <div class="fulfillment-value">2</div>
+                                        <div class="fulfillment-label">Delayed</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Other Report Tabs (Hidden) -->
+                    <div id="financial-report" class="report-content">
+                        <div class="report-section">
+                            <h3 class="report-section-title">Financial Performance</h3>
+                            <div class="financial-summary">
+                                <div class="finance-card">
+                                    <h4>Revenue Breakdown</h4>
+                                    <div class="finance-chart">
+                                        <div class="donut-chart">
+                                            <svg viewBox="0 0 200 200" style="width: 200px; height: 200px;">
+                                                <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" stroke-width="20"/>
+                                                <circle cx="100" cy="100" r="80" fill="none" stroke="#2563eb" stroke-width="20" 
+                                                        stroke-dasharray="251.2 0" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+                                                <circle cx="100" cy="100" r="80" fill="none" stroke="#10b981" stroke-width="20" 
+                                                        stroke-dasharray="150.72 100.48" stroke-dashoffset="-251.2" transform="rotate(-90 100 100)"/>
+                                                <circle cx="100" cy="100" r="80" fill="none" stroke="#f59e0b" stroke-width="20" 
+                                                        stroke-dasharray="75.36 326.56" stroke-dashoffset="-401.92" transform="rotate(-90 100 100)"/>
+                                                <text x="100" y="100" text-anchor="middle" font-size="24" font-weight="bold">€458.7k</text>
+                                                <text x="100" y="120" text-anchor="middle" font-size="14" fill="#64748b">Total</text>
+                                            </svg>
+                                        </div>
+                                        <div class="finance-legend">
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background: #2563eb;"></span>
+                                                <span>MLEKOVITA - €187.4k (40%)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background: #10b981;"></span>
+                                                <span>AGRONA - €142.8k (30%)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background: #f59e0b;"></span>
+                                                <span>Others - €128.5k (30%)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="finance-card">
+                                    <h4>Cost Analysis</h4>
+                                    <div class="cost-table">
+                                        <div class="cost-row">
+                                            <span>Material Costs</span>
+                                            <span>€215.3k</span>
+                                            <span class="cost-percent">47%</span>
+                                        </div>
+                                        <div class="cost-row">
+                                            <span>Labor Costs</span>
+                                            <span>€98.7k</span>
+                                            <span class="cost-percent">22%</span>
+                                        </div>
+                                        <div class="cost-row">
+                                            <span>Overhead</span>
+                                            <span>€68.5k</span>
+                                            <span class="cost-percent">15%</span>
+                                        </div>
+                                        <div class="cost-row">
+                                            <span>Energy</span>
+                                            <span>€45.2k</span>
+                                            <span class="cost-percent">10%</span>
+                                        </div>
+                                        <div class="cost-row">
+                                            <span>Other</span>
+                                            <span>€31.0k</span>
+                                            <span class="cost-percent">6%</span>
+                                        </div>
+                                        <div class="cost-row total">
+                                            <span>Total Costs</span>
+                                            <span>€458.7k</span>
+                                            <span class="cost-percent">100%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="quality-report" class="report-content">
+                        <div class="empty-state">
+                            <span class="empty-icon">✅</span>
+                            <h3>Quality Reports</h3>
+                            <p>Quality metrics and defect analysis will be displayed here</p>
+                        </div>
+                    </div>
+                    
+                    <div id="efficiency-report" class="report-content">
+                        <div class="empty-state">
+                            <span class="empty-icon">⚡</span>
+                            <h3>Efficiency Reports</h3>
+                            <p>OEE analysis and efficiency metrics will be displayed here</p>
+                        </div>
+                    </div>
+                    
+                    <div id="inventory-report" class="report-content">
+                        <div class="empty-state">
+                            <span class="empty-icon">📦</span>
+                            <h3>Inventory Reports</h3>
+                            <p>Stock levels and consumption analysis will be displayed here</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Report Footer -->
+                    <div class="report-footer">
+                        <div class="footer-info">
+                            <span>Report generated on: <strong id="reportDate">March 22, 2025 10:45 AM</strong></span>
+                            <span>Data period: <strong id="reportPeriod">March 15-22, 2025</strong></span>
+                        </div>
+                        <div class="footer-actions">
+                            <button class="btn-text" onclick="printReport()">
+                                <span>🖨️</span> Print
+                            </button>
+                            <button class="btn-text" onclick="emailReport()">
+                                <span>📧</span> Email
+                            </button>
+                            <button class="btn-text" onclick="scheduleReport()">
+                                <span>📅</span> Schedule
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
