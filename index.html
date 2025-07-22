@@ -1,1 +1,315 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPSYSTEM - Production ERP</title>
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">📦</span>
+                    <span class="logo-text">MPSYSTEM</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#orders" class="nav-item" data-page="orders">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">Orders</span>
+                </a>
+                <a href="#production" class="nav-item" data-page="production">
+                    <span class="nav-icon">🏭</span>
+                    <span class="nav-text">Production</span>
+                </a>
+                <a href="#inventory" class="nav-item" data-page="inventory">
+                    <span class="nav-icon">📦</span>
+                    <span class="nav-text">Inventory</span>
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">System</div>
+                <a href="#bom" class="nav-item" data-page="bom">
+                    <span class="nav-icon">🔧</span>
+                    <span class="nav-text">BOM & Recipes</span>
+                </a>
+                <a href="#quality" class="nav-item" data-page="quality">
+                    <span class="nav-icon">✅</span>
+                    <span class="nav-text">Quality</span>
+                </a>
+                <a href="#reports" class="nav-item" data-page="reports">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Reports</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Production Manager</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Real-time production overview</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn-icon">
+                        <span>🔔</span>
+                    </button>
+                    <button class="btn-primary">
+                        <span>➕</span>
+                        <span>New Order</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Page Content -->
+            <div class="content">
+                <!-- Dashboard Page -->
+                <div id="dashboard" class="page active">
+                    <!-- KPI Cards -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Production Efficiency</span>
+                                <span class="kpi-icon">📈</span>
+                            </div>
+                            <div class="kpi-value">94.8%</div>
+                            <div class="kpi-footer">
+                                <span class="kpi-change positive">↑ 2.3%</span>
+                                <span class="kpi-period">vs last week</span>
+                            </div>
+                        </div>
+                        
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Active Orders</span>
+                                <span class="kpi-icon">📋</span>
+                            </div>
+                            <div class="kpi-value">28</div>
+                            <div class="kpi-footer">
+                                <span class="kpi-change positive">↑ 6</span>
+                                <span class="kpi-period">new today</span>
+                            </div>
+                        </div>
+                        
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Quality Rate</span>
+                                <span class="kpi-icon">✅</span>
+                            </div>
+                            <div class="kpi-value">99.2%</div>
+                            <div class="kpi-footer">
+                                <span class="kpi-change positive">↑ 0.5%</span>
+                                <span class="kpi-period">above target</span>
+                            </div>
+                        </div>
+                        
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Stock Level</span>
+                                <span class="kpi-icon">📦</span>
+                            </div>
+                            <div class="kpi-value">87%</div>
+                            <div class="kpi-footer">
+                                <span class="kpi-change warning">↓ 3%</span>
+                                <span class="kpi-period">needs attention</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Production Status -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Production Lines Status</h2>
+                            <button class="btn-text">View All →</button>
+                        </div>
+                        
+                        <div class="production-grid">
+                            <div class="production-card">
+                                <div class="production-header">
+                                    <div>
+                                        <h3 class="production-name">Extrusion Line 1</h3>
+                                        <p class="production-product">PE Film 250mm</p>
+                                    </div>
+                                    <span class="status-badge running">Running</span>
+                                </div>
+                                <div class="production-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 76%"></div>
+                                    </div>
+                                    <span class="progress-text">76% complete</span>
+                                </div>
+                                <div class="production-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">Speed</span>
+                                        <span class="metric-value">145 m/min</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Output</span>
+                                        <span class="metric-value">287 kg/h</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="production-card">
+                                <div class="production-header">
+                                    <div>
+                                        <h3 class="production-name">Printing Station</h3>
+                                        <p class="production-product">6-Color Flexo</p>
+                                    </div>
+                                    <span class="status-badge setup">Setup</span>
+                                </div>
+                                <div class="production-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill warning" style="width: 25%"></div>
+                                    </div>
+                                    <span class="progress-text">Changing colors</span>
+                                </div>
+                                <div class="production-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">Next Order</span>
+                                        <span class="metric-value">ZP-0321</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">ETA</span>
+                                        <span class="metric-value">35 min</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Orders -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Recent Orders</h2>
+                            <button class="btn-text">View All →</button>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="order-id">ZP-2024/0318</td>
+                                        <td>MLEKOVITA</td>
+                                        <td>Cheese Packaging 250×450mm</td>
+                                        <td>20,000 pcs</td>
+                                        <td>Mar 18</td>
+                                        <td><span class="status-badge running">In Production</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="order-id">ZP-2024/0319</td>
+                                        <td>AGRONA</td>
+                                        <td>Food Wrap 230×475mm</td>
+                                        <td>10,000 pcs</td>
+                                        <td>Mar 20</td>
+                                        <td><span class="status-badge running">In Production</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="order-id">ZP-2024/0320</td>
+                                        <td>LACPOL</td>
+                                        <td>Laminate 425×750mm</td>
+                                        <td>5,000 pcs</td>
+                                        <td>Mar 22</td>
+                                        <td><span class="status-badge pending">Scheduled</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Other Pages (hidden by default) -->
+                <div id="orders" class="page">
+                    <div class="empty-state">
+                        <span class="empty-icon">📋</span>
+                        <h3>Orders Management</h3>
+                        <p>Order tracking and management will be displayed here</p>
+                    </div>
+                </div>
+                
+                <div id="production" class="page">
+                    <div class="empty-state">
+                        <span class="empty-icon">🏭</span>
+                        <h3>Production Control</h3>
+                        <p>Production monitoring and control will be displayed here</p>
+                    </div>
+                </div>
+                
+                <div id="inventory" class="page">
+                    <div class="empty-state">
+                        <span class="empty-icon">📦</span>
+                        <h3>Inventory Management</h3>
+                        <p>Warehouse and inventory data will be displayed here</p>
+                    </div>
+                </div>
+                
+                <div id="bom" class="page">
+                    <div class="empty-state">
+                        <span class="empty-icon">🔧</span>
+                        <h3>BOM & Recipes</h3>
+                        <p>Product specifications and recipes will be displayed here</p>
+                    </div>
+                </div>
+                
+                <div id="quality" class="page">
+                    <div class="empty-state">
+                        <span class="empty-icon">✅</span>
+                        <h3>Quality Control</h3>
+                        <p>Quality metrics and controls will be displayed here</p>
+                    </div>
+                </div>
+                
+                <div id="reports" class="page">
+                    <div class="empty-state">
+                        <span class="empty-icon">📈</span>
+                        <h3>Reports & Analytics</h3>
+                        <p>Detailed reports and analytics will be displayed here</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
