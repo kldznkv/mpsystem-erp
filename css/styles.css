@@ -1827,3 +1827,447 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* Inventory Page Styles */
+.inventory-overview {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}
+
+/* Warehouse Map */
+.warehouse-map {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+}
+
+.map-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: var(--space-lg);
+}
+
+.warehouse-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+}
+
+.warehouse-block {
+    background: var(--gray-50);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.warehouse-block:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+}
+
+.warehouse-block.mag1 {
+    grid-column: span 2;
+}
+
+.warehouse-block.mag9 {
+    grid-column: span 2;
+}
+
+.warehouse-name {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--gray-900);
+    margin-bottom: 2px;
+}
+
+.warehouse-type {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-bottom: var(--space-sm);
+}
+
+.warehouse-capacity {
+    margin-top: var(--space-sm);
+}
+
+.capacity-bar {
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.capacity-fill {
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.capacity-fill.warning {
+    background: var(--warning);
+}
+
+.capacity-text {
+    font-size: 11px;
+    color: var(--gray-600);
+}
+
+/* Inventory Stats */
+.inventory-stats {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.stat-box {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+}
+
+.stat-box.critical {
+    border-color: var(--danger);
+    background: linear-gradient(to bottom, rgba(239, 68, 68, 0.05) 0%, transparent 100%);
+}
+
+.stat-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.stat-icon {
+    font-size: 20px;
+}
+
+.stat-title {
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.stat-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.critical-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-sm);
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+}
+
+.critical-level {
+    font-weight: 600;
+    color: var(--danger);
+}
+
+/* Value Display */
+.value-display {
+    text-align: center;
+}
+
+.value-main {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: var(--space-md);
+}
+
+.value-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.value-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.value-item:last-child {
+    border-bottom: none;
+}
+
+/* Inventory Tabs */
+.inventory-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+    background: var(--white);
+    padding: var(--space-sm);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+}
+
+.tab-btn {
+    padding: var(--space-sm) var(--space-lg);
+    border: none;
+    background: none;
+    color: var(--gray-600);
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+    background: var(--gray-100);
+    color: var(--gray-900);
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Materials Grid */
+.materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--space-lg);
+}
+
+.material-card {
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.material-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+}
+
+.material-card.critical {
+    border-color: var(--danger);
+    background: linear-gradient(to bottom, rgba(239, 68, 68, 0.02) 0%, transparent 100%);
+}
+
+.material-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-md);
+}
+
+.material-header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 2px;
+}
+
+.material-id {
+    font-size: 12px;
+    color: var(--gray-500);
+    font-family: monospace;
+}
+
+.stock-status {
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.stock-status.stock-good {
+    background: var(--success);
+    color: var(--white);
+}
+
+.stock-status.stock-warning {
+    background: var(--warning);
+    color: var(--white);
+}
+
+.stock-status.stock-critical {
+    background: var(--danger);
+    color: var(--white);
+}
+
+.material-info {
+    display: flex;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-md);
+}
+
+.info-item {
+    font-size: 13px;
+}
+
+.info-item span {
+    color: var(--gray-600);
+}
+
+.info-item strong {
+    color: var(--gray-900);
+}
+
+.hazmat-warning {
+    background: var(--warning);
+    color: var(--white);
+    padding: 4px 8px;
+    border-radius: var(--radius-md);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Stock Visual */
+.stock-visual {
+    margin: var(--space-lg) 0;
+}
+
+.stock-numbers {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: var(--space-sm);
+}
+
+.critical-warning {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.stock-bar-container {
+    position: relative;
+    background: var(--gray-200);
+    height: 24px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.stock-bar {
+    height: 100%;
+    position: relative;
+}
+
+.stock-current {
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.stock-current.critical {
+    background: var(--danger);
+}
+
+.stock-min-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--gray-700);
+    opacity: 0.5;
+}
+
+/* Material Footer */
+.material-footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--gray-200);
+}
+
+.footer-item {
+    text-align: center;
+}
+
+.footer-label {
+    display: block;
+    font-size: 11px;
+    color: var(--gray-600);
+    margin-bottom: 2px;
+}
+
+.footer-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.footer-value.critical {
+    color: var(--danger);
+}
+
+.btn-critical {
+    padding: 6px 12px;
+    background: var(--danger);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-critical:hover {
+    background: #dc2626;
+}
+
+/* Consumption Chart */
+.consumption-chart {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .inventory-overview {
+        grid-template-columns: 1fr;
+    }
+    
+    .warehouse-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .materials-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .material-footer {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+    }
+    
+    .inventory-tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+}
