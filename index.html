@@ -838,11 +838,346 @@
                     </div>
                 </div>
                 
+                <!-- Inventory Page -->
                 <div id="inventory" class="page">
-                    <div class="empty-state">
-                        <span class="empty-icon">📦</span>
-                        <h3>Inventory Management</h3>
-                        <p>Warehouse and inventory data will be displayed here</p>
+                    <!-- Inventory Overview -->
+                    <div class="inventory-overview">
+                        <div class="warehouse-map">
+                            <h3 class="map-title">Warehouse Layout (MAG 1-9)</h3>
+                            <div class="warehouse-grid">
+                                <div class="warehouse-block mag1" onclick="filterByWarehouse('MAG1')">
+                                    <div class="warehouse-name">MAG 1</div>
+                                    <div class="warehouse-type">Raw Materials</div>
+                                    <div class="warehouse-capacity">
+                                        <div class="capacity-bar">
+                                            <div class="capacity-fill" style="width: 78%"></div>
+                                        </div>
+                                        <span class="capacity-text">78% full</span>
+                                    </div>
+                                </div>
+                                <div class="warehouse-block mag1-1" onclick="filterByWarehouse('MAG1_1')">
+                                    <div class="warehouse-name">MAG 1.1</div>
+                                    <div class="warehouse-type">ADR Storage</div>
+                                    <div class="warehouse-capacity">
+                                        <div class="capacity-bar">
+                                            <div class="capacity-fill warning" style="width: 92%"></div>
+                                        </div>
+                                        <span class="capacity-text">92% full</span>
+                                    </div>
+                                </div>
+                                <div class="warehouse-block mag2" onclick="filterByWarehouse('MAG2')">
+                                    <div class="warehouse-name">MAG 2</div>
+                                    <div class="warehouse-type">Extrusion</div>
+                                    <div class="warehouse-capacity">
+                                        <div class="capacity-bar">
+                                            <div class="capacity-fill" style="width: 45%"></div>
+                                        </div>
+                                        <span class="capacity-text">WIP Storage</span>
+                                    </div>
+                                </div>
+                                <div class="warehouse-block mag3" onclick="filterByWarehouse('MAG3')">
+                                    <div class="warehouse-name">MAG 3</div>
+                                    <div class="warehouse-type">UV Treatment</div>
+                                    <div class="warehouse-capacity">
+                                        <div class="capacity-bar">
+                                            <div class="capacity-fill" style="width: 30%"></div>
+                                        </div>
+                                        <span class="capacity-text">Buffer</span>
+                                    </div>
+                                </div>
+                                <div class="warehouse-block mag4" onclick="filterByWarehouse('MAG4')">
+                                    <div class="warehouse-name">MAG 4</div>
+                                    <div class="warehouse-type">Printing</div>
+                                    <div class="warehouse-capacity">
+                                        <div class="capacity-bar">
+                                            <div class="capacity-fill" style="width: 55%"></div>
+                                        </div>
+                                        <span class="capacity-text">Queue</span>
+                                    </div>
+                                </div>
+                                <div class="warehouse-block mag9" onclick="filterByWarehouse('MAG9')">
+                                    <div class="warehouse-name">MAG 9</div>
+                                    <div class="warehouse-type">Finished Goods</div>
+                                    <div class="warehouse-capacity">
+                                        <div class="capacity-bar">
+                                            <div class="capacity-fill" style="width: 67%"></div>
+                                        </div>
+                                        <span class="capacity-text">67% full</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="inventory-stats">
+                            <div class="stat-box critical">
+                                <div class="stat-header">
+                                    <span class="stat-icon">🚨</span>
+                                    <span class="stat-title">Critical Stock</span>
+                                </div>
+                                <div class="stat-items">
+                                    <div class="critical-item">
+                                        <span>Antiblock CESA</span>
+                                        <span class="critical-level">940kg</span>
+                                    </div>
+                                    <div class="critical-item">
+                                        <span>Blue Ink</span>
+                                        <span class="critical-level">12L</span>
+                                    </div>
+                                    <div class="critical-item">
+                                        <span>Liofol UR7780</span>
+                                        <span class="critical-level">85kg</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-box">
+                                <div class="stat-header">
+                                    <span class="stat-icon">📊</span>
+                                    <span class="stat-title">Inventory Value</span>
+                                </div>
+                                <div class="value-display">
+                                    <div class="value-main">€2.84M</div>
+                                    <div class="value-breakdown">
+                                        <div class="value-item">
+                                            <span>Raw Materials</span>
+                                            <span>€1.2M</span>
+                                        </div>
+                                        <div class="value-item">
+                                            <span>WIP</span>
+                                            <span>€0.6M</span>
+                                        </div>
+                                        <div class="value-item">
+                                            <span>Finished Goods</span>
+                                            <span>€1.04M</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Inventory Tabs -->
+                    <div class="inventory-tabs">
+                        <button class="tab-btn active" onclick="switchInventoryTab('materials')">
+                            Raw Materials
+                        </button>
+                        <button class="tab-btn" onclick="switchInventoryTab('wip')">
+                            Work in Progress
+                        </button>
+                        <button class="tab-btn" onclick="switchInventoryTab('finished')">
+                            Finished Goods
+                        </button>
+                        <button class="tab-btn" onclick="switchInventoryTab('suppliers')">
+                            Suppliers
+                        </button>
+                    </div>
+                    
+                    <!-- Materials Tab -->
+                    <div id="materials-tab" class="tab-content active">
+                        <div class="section">
+                            <div class="section-header">
+                                <h2 class="section-title">Raw Materials Inventory</h2>
+                                <div class="section-actions">
+                                    <select class="filter-select" onchange="filterMaterials(this.value)">
+                                        <option value="">All Categories</option>
+                                        <option value="raw-material">Granulates</option>
+                                        <option value="additive">Additives</option>
+                                        <option value="consumable">Consumables</option>
+                                    </select>
+                                    <button class="btn-primary" onclick="addNewMaterial()">
+                                        <span>➕</span>
+                                        <span>Add Material</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="materials-grid">
+                                <div class="material-card" onclick="showInventoryDetails(DEMO_DATA.inventory.materials[0])">
+                                    <div class="material-header">
+                                        <div>
+                                            <h4>PE-LD Granulate</h4>
+                                            <p class="material-id">PE-LD-001</p>
+                                        </div>
+                                        <span class="stock-status stock-good">In Stock</span>
+                                    </div>
+                                    <div class="material-info">
+                                        <div class="info-item">
+                                            <span>Location:</span>
+                                            <strong>MAG 1</strong>
+                                        </div>
+                                        <div class="info-item">
+                                            <span>Supplier:</span>
+                                            <strong>Orlen SA</strong>
+                                        </div>
+                                    </div>
+                                    <div class="stock-visual">
+                                        <div class="stock-numbers">
+                                            <span>Current: 19,250 kg</span>
+                                            <span>Min: 5,000 kg</span>
+                                        </div>
+                                        <div class="stock-bar-container">
+                                            <div class="stock-bar">
+                                                <div class="stock-current" style="width: 77%"></div>
+                                                <div class="stock-min-line" style="left: 20%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="material-footer">
+                                        <div class="footer-item">
+                                            <span class="footer-label">Last Delivery</span>
+                                            <span class="footer-value">Mar 10</span>
+                                        </div>
+                                        <div class="footer-item">
+                                            <span class="footer-label">Next Delivery</span>
+                                            <span class="footer-value">Mar 25</span>
+                                        </div>
+                                        <div class="footer-item">
+                                            <span class="footer-label">Consumption</span>
+                                            <span class="footer-value">850 kg/day</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="material-card critical" onclick="showInventoryDetails(DEMO_DATA.inventory.materials[1])">
+                                    <div class="material-header">
+                                        <div>
+                                            <h4>Antiblock CESA</h4>
+                                            <p class="material-id">CESA-AB-001</p>
+                                        </div>
+                                        <span class="stock-status stock-critical">Low Stock</span>
+                                    </div>
+                                    <div class="material-info">
+                                        <div class="info-item">
+                                            <span>Location:</span>
+                                            <strong>MAG 1</strong>
+                                        </div>
+                                        <div class="info-item">
+                                            <span>Supplier:</span>
+                                            <strong>Clariant AG</strong>
+                                        </div>
+                                    </div>
+                                    <div class="stock-visual">
+                                        <div class="stock-numbers">
+                                            <span>Current: 940 kg</span>
+                                            <span class="critical-warning">⚠️ Below minimum!</span>
+                                        </div>
+                                        <div class="stock-bar-container">
+                                            <div class="stock-bar">
+                                                <div class="stock-current critical" style="width: 31%"></div>
+                                                <div class="stock-min-line" style="left: 33%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="material-footer">
+                                        <div class="footer-item">
+                                            <span class="footer-label">Days Left</span>
+                                            <span class="footer-value critical">3.2 days</span>
+                                        </div>
+                                        <div class="footer-item">
+                                            <span class="footer-label">PO Status</span>
+                                            <span class="footer-value">Pending</span>
+                                        </div>
+                                        <div class="footer-item">
+                                            <button class="btn-critical" onclick="createUrgentPO('CESA-AB-001')">
+                                                Urgent PO
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="material-card" onclick="showInventoryDetails(DEMO_DATA.inventory.materials[2])">
+                                    <div class="material-header">
+                                        <div>
+                                            <h4>Flexo Ink Set CMYK</h4>
+                                            <p class="material-id">INK-CMYK-001</p>
+                                        </div>
+                                        <span class="stock-status stock-good">In Stock</span>
+                                    </div>
+                                    <div class="material-info">
+                                        <div class="info-item">
+                                            <span>Location:</span>
+                                            <strong>MAG 1.1</strong>
+                                        </div>
+                                        <div class="info-item">
+                                            <span>Supplier:</span>
+                                            <strong>Huber Group</strong>
+                                        </div>
+                                        <div class="hazmat-warning">
+                                            ⚠️ HAZMAT - ADR Storage Required
+                                        </div>
+                                    </div>
+                                    <div class="stock-visual">
+                                        <div class="stock-numbers">
+                                            <span>Current: 850 kg</span>
+                                            <span>Min: 500 kg</span>
+                                        </div>
+                                        <div class="stock-bar-container">
+                                            <div class="stock-bar">
+                                                <div class="stock-current" style="width: 42%"></div>
+                                                <div class="stock-min-line" style="left: 25%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="material-footer">
+                                        <div class="footer-item">
+                                            <span class="footer-label">Shelf Life</span>
+                                            <span class="footer-value">180 days</span>
+                                        </div>
+                                        <div class="footer-item">
+                                            <span class="footer-label">Batch</span>
+                                            <span class="footer-value">2024-Q1-15</span>
+                                        </div>
+                                        <div class="footer-item">
+                                            <span class="footer-label">Certificate</span>
+                                            <span class="footer-value">Valid ✓</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Other Tabs (Hidden by default) -->
+                    <div id="wip-tab" class="tab-content">
+                        <div class="empty-state">
+                            <span class="empty-icon">🏭</span>
+                            <h3>Work in Progress</h3>
+                            <p>Materials currently in production will be displayed here</p>
+                        </div>
+                    </div>
+                    
+                    <div id="finished-tab" class="tab-content">
+                        <div class="empty-state">
+                            <span class="empty-icon">📦</span>
+                            <h3>Finished Goods</h3>
+                            <p>Completed products ready for delivery will be displayed here</p>
+                        </div>
+                    </div>
+                    
+                    <div id="suppliers-tab" class="tab-content">
+                        <div class="empty-state">
+                            <span class="empty-icon">🚚</span>
+                            <h3>Suppliers Management</h3>
+                            <p>Supplier information and delivery schedules will be displayed here</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Consumption Trends -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Material Consumption Trends</h2>
+                            <select class="filter-select">
+                                <option>Last 7 days</option>
+                                <option>Last 30 days</option>
+                                <option>Last 90 days</option>
+                            </select>
+                        </div>
+                        
+                        <div class="consumption-chart">
+                            <div class="chart-placeholder" style="height: 300px;">
+                                <p>Consumption trend chart would display here</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
