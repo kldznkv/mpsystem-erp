@@ -1181,11 +1181,351 @@
                     </div>
                 </div>
                 
+                <!-- BOM Page -->
                 <div id="bom" class="page">
-                    <div class="empty-state">
-                        <span class="empty-icon">🔧</span>
-                        <h3>BOM & Recipes</h3>
-                        <p>Product specifications and recipes will be displayed here</p>
+                    <!-- BOM Overview -->
+                    <div class="bom-overview">
+                        <div class="bom-stats-grid">
+                            <div class="bom-stat-card">
+                                <div class="bom-stat-icon">📋</div>
+                                <div class="bom-stat-content">
+                                    <div class="bom-stat-value">47</div>
+                                    <div class="bom-stat-label">Active BOMs</div>
+                                </div>
+                            </div>
+                            <div class="bom-stat-card">
+                                <div class="bom-stat-icon">🆕</div>
+                                <div class="bom-stat-content">
+                                    <div class="bom-stat-value">8</div>
+                                    <div class="bom-stat-label">New This Month</div>
+                                </div>
+                            </div>
+                            <div class="bom-stat-card">
+                                <div class="bom-stat-icon">📊</div>
+                                <div class="bom-stat-content">
+                                    <div class="bom-stat-value">€38.22</div>
+                                    <div class="bom-stat-label">Avg Cost/1000pcs</div>
+                                </div>
+                            </div>
+                            <div class="bom-stat-card">
+                                <div class="bom-stat-icon">✅</div>
+                                <div class="bom-stat-content">
+                                    <div class="bom-stat-value">96.2%</div>
+                                    <div class="bom-stat-label">Cost Accuracy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- BOM Search and Filters -->
+                    <div class="bom-controls">
+                        <div class="search-box">
+                            <input type="text" class="search-input" placeholder="Search BOMs by product, customer, or ID..." id="bomSearch">
+                            <button class="search-btn">🔍</button>
+                        </div>
+                        <div class="bom-actions">
+                            <select class="filter-select" onchange="filterBOMs(this.value)">
+                                <option value="">All Categories</option>
+                                <option value="cheese-packaging">Cheese Packaging</option>
+                                <option value="food-wrap">Food Wrap</option>
+                                <option value="laminate">Laminates</option>
+                                <option value="printed">Printed Films</option>
+                            </select>
+                            <button class="btn-primary" onclick="createNewBOM()">
+                                <span>➕</span>
+                                <span>Create BOM</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Active BOMs Grid -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Product BOMs & Recipes</h2>
+                            <div class="view-options">
+                                <button class="view-option active" onclick="setBOMView('cards')">Cards</button>
+                                <button class="view-option" onclick="setBOMView('table')">Table</button>
+                            </div>
+                        </div>
+                        
+                        <div id="bomCardsView" class="bom-cards-grid">
+                            <!-- BOM Card 1 -->
+                            <div class="bom-card" onclick="showBOMDetails('BOM-001')">
+                                <div class="bom-card-header">
+                                    <div class="bom-product-info">
+                                        <h3>Cheese Packaging Standard</h3>
+                                        <p class="bom-id">BOM-001 • Version 2.1</p>
+                                    </div>
+                                    <span class="bom-status active">Active</span>
+                                </div>
+                                
+                                <div class="bom-customer">
+                                    <span class="customer-label">Customer:</span>
+                                    <span class="customer-name">MLEKOVITA</span>
+                                </div>
+                                
+                                <div class="bom-specs">
+                                    <div class="spec-item">
+                                        <span class="spec-label">Size:</span>
+                                        <span class="spec-value">250×450mm</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Type:</span>
+                                        <span class="spec-value">Monolayer PE</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Thickness:</span>
+                                        <span class="spec-value">80μm</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="bom-materials">
+                                    <h4>Main Materials:</h4>
+                                    <div class="material-list">
+                                        <div class="material-item">
+                                            <span>PE-LD Granulate</span>
+                                            <span class="material-qty">8.2 kg/1000pcs</span>
+                                        </div>
+                                        <div class="material-item">
+                                            <span>White Masterbatch</span>
+                                            <span class="material-qty">0.164 kg (2%)</span>
+                                        </div>
+                                        <div class="material-item">
+                                            <span>Antiblock CESA</span>
+                                            <span class="material-qty">0.041 kg (0.5%)</span>
+                                        </div>
+                                        <div class="material-item">
+                                            <span>Flexo Inks (6 colors)</span>
+                                            <span class="material-qty">0.42 kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bom-cost-summary">
+                                    <div class="cost-breakdown">
+                                        <div class="cost-item">
+                                            <span>Materials:</span>
+                                            <span>€20.09</span>
+                                        </div>
+                                        <div class="cost-item">
+                                            <span>Labor:</span>
+                                            <span>€11.35</span>
+                                        </div>
+                                        <div class="cost-item">
+                                            <span>Overhead:</span>
+                                            <span>€6.78</span>
+                                        </div>
+                                    </div>
+                                    <div class="total-cost">
+                                        <span>Total Cost:</span>
+                                        <span class="cost-value">€38.22/1000pcs</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="bom-actions">
+                                    <button class="btn-sm" onclick="editBOM('BOM-001')">Edit</button>
+                                    <button class="btn-sm" onclick="copyBOM('BOM-001')">Copy</button>
+                                    <button class="btn-sm" onclick="printBOM('BOM-001')">Print</button>
+                                </div>
+                            </div>
+                            
+                            <!-- BOM Card 2 -->
+                            <div class="bom-card" onclick="showBOMDetails('BOM-002')">
+                                <div class="bom-card-header">
+                                    <div class="bom-product-info">
+                                        <h3>Barrier Laminate Premium</h3>
+                                        <p class="bom-id">BOM-002 • Version 1.5</p>
+                                    </div>
+                                    <span class="bom-status active">Active</span>
+                                </div>
+                                
+                                <div class="bom-customer">
+                                    <span class="customer-label">Customer:</span>
+                                    <span class="customer-name">LACPOL</span>
+                                </div>
+                                
+                                <div class="bom-specs">
+                                    <div class="spec-item">
+                                        <span class="spec-label">Size:</span>
+                                        <span class="spec-value">425×750mm</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Type:</span>
+                                        <span class="spec-value">PE/PE/EVOH</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Thickness:</span>
+                                        <span class="spec-value">120μm</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="bom-materials">
+                                    <h4>Main Materials:</h4>
+                                    <div class="material-list">
+                                        <div class="material-item">
+                                            <span>PE-LD Granulate</span>
+                                            <span class="material-qty">12.4 kg/1000pcs</span>
+                                        </div>
+                                        <div class="material-item">
+                                            <span>EVOH Barrier</span>
+                                            <span class="material-qty">0.8 kg</span>
+                                        </div>
+                                        <div class="material-item">
+                                            <span>Adhesive Liofol UR7780</span>
+                                            <span class="material-qty">0.45 kg</span>
+                                        </div>
+                                        <div class="material-item">
+                                            <span>Flexo Inks (8 colors)</span>
+                                            <span class="material-qty">0.68 kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bom-cost-summary">
+                                    <div class="cost-breakdown">
+                                        <div class="cost-item">
+                                            <span>Materials:</span>
+                                            <span>€45.20</span>
+                                        </div>
+                                        <div class="cost-item">
+                                            <span>Labor:</span>
+                                            <span>€15.85</span>
+                                        </div>
+                                        <div class="cost-item">
+                                            <span>Overhead:</span>
+                                            <span>€6.80</span>
+                                        </div>
+                                    </div>
+                                    <div class="total-cost">
+                                        <span>Total Cost:</span>
+                                        <span class="cost-value">€67.85/1000pcs</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="bom-actions">
+                                    <button class="btn-sm" onclick="editBOM('BOM-002')">Edit</button>
+                                    <button class="btn-sm" onclick="copyBOM('BOM-002')">Copy</button>
+                                    <button class="btn-sm" onclick="printBOM('BOM-002')">Print</button>
+                                </div>
+                            </div>
+                            
+                            <!-- BOM Card 3 -->
+                            <div class="bom-card draft" onclick="showBOMDetails('BOM-003')">
+                                <div class="bom-card-header">
+                                    <div class="bom-product-info">
+                                        <h3>Printed Food Wrap</h3>
+                                        <p class="bom-id">BOM-003 • Version 0.9</p>
+                                    </div>
+                                    <span class="bom-status draft">Draft</span>
+                                </div>
+                                
+                                <div class="bom-customer">
+                                    <span class="customer-label">Customer:</span>
+                                    <span class="customer-name">Sainsbury's</span>
+                                </div>
+                                
+                                <div class="bom-specs">
+                                    <div class="spec-item">
+                                        <span class="spec-label">Size:</span>
+                                        <span class="spec-value">320×480mm</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Type:</span>
+                                        <span class="spec-value">PE Printed</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Thickness:</span>
+                                        <span class="spec-value">90μm</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="bom-draft-notice">
+                                    ⚠️ This BOM is still in draft. Costs are estimated.
+                                </div>
+                                
+                                <div class="bom-cost-summary">
+                                    <div class="total-cost">
+                                        <span>Estimated Cost:</span>
+                                        <span class="cost-value">~€52.40/1000pcs</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="bom-actions">
+                                    <button class="btn-sm primary" onclick="finalizeBOM('BOM-003')">Finalize</button>
+                                    <button class="btn-sm" onclick="editBOM('BOM-003')">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- BOM Comparison Tool -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">BOM Comparison Tool</h2>
+                            <button class="btn-text" onclick="addToComparison()">
+                                Add BOMs to Compare →
+                            </button>
+                        </div>
+                        
+                        <div class="comparison-container">
+                            <div class="comparison-placeholder">
+                                <span class="placeholder-icon">📊</span>
+                                <p>Select 2-4 BOMs to compare costs, materials, and specifications</p>
+                                <button class="btn-primary" onclick="startComparison()">
+                                    Start Comparison
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Material Usage Matrix -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Material Usage Across BOMs</h2>
+                        </div>
+                        
+                        <div class="usage-matrix">
+                            <table class="matrix-table">
+                                <thead>
+                                    <tr>
+                                        <th>Material</th>
+                                        <th>Used in BOMs</th>
+                                        <th>Total Monthly Usage</th>
+                                        <th>Cost Impact</th>
+                                        <th>Stock Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>PE-LD Granulate</td>
+                                        <td>
+                                            <span class="usage-count">42 BOMs</span>
+                                        </td>
+                                        <td>18,500 kg</td>
+                                        <td>€45,325</td>
+                                        <td><span class="stock-status stock-good">Sufficient</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Antiblock CESA</td>
+                                        <td>
+                                            <span class="usage-count">28 BOMs</span>
+                                        </td>
+                                        <td>850 kg</td>
+                                        <td>€7,820</td>
+                                        <td><span class="stock-status stock-critical">Low Stock</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Liofol UR7780</td>
+                                        <td>
+                                            <span class="usage-count">15 BOMs</span>
+                                        </td>
+                                        <td>1,200 kg</td>
+                                        <td>€14,400</td>
+                                        <td><span class="stock-status stock-warning">Order Soon</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 
