@@ -3421,3 +3421,249 @@ body {
         gap: var(--space-sm);
     }
 }
+
+/* System Integration Styles */
+
+/* BOM Detail Modal */
+.bom-detail-modal {
+    max-width: 600px;
+}
+
+.detail-section {
+    margin-bottom: var(--space-xl);
+}
+
+.detail-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: var(--space-md);
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 12px;
+    color: var(--gray-600);
+}
+
+.detail-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-900);
+}
+
+/* Production Route Timeline */
+.route-timeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-lg);
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.route-step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.step-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.step-name {
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.step-location {
+    font-size: 12px;
+    color: var(--gray-600);
+}
+
+.step-time {
+    font-size: 12px;
+    color: var(--primary);
+}
+
+.route-connector {
+    flex: 1;
+    height: 2px;
+    background: #e5e7eb;
+    margin: 0 var(--space-md);
+}
+
+.detail-actions {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+}
+
+/* BOM Creation Form */
+.bom-creation-form {
+    max-width: 500px;
+}
+
+.form-section {
+    margin-bottom: var(--space-xl);
+}
+
+.form-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: var(--space-md);
+}
+
+.form-grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-700);
+}
+
+.form-input,
+.form-select {
+    padding: 10px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.input-group input {
+    flex: 1;
+}
+
+.input-group span {
+    color: var(--gray-500);
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+}
+
+/* Notifications */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    max-width: 400px;
+    font-size: 14px;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.info {
+    border-left: 4px solid var(--primary);
+}
+
+.notification.warning {
+    border-left: 4px solid var(--warning);
+    background: #fffbeb;
+}
+
+.notification.success {
+    border-left: 4px solid var(--success);
+    background: #f0fdf4;
+}
+
+.notification.error {
+    border-left: 4px solid var(--danger);
+    background: #fef2f2;
+}
+
+/* Confirm Dialog */
+.confirm-dialog {
+    text-align: center;
+}
+
+.confirm-message {
+    font-size: 14px;
+    color: var(--gray-700);
+    margin-bottom: var(--space-xl);
+}
+
+.confirm-actions {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+}
+
+/* Responsive Updates */
+@media (max-width: 768px) {
+    .route-timeline {
+        flex-direction: column;
+        gap: var(--space-lg);
+    }
+    
+    .route-connector {
+        width: 2px;
+        height: 40px;
+        margin: var(--space-sm) 0;
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
