@@ -256,11 +256,203 @@
                 </div>
                 
                 <!-- Other Pages (hidden by default) -->
+                <!-- Orders Page -->
                 <div id="orders" class="page">
-                    <div class="empty-state">
-                        <span class="empty-icon">📋</span>
-                        <h3>Orders Management</h3>
-                        <p>Order tracking and management will be displayed here</p>
+                    <!-- Orders Header with Filters -->
+                    <div class="page-controls">
+                        <div class="filters-row">
+                            <div class="filter-group">
+                                <label class="filter-label">Status</label>
+                                <select class="filter-select" id="orderStatusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="in-production">In Production</option>
+                                    <option value="scheduled">Scheduled</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Priority</label>
+                                <select class="filter-select" id="orderPriorityFilter">
+                                    <option value="">All Priorities</option>
+                                    <option value="urgent">Urgent</option>
+                                    <option value="high">High</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Customer</label>
+                                <select class="filter-select" id="orderCustomerFilter">
+                                    <option value="">All Customers</option>
+                                    <option value="MLEKOVITA">MLEKOVITA</option>
+                                    <option value="AGRONA">AGRONA</option>
+                                    <option value="LACPOL">LACPOL</option>
+                                    <option value="Sainsbury's">Sainsbury's</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Date Range</label>
+                                <input type="date" class="filter-input" id="orderDateFrom">
+                                <span class="filter-separator">to</span>
+                                <input type="date" class="filter-input" id="orderDateTo">
+                            </div>
+                            <button class="btn-primary" onclick="applyOrderFilters()">
+                                <span>🔍</span>
+                                <span>Apply Filters</span>
+                            </button>
+                            <button class="btn-secondary" onclick="resetOrderFilters()">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Orders Summary Cards -->
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <div class="summary-icon">📋</div>
+                            <div class="summary-content">
+                                <div class="summary-value">28</div>
+                                <div class="summary-label">Total Orders</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">🏭</div>
+                            <div class="summary-content">
+                                <div class="summary-value">12</div>
+                                <div class="summary-label">In Production</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">⏰</div>
+                            <div class="summary-content">
+                                <div class="summary-value">8</div>
+                                <div class="summary-label">Scheduled</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">✅</div>
+                            <div class="summary-content">
+                                <div class="summary-value">4</div>
+                                <div class="summary-label">Completed Today</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">💰</div>
+                            <div class="summary-content">
+                                <div class="summary-value">€847k</div>
+                                <div class="summary-label">Total Value</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Orders Table -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Production Orders</h2>
+                            <div class="section-actions">
+                                <button class="btn-text" onclick="exportOrders()">
+                                    Export CSV
+                                </button>
+                                <button class="btn-primary" onclick="createNewOrder()">
+                                    <span>➕</span>
+                                    <span>New Order</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="data-table" id="ordersTable">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" onclick="sortOrders('id')">
+                                            Order ID <span class="sort-icon">↕</span>
+                                        </th>
+                                        <th class="sortable" onclick="sortOrders('customer')">
+                                            Customer <span class="sort-icon">↕</span>
+                                        </th>
+                                        <th>Product</th>
+                                        <th class="sortable" onclick="sortOrders('quantity')">
+                                            Quantity <span class="sort-icon">↕</span>
+                                        </th>
+                                        <th class="sortable" onclick="sortOrders('value')">
+                                            Value <span class="sort-icon">↕</span>
+                                        </th>
+                                        <th class="sortable" onclick="sortOrders('dueDate')">
+                                            Due Date <span class="sort-icon">↕</span>
+                                        </th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th>Progress</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody">
+                                    <!-- Orders will be inserted here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="pagination">
+                            <button class="pagination-btn" onclick="previousOrdersPage()">Previous</button>
+                            <span class="pagination-info">
+                                Page <span id="currentOrderPage">1</span> of <span id="totalOrderPages">3</span>
+                            </span>
+                            <button class="pagination-btn" onclick="nextOrdersPage()">Next</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Production Planning Timeline -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Production Timeline</h2>
+                            <button class="btn-text" onclick="toggleTimelineView()">
+                                Switch View →
+                            </button>
+                        </div>
+                        
+                        <div class="timeline-container">
+                            <div class="timeline-header">
+                                <div class="timeline-lines">
+                                    <div class="timeline-line">Extrusion Line 1</div>
+                                    <div class="timeline-line">Extrusion Line 2</div>
+                                    <div class="timeline-line">Printing Station</div>
+                                    <div class="timeline-line">Lamination Line</div>
+                                </div>
+                                <div class="timeline-grid">
+                                    <div class="timeline-hours">
+                                        <span>8:00</span>
+                                        <span>10:00</span>
+                                        <span>12:00</span>
+                                        <span>14:00</span>
+                                        <span>16:00</span>
+                                        <span>18:00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-body">
+                                <!-- Timeline blocks will be inserted here -->
+                                <div class="timeline-block" style="left: 0%; width: 25%; top: 0;">
+                                    <div class="timeline-order running">
+                                        ZP-2024/0318
+                                        <span class="timeline-progress">76%</span>
+                                    </div>
+                                </div>
+                                <div class="timeline-block" style="left: 10%; width: 20%; top: 40px;">
+                                    <div class="timeline-order running">
+                                        ZP-2024/0319
+                                        <span class="timeline-progress">45%</span>
+                                    </div>
+                                </div>
+                                <div class="timeline-block" style="left: 30%; width: 15%; top: 80px;">
+                                    <div class="timeline-order setup">
+                                        ZP-2024/0321
+                                        <span class="timeline-progress">Setup</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
