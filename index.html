@@ -456,11 +456,385 @@
                     </div>
                 </div>
                 
+                <!-- Production Page -->
                 <div id="production" class="page">
-                    <div class="empty-state">
-                        <span class="empty-icon">🏭</span>
-                        <h3>Production Control</h3>
-                        <p>Production monitoring and control will be displayed here</p>
+                    <!-- Production Overview -->
+                    <div class="production-overview">
+                        <div class="overview-card">
+                            <div class="overview-header">
+                                <h3>Overall Equipment Effectiveness (OEE)</h3>
+                                <span class="overview-period">Last 24 hours</span>
+                            </div>
+                            <div class="oee-metrics">
+                                <div class="oee-metric">
+                                    <div class="oee-value">92.5%</div>
+                                    <div class="oee-label">Availability</div>
+                                    <div class="oee-bar">
+                                        <div class="oee-fill" style="width: 92.5%"></div>
+                                    </div>
+                                </div>
+                                <div class="oee-metric">
+                                    <div class="oee-value">94.8%</div>
+                                    <div class="oee-label">Performance</div>
+                                    <div class="oee-bar">
+                                        <div class="oee-fill" style="width: 94.8%"></div>
+                                    </div>
+                                </div>
+                                <div class="oee-metric">
+                                    <div class="oee-value">99.2%</div>
+                                    <div class="oee-label">Quality</div>
+                                    <div class="oee-bar">
+                                        <div class="oee-fill" style="width: 99.2%"></div>
+                                    </div>
+                                </div>
+                                <div class="oee-metric total">
+                                    <div class="oee-value">86.7%</div>
+                                    <div class="oee-label">Total OEE</div>
+                                    <div class="oee-bar">
+                                        <div class="oee-fill success" style="width: 86.7%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-stats">
+                            <div class="stat-card">
+                                <div class="stat-icon">⚡</div>
+                                <div class="stat-content">
+                                    <div class="stat-value">5,847</div>
+                                    <div class="stat-label">kg/hour</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">📦</div>
+                                <div class="stat-content">
+                                    <div class="stat-value">127,350</div>
+                                    <div class="stat-label">units today</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">⏱️</div>
+                                <div class="stat-content">
+                                    <div class="stat-value">1.2</div>
+                                    <div class="stat-label">hours downtime</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">🎯</div>
+                                <div class="stat-content">
+                                    <div class="stat-value">98.7%</div>
+                                    <div class="stat-label">on-time delivery</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Production Lines Grid -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Production Lines Status</h2>
+                            <div class="view-toggle">
+                                <button class="view-btn active" onclick="setProductionView('grid')">
+                                    <span>⊞</span> Grid
+                                </button>
+                                <button class="view-btn" onclick="setProductionView('list')">
+                                    <span>☰</span> List
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="productionLinesGrid" class="production-lines-grid">
+                            <!-- Extrusion Lines -->
+                            <div class="line-category">
+                                <h3 class="category-title">Extrusion Department (MAG 2)</h3>
+                                <div class="lines-grid">
+                                    <div class="line-card" onclick="showLineDetails('ext-1')">
+                                        <div class="line-header">
+                                            <h4>Extrusion Line 1</h4>
+                                            <span class="line-status running">Running</span>
+                                        </div>
+                                        <div class="line-info">
+                                            <div class="info-row">
+                                                <span>Product:</span>
+                                                <strong>PE Film 250mm</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>Order:</span>
+                                                <strong>ZP-2024/0318</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>Speed:</span>
+                                                <strong>145 m/min</strong>
+                                            </div>
+                                        </div>
+                                        <div class="line-progress">
+                                            <div class="progress-header">
+                                                <span>Progress</span>
+                                                <span>76%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 76%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Output</span>
+                                                <span class="metric-value">287 kg/h</span>
+                                            </div>
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Efficiency</span>
+                                                <span class="metric-value">96.5%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="line-card" onclick="showLineDetails('ext-2')">
+                                        <div class="line-header">
+                                            <h4>Extrusion Line 2</h4>
+                                            <span class="line-status running">Running</span>
+                                        </div>
+                                        <div class="line-info">
+                                            <div class="info-row">
+                                                <span>Product:</span>
+                                                <strong>PE Film 230mm</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>Order:</span>
+                                                <strong>ZP-2024/0319</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>Speed:</span>
+                                                <strong>132 m/min</strong>
+                                            </div>
+                                        </div>
+                                        <div class="line-progress">
+                                            <div class="progress-header">
+                                                <span>Progress</span>
+                                                <span>45%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 45%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Output</span>
+                                                <span class="metric-value">264 kg/h</span>
+                                            </div>
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Efficiency</span>
+                                                <span class="metric-value">94.2%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="line-card" onclick="showLineDetails('ext-3')">
+                                        <div class="line-header">
+                                            <h4>Extrusion Line 3</h4>
+                                            <span class="line-status idle">Idle</span>
+                                        </div>
+                                        <div class="line-info">
+                                            <div class="info-row">
+                                                <span>Status:</span>
+                                                <strong>Awaiting Material</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>Next Order:</span>
+                                                <strong>ZP-2024/0322</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>Start Time:</span>
+                                                <strong>14:00</strong>
+                                            </div>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Last Run</span>
+                                                <span class="metric-value">2h ago</span>
+                                            </div>
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Utilization</span>
+                                                <span class="metric-value">78%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Printing Department -->
+                            <div class="line-category">
+                                <h3 class="category-title">Printing Department (MAG 4)</h3>
+                                <div class="lines-grid">
+                                    <div class="line-card" onclick="showLineDetails('print-1')">
+                                        <div class="line-header">
+                                            <h4>Flexo Printer 1</h4>
+                                            <span class="line-status setup">Setup</span>
+                                        </div>
+                                        <div class="line-info">
+                                            <div class="info-row">
+                                                <span>Activity:</span>
+                                                <strong>Color Change</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>Next Order:</span>
+                                                <strong>ZP-2024/0321</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>ETA:</span>
+                                                <strong>35 min</strong>
+                                            </div>
+                                        </div>
+                                        <div class="line-progress">
+                                            <div class="progress-header">
+                                                <span>Setup Progress</span>
+                                                <span>25%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill warning" style="width: 25%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Colors</span>
+                                                <span class="metric-value">6</span>
+                                            </div>
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Operator</span>
+                                                <span class="metric-value">J. Smith</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="line-card" onclick="showLineDetails('print-2')">
+                                        <div class="line-header">
+                                            <h4>Flexo Printer 2</h4>
+                                            <span class="line-status maintenance">Maintenance</span>
+                                        </div>
+                                        <div class="line-info">
+                                            <div class="info-row">
+                                                <span>Type:</span>
+                                                <strong>Scheduled PM</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>Duration:</span>
+                                                <strong>4 hours</strong>
+                                            </div>
+                                            <div class="info-row">
+                                                <span>Complete:</span>
+                                                <strong>16:00</strong>
+                                            </div>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Technician</span>
+                                                <span class="metric-value">M. Johnson</span>
+                                            </div>
+                                            <div class="mini-metric">
+                                                <span class="metric-label">Next PM</span>
+                                                <span class="metric-value">500h</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Production Alerts -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Active Alerts & Notifications</h2>
+                            <button class="btn-text" onclick="viewAllAlerts()">
+                                View All →
+                            </button>
+                        </div>
+                        
+                        <div class="alerts-grid">
+                            <div class="alert-card critical">
+                                <div class="alert-icon">🚨</div>
+                                <div class="alert-content">
+                                    <div class="alert-title">Low Material Stock</div>
+                                    <div class="alert-message">Antiblock CESA below minimum level (940kg remaining)</div>
+                                    <div class="alert-time">10 minutes ago</div>
+                                </div>
+                                <button class="alert-action" onclick="handleAlert('material')">
+                                    Take Action
+                                </button>
+                            </div>
+                            
+                            <div class="alert-card warning">
+                                <div class="alert-icon">⚠️</div>
+                                <div class="alert-content">
+                                    <div class="alert-title">Quality Check Required</div>
+                                    <div class="alert-message">Batch EXT240318-02 ready for testing</div>
+                                    <div class="alert-time">25 minutes ago</div>
+                                </div>
+                                <button class="alert-action" onclick="handleAlert('quality')">
+                                    Review
+                                </button>
+                            </div>
+                            
+                            <div class="alert-card info">
+                                <div class="alert-icon">ℹ️</div>
+                                <div class="alert-content">
+                                    <div class="alert-title">Shift Change</div>
+                                    <div class="alert-message">Night shift starting in 2 hours</div>
+                                    <div class="alert-time">1 hour ago</div>
+                                </div>
+                                <button class="alert-action" onclick="handleAlert('shift')">
+                                    Acknowledge
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Real-time Metrics -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Real-time Production Metrics</h2>
+                            <div class="refresh-indicator">
+                                <span class="refresh-dot"></span>
+                                <span>Live data</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metrics-dashboard">
+                            <div class="metric-chart">
+                                <h4>Output Trend (Last 4 Hours)</h4>
+                                <div class="chart-placeholder">
+                                    <canvas id="outputChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-chart">
+                                <h4>Line Efficiency Comparison</h4>
+                                <div class="chart-placeholder">
+                                    <canvas id="efficiencyChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-chart">
+                                <h4>Quality Metrics</h4>
+                                <div class="quality-stats">
+                                    <div class="quality-stat">
+                                        <span class="quality-label">First Pass Yield</span>
+                                        <span class="quality-value good">99.2%</span>
+                                    </div>
+                                    <div class="quality-stat">
+                                        <span class="quality-label">Defect Rate</span>
+                                        <span class="quality-value good">0.8%</span>
+                                    </div>
+                                    <div class="quality-stat">
+                                        <span class="quality-label">Rework Rate</span>
+                                        <span class="quality-value warning">2.1%</span>
+                                    </div>
+                                    <div class="quality-stat">
+                                        <span class="quality-label">Scrap Rate</span>
+                                        <span class="quality-value good">0.3%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
