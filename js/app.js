@@ -1936,3 +1936,26 @@
     });
     
 })();
+
+// Confirm Dialog Function
+function showConfirmDialog(title, message, onConfirm) {
+    showModal(title, `
+        <div class="confirm-dialog">
+            <p class="confirm-message">${message}</p>
+            <div class="confirm-actions">
+                <button class="btn-primary" onclick="confirmAction()">
+                    Confirm
+                </button>
+                <button class="btn-secondary" onclick="closeModal()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    `);
+    
+    // Store the confirm callback
+    window.confirmAction = function() {
+        if (onConfirm) onConfirm();
+        closeModal();
+    };
+}
