@@ -306,6 +306,239 @@
             </div>
         </main>
     </div>
+
+    <!-- Modals -->
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Order Details</h2>
+                <button class="modal-close" onclick="closeModal('orderModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-grid">
+                    <div class="detail-section">
+                        <h3 class="detail-section-title">Order Information</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Order ID:</span>
+                            <span class="detail-value" id="modalOrderId">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Customer:</span>
+                            <span class="detail-value" id="modalCustomer">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Product:</span>
+                            <span class="detail-value" id="modalProduct">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Quantity:</span>
+                            <span class="detail-value" id="modalQuantity">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Value:</span>
+                            <span class="detail-value" id="modalValue">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Due Date:</span>
+                            <span class="detail-value" id="modalDueDate">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3 class="detail-section-title">Production Status</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value" id="modalStatus">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Priority:</span>
+                            <span class="detail-value" id="modalPriority">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Progress:</span>
+                            <div class="detail-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="modalProgress" style="width: 0%"></div>
+                                </div>
+                                <span id="modalProgressText">0%</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Assigned Line:</span>
+                            <span class="detail-value" id="modalAssignedLine">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Quality Status:</span>
+                            <span class="detail-value" id="modalQualityStatus">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h3 class="detail-section-title">BOM Details</h3>
+                    <div id="modalBOMDetails" class="bom-details">
+                        <!-- BOM details will be inserted here -->
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h3 class="detail-section-title">Documents</h3>
+                    <div id="modalDocuments" class="document-list">
+                        <!-- Documents will be inserted here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('orderModal')">Close</button>
+                <button class="btn-primary" onclick="editOrder()">Edit Order</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Production Line Details Modal -->
+    <div id="productionModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Production Line Details</h2>
+                <button class="modal-close" onclick="closeModal('productionModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-grid">
+                    <div class="detail-section">
+                        <h3 class="detail-section-title">Line Information</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Line Name:</span>
+                            <span class="detail-value" id="modalLineName">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Type:</span>
+                            <span class="detail-value" id="modalLineType">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value" id="modalLineStatus">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Current Product:</span>
+                            <span class="detail-value" id="modalLineProduct">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Order ID:</span>
+                            <span class="detail-value" id="modalLineOrderId">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3 class="detail-section-title">Performance Metrics</h3>
+                        <div id="modalLineMetrics" class="metrics-grid">
+                            <!-- Metrics will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h3 class="detail-section-title">Production Progress</h3>
+                    <div class="large-progress">
+                        <div class="progress-bar large">
+                            <div class="progress-fill" id="modalLineProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span id="modalLineProgressText">0% Complete</span>
+                            <span id="modalLineTimeRemaining">Time remaining: -</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h3 class="detail-section-title">Recent Events</h3>
+                    <div id="modalLineEvents" class="event-list">
+                        <!-- Events will be inserted here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('productionModal')">Close</button>
+                <button class="btn-warning" onclick="pauseProduction()">Pause Line</button>
+                <button class="btn-primary" onclick="viewLineDetails()">View Full Details</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Inventory Item Modal -->
+    <div id="inventoryModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Inventory Details</h2>
+                <button class="modal-close" onclick="closeModal('inventoryModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-grid">
+                    <div class="detail-section">
+                        <h3 class="detail-section-title">Item Information</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Item ID:</span>
+                            <span class="detail-value" id="modalItemId">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Name:</span>
+                            <span class="detail-value" id="modalItemName">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Category:</span>
+                            <span class="detail-value" id="modalItemCategory">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Warehouse:</span>
+                            <span class="detail-value" id="modalItemWarehouse">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Supplier:</span>
+                            <span class="detail-value" id="modalItemSupplier">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3 class="detail-section-title">Stock Levels</h3>
+                        <div class="stock-chart">
+                            <div class="stock-bar">
+                                <div class="stock-level" id="modalStockLevel"></div>
+                                <div class="stock-min" id="modalStockMin"></div>
+                                <div class="stock-max" id="modalStockMax"></div>
+                            </div>
+                            <div class="stock-labels">
+                                <span>Min: <span id="modalMinValue">-</span></span>
+                                <span>Current: <span id="modalCurrentValue">-</span></span>
+                                <span>Max: <span id="modalMaxValue">-</span></span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Last Delivery:</span>
+                            <span class="detail-value" id="modalLastDelivery">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Next Delivery:</span>
+                            <span class="detail-value" id="modalNextDelivery">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h3 class="detail-section-title">Consumption Forecast</h3>
+                    <div id="modalConsumptionChart" class="chart-placeholder">
+                        <p>Consumption chart will be displayed here</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('inventoryModal')">Close</button>
+                <button class="btn-primary" onclick="createPurchaseOrder()">Create PO</button>
+            </div>
+        </div>
+    </div>
     
     <!-- Scripts -->
     <script src="js/config.js"></script>
