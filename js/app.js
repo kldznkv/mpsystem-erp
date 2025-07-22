@@ -263,15 +263,248 @@
         document.querySelector('.btn-icon').addEventListener('click', () => {
             alert('Notifications feature coming soon!');
         });
+        
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', () => {
+                const modal = overlay.parentElement;
+                closeModal(modal.id);
+            });
+        });
     }
     
-    // Detail modals (placeholder)
+    // Modal functions
     function showProductionDetails(line) {
-        alert(`Production Line: ${line.name}\nStatus: ${line.status}\nProgress: ${line.progress}%`);
+        // Fill modal with data
+        document.getElementById('modalLineName').textContent = line.name;
+        document.getElementById('modalLineType').textContent = formatStatus(line.type);
+        document.getElementById('modalLineStatus').innerHTML = `<span class="status-badge ${line.status}">${formatStatus(line.status)}</span>`;
+        document.getElementById('modalLineProduct').textContent = line.product;
+        document.getElementById('modalLineOrderId').textContent = line.orderId || 'N/A';
+        
+        // Progress
+        const progressBar = document.getElementById('modalLineProgress');
+        progressBar.style.width = line.progress + '%';
+        document.getElementById('modalLineProgressText').textContent = line.progress + '% Complete';
+        
+        // Calculate time remaining
+        if (line.estimatedEnd) {
+            const end = new Date(line.estimatedEnd);
+            const now = new Date();
+            const hoursRemaining = Math.max(0, (end - now) / (1000 * 60 * 60));
+            document.getElementById('modalLineTimeRemaining').textContent = 
+                `Time remaining: ${hoursRemaining.toFixed(1)} hours`;
+        }
+        
+        // Metrics
+        const metricsContainer = document.getElementById('modalLineMetrics');
+        metricsContainer.innerHTML = '';
+        
+        if (line.metrics.speed !== undefined) {
+            metricsContainer.innerHTML += `
+                <div class="metric-box">
+                    <span class="metric-box-value">${line.metrics.speed}</span>
+                    <span class="metric-box-label">${line.metrics.speedUnit}</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-box-value">${line.metrics.output}</span>
+                    <span class="metric-box-label">${line.metrics.outputUnit}</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-box-value">${line.metrics.temperature}°C</span>
+                    <span class="metric-box-label">Temperature</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-box-value">${line.efficiency}%</span>
+                    <span class="metric-box-label">Efficiency</span>
+                </div>
+            `;
+        } else {
+            metricsContainer.innerHTML += `
+                <div class="metric-box">
+                    <span class="metric-box-value">${line.metrics.colors}</span>
+                    <span class="metric-box-label">Colors</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-box-value">${line.metrics.setupTime}</span>
+                    <span class="metric-box-label">Setup Time (min)</span>
+                </div>
+            `;
+        }
+        
+        // Recent events
+        const eventsContainer = document.getElementById('modalLineEvents');
+        eventsContainer.innerHTML = `
+            <div class="event-item">
+                <span class="event-time">10:30</span>
+                <span class="event-text">Production started for order ${line.orderId}</span>
+            </div>
+            <div class="event-item">
+                <span class="event-time">10:15</span>
+                <span class="event-text">Setup completed, quality check passed</span>
+            </div>
+            <div class="event-item">
+                <span class="event-time">09:45</span>
+                <span class="event-text">Material loaded: PE-LD from MAG 1</span>
+            </div>
+        `;
+        
+        // Show modal
+        showModal('productionModal');
     }
     
     function showOrderDetails(order) {
-        alert(`Order: ${order.id}\nCustomer: ${order.customer}\nStatus: ${order.status}`);
+        // Fill modal with order data
+        document.getElementById('modalOrderId').textContent = order.id;
+        document.getElementById('modalCustomer').textContent = order.customer;
+        document.getElementById('modalProduct').textContent = order.product;
+        document.getElementById('modalQuantity').textContent = 
+            `${order.quantity.toLocaleString()} ${order.unit}`;
+        document.getElementById('modalValue').textContent = 
+            `€${order.value.toLocaleString()}`;
+        document.getElementById('modalDueDate').textContent = formatDate(order.dueDate);
+        
+        // Status
+        document.getElementById('modalStatus').innerHTML = 
+            `<span class="status-badge ${getStatusClass(order.status)}">${formatStatus(order.status)}</span>`;
+        document.getElementById('modalPriority').innerHTML = 
+            `<span style="color: ${CONFIG.PRIORITY_LEVELS[order.priority.toUpperCase()].color}">
+                ${CONFIG.PRIORITY_LEVELS[order.priority.toUpperCase()].label}
+            </span>`;
+        
+        // Progress
+        const progressBar = document.getElementById('modalProgress');
+        progressBar.style.width = order.progress + '%';
+        document.getElementById('modalProgressText').textContent = order.progress + '%';
+        
+        // Production info
+        document.getElementById('modalAssignedLine').textContent = 
+            order.assignedLine ? CONFIG.PRODUCTION_LINES[order.assignedLine.toUpperCase().replace('-', '')] : 'Not assigned';
+        document.getElementById('modalQualityStatus').innerHTML = 
+            `<span class="status-badge ${getQualityStatusClass(order.qualityStatus)}">
+                ${formatStatus(order.qualityStatus)}
+            </span>`;
+        
+        // BOM Details
+        const bomContainer = document.getElementById('modalBOMDetails');
+        bomContainer.innerHTML = `
+            <div class="bom-item">
+                <span>Material:</span>
+                <span>${order.bom.material} - ${order.bom.weight}kg</span>
+            </div>
+            <div class="bom-item">
+                <span>Additives:</span>
+                <span>${order.bom.additives.join(', ')}</span>
+            </div>
+            <div class="bom-item">
+                <span>Colors:</span>
+                <span>${order.bom.colors} colors</span>
+            </div>
+            <div class="bom-item">
+                <span>Adhesive:</span>
+                <span>${order.bom.adhesive || 'None'}</span>
+            </div>
+        `;
+        
+        // Documents
+        const docsContainer = document.getElementById('modalDocuments');
+        docsContainer.innerHTML = '';
+        const docTypes = {
+            'spec': '📄 Specification',
+            'bom': '📋 BOM',
+            'coa': '✅ CoA',
+            'artwork': '🎨 Artwork'
+        };
+        
+        Object.keys(docTypes).forEach(doc => {
+            const hasDoc = order.documents.includes(doc);
+            docsContainer.innerHTML += `
+                <span class="document-tag ${hasDoc ? 'available' : ''}">
+                    ${docTypes[doc]}
+                </span>
+            `;
+        });
+        
+        // Show modal
+        showModal('orderModal');
+    }
+    
+    function showInventoryDetails(item) {
+        // Fill modal with inventory data
+        document.getElementById('modalItemId').textContent = item.id;
+        document.getElementById('modalItemName').textContent = item.name;
+        document.getElementById('modalItemCategory').textContent = formatStatus(item.category);
+        document.getElementById('modalItemWarehouse').textContent = CONFIG.WAREHOUSES[item.warehouse];
+        document.getElementById('modalItemSupplier').textContent = item.supplier;
+        
+        // Stock levels
+        const currentPercent = ((item.quantity - item.minStock) / (item.maxStock - item.minStock)) * 100;
+        const stockLevel = document.getElementById('modalStockLevel');
+        stockLevel.style.width = currentPercent + '%';
+        
+        if (currentPercent < 20) {
+            stockLevel.style.background = 'var(--danger)';
+        } else if (currentPercent < 40) {
+            stockLevel.style.background = 'var(--warning)';
+        }
+        
+        document.getElementById('modalMinValue').textContent = item.minStock + ' ' + item.unit;
+        document.getElementById('modalCurrentValue').textContent = item.quantity + ' ' + item.unit;
+        document.getElementById('modalMaxValue').textContent = item.maxStock + ' ' + item.unit;
+        
+        const minPos = (item.minStock / item.maxStock) * 100;
+        document.getElementById('modalStockMin').style.left = minPos + '%';
+        
+        document.getElementById('modalLastDelivery').textContent = formatDate(item.lastDelivery);
+        document.getElementById('modalNextDelivery').textContent = formatDate(item.nextDelivery);
+        
+        // Show modal
+        showModal('inventoryModal');
+    }
+    
+    // Modal utilities
+    function showModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Modal action functions
+    window.editOrder = function() {
+        alert('Edit order feature coming soon!');
+        closeModal('orderModal');
+    }
+    
+    window.pauseProduction = function() {
+        alert('Pause production feature coming soon!');
+    }
+    
+    window.viewLineDetails = function() {
+        closeModal('productionModal');
+        navigateToPage('production');
+    }
+    
+    window.createPurchaseOrder = function() {
+        alert('Create PO feature coming soon!');
+        closeModal('inventoryModal');
+    }
+    
+    // Close modal function for onclick handlers
+    window.closeModal = closeModal;
+    
+    // Helper function for quality status
+    function getQualityStatusClass(status) {
+        const statusMap = {
+            'released': 'running',
+            'testing': 'setup',
+            'blocked': 'danger',
+            'pending': 'pending'
+        };
+        return statusMap[status] || 'pending';
     }
     
     // Auto refresh
