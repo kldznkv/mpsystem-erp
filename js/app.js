@@ -667,9 +667,238 @@
         }
     }
     
+    // Inventory Page Implementation
+    let inventoryState = {
+        activeTab: 'materials',
+        selectedWarehouse: null,
+        materialFilter: ''
+    };
+    
     function loadInventoryPage() {
-        console.log('Loading inventory page...');
-        // TODO: Implement inventory management
+        updateInventoryOverview();
+        renderMaterials();
+        initInventoryEventListeners();
+    }
+    
+    function updateInventoryOverview() {
+        // Update warehouse capacities
+        const warehouses = [
+            { selector: '.mag1 .capacity-fill', capacity: 78 },
+            { selector: '.mag1-1 .capacity-fill', capacity: 92 },
+            { selector: '.mag2 .capacity-fill', capacity: 45 },
+            { selector: '.mag3 .capacity-fill', capacity: 30 },
+            { selector: '.mag4 .capacity-fill', capacity: 55 },
+            { selector: '.mag9 .capacity-fill', capacity: 67 }
+        ];
+        
+        warehouses.forEach(wh => {
+            const element = document.querySelector(wh.selector);
+            if (element) {
+                element.style.width = '0%';
+                setTimeout(() => {
+                    element.style.width = wh.capacity + '%';
+                }, 100);
+            }
+        });
+        
+        // Update critical items
+        updateCriticalItems();
+        
+        // Update inventory value
+        animateInventoryValue();
+    }
+    
+    function updateCriticalItems() {
+        const criticalItems = document.querySelectorAll('.critical-item');
+        criticalItems.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-10px)';
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+                item.style.transition = 'all 0.3s ease';
+            }, index * 100);
+        });
+    }
+    
+    function animateInventoryValue() {
+        const valueElement = document.querySelector('.value-main');
+        if (valueElement) {
+            const endValue = 2.84;
+            let currentValue = 0;
+            const increment = endValue / 30;
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= endValue) {
+                    currentValue = endValue;
+                    clearInterval(timer);
+                }
+                valueElement.textContent = '€' + currentValue.toFixed(2) + 'M';
+            }, 30);
+        }
+    }
+    
+    function renderMaterials() {
+        const materialsGrid = document.querySelector('.materials-grid');
+        if (!materialsGrid) return;
+        
+        // Clear existing content
+        materialsGrid.innerHTML = '';
+        
+        // Filter materials based on current filters
+        let materials = DEMO_DATA.inventory.materials;
+        if (inventoryState.selectedWarehouse) {
+            materials = materials.filter(m => m.warehouse === inventoryState.selectedWarehouse);
+        }
+        if (inventoryState.materialFilter) {
+            materials = materials.filter(m => m.category === inventoryState.materialFilter);
+        }
+        
+        // Render material cards
+        materials.forEach(material => {
+            const card = createMaterialCard(material);
+            materialsGrid.appendChild(card);
+        });
+    }
+    
+    function createMaterialCard(material) {
+        const card = document.createElement('div');
+        const isCritical = material.quantity < material.minStock;
+        card.className = 'material-card' + (isCritical ? ' critical' : '');
+        
+        const stockPercent = ((material.quantity - 0) / (material.maxStock - 0)) * 100;
+        const minPercent = (material.minStock / material.maxStock) * 100;
+        const daysLeft = material.quantity / (material.quantity * 0.1); // Simplified calculation
+        
+        card.innerHTML = `
+            <div class="material-header">
+                <div>
+                    <h4>${material.name}</h4>
+                    <p class="material-id">${material.id}</p>
+                </div>
+                <span class="stock-status ${isCritical ? 'stock-critical' : 'stock-good'}">
+                    ${isCritical ? 'Low Stock' : 'In Stock'}
+                </span>
+            </div>
+            <div class="material-info">
+                <div class="info-item">
+                    <span>Location:</span>
+                    <strong>${CONFIG.WAREHOUSES[material.warehouse]}</strong>
+                </div>
+                <div class="info-item">
+                    <span>Supplier:</span>
+                    <strong>${material.supplier}</strong>
+                </div>
+                ${material.hazmat ? '<div class="hazmat-warning">⚠️ HAZMAT - ADR Storage Required</div>' : ''}
+            </div>
+            <div class="stock-visual">
+                <div class="stock-numbers">
+                    <span>Current: ${material.quantity.toLocaleString()} ${material.unit}</span>
+                    ${isCritical ? '<span class="critical-warning">⚠️ Below minimum!</span>' : 
+                                  `<span>Min: ${material.minStock.toLocaleString()} ${material.unit}</span>`}
+                </div>
+                <div class="stock-bar-container">
+                    <div class="stock-bar">
+                        <div class="stock-current ${isCritical ? 'critical' : ''}" style="width: ${stockPercent}%"></div>
+                        <div class="stock-min-line" style="left: ${minPercent}%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="material-footer">
+                <div class="footer-item">
+                    <span class="footer-label">${isCritical ? 'Days Left' : 'Last Delivery'}</span>
+                    <span class="footer-value ${isCritical ? 'critical' : ''}">
+                        ${isCritical ? daysLeft.toFixed(1) + ' days' : formatDate(material.lastDelivery)}
+                    </span>
+                </div>
+                <div class="footer-item">
+                    <span class="footer-label">Next Delivery</span>
+                    <span class="footer-value">${formatDate(material.nextDelivery)}</span>
+                </div>
+                <div class="footer-item">
+                    ${isCritical ? 
+                        `<button class="btn-critical" onclick="createUrgentPO('${material.id}')">Urgent PO</button>` :
+                        `<span class="footer-label">Price</span><span class="footer-value">${material.price} ${material.currency}</span>`}
+                </div>
+            </div>
+        `;
+        
+        card.addEventListener('click', (e) => {
+            if (!e.target.closest('button')) {
+                showInventoryDetails(material);
+            }
+        });
+        
+        return card;
+    }
+    
+    function initInventoryEventListeners() {
+        // Tab switching is handled by global functions
+    }
+    
+    // Global functions for inventory
+    window.switchInventoryTab = function(tab) {
+        inventoryState.activeTab = tab;
+        
+        // Update tab buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        // Update tab content
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.getElementById(tab + '-tab').classList.add('active');
+        
+        // Load tab data
+        switch(tab) {
+            case 'materials':
+                renderMaterials();
+                break;
+            case 'wip':
+                console.log('Loading WIP inventory...');
+                break;
+            case 'finished':
+                console.log('Loading finished goods...');
+                break;
+            case 'suppliers':
+                console.log('Loading suppliers...');
+                break;
+        }
+    }
+    
+    window.filterByWarehouse = function(warehouse) {
+        inventoryState.selectedWarehouse = warehouse;
+        
+        // Highlight selected warehouse
+        document.querySelectorAll('.warehouse-block').forEach(block => {
+            block.style.borderColor = '';
+        });
+        event.currentTarget.style.borderColor = 'var(--primary)';
+        
+        // Refresh materials
+        renderMaterials();
+        
+        // Scroll to materials section
+        document.querySelector('.materials-grid').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    window.filterMaterials = function(category) {
+        inventoryState.materialFilter = category;
+        renderMaterials();
+    }
+    
+    window.createUrgentPO = function(materialId) {
+        const material = DEMO_DATA.inventory.materials.find(m => m.id === materialId);
+        if (material) {
+            alert(`Creating urgent purchase order for ${material.name}...\nSupplier: ${material.supplier}\nRequired: ${material.minStock * 2} ${material.unit}`);
+        }
+    }
+    
+    window.addNewMaterial = function() {
+        alert('Add new material feature coming soon!');
     }
     
     function loadBOMPage() {
