@@ -779,6 +779,170 @@
             font-size: 0.925rem;
             font-weight: 500;
         }
+
+        /* Import Modal Styles */
+        .import-step {
+            min-height: 400px;
+        }
+
+        .import-section {
+            margin-bottom: 2rem;
+        }
+
+        .import-section h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .entity-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .entity-option {
+            cursor: pointer;
+        }
+
+        .entity-option input[type="radio"] {
+            display: none;
+        }
+
+        .entity-card {
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            transition: var(--transition);
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .entity-option input[type="radio"]:checked + .entity-card {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .entity-card:hover {
+            border-color: var(--border-dark);
+            background: var(--surface-hover);
+        }
+
+        .entity-icon {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+
+        .entity-info {
+            flex: 1;
+        }
+
+        .entity-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .entity-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .file-upload-area {
+            border: 2px dashed var(--border-medium);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--surface-hover);
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .upload-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .file-info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .template-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .preview-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .preview-stats {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .preview-table-container {
+            max-height: 300px;
+            overflow: auto;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+        }
+
+        .import-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-light);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+        }
     </style>
 </head>
 <body>
@@ -796,7 +960,7 @@
                 <button class="btn btn-secondary" onclick="exportData()">
                     📤 Export Data
                 </button>
-                <button class="btn btn-secondary" onclick="importData()">
+                <button class="btn btn-secondary" onclick="showModal('importModal')">
                     📥 Import Data
                 </button>
             </div>
@@ -1346,7 +1510,155 @@
                 </div>
             </div>
 
-            <!-- File input for import -->
+            <!-- Import Modal -->
+            <div id="importModal" class="modal">
+                <div class="modal-content" style="max-width: 1000px;">
+                    <div class="modal-header">
+                        <h3>Импорт данных</h3>
+                        <button class="modal-close" onclick="hideModal('importModal')">&times;</button>
+                    </div>
+                    
+                    <div id="importStep1" class="import-step">
+                        <div class="import-section">
+                            <h4>1. Выберите тип данных для импорта</h4>
+                            <div class="entity-selection">
+                                <label class="entity-option">
+                                    <input type="radio" name="entityType" value="materials">
+                                    <div class="entity-card">
+                                        <div class="entity-icon">📦</div>
+                                        <div class="entity-info">
+                                            <div class="entity-name">Материалы</div>
+                                            <div class="entity-desc">Код, наименование, тип, стоимость</div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="entity-option">
+                                    <input type="radio" name="entityType" value="suppliers">
+                                    <div class="entity-card">
+                                        <div class="entity-icon">👥</div>
+                                        <div class="entity-info">
+                                            <div class="entity-name">Поставщики</div>
+                                            <div class="entity-desc">Наименование, контакты, рейтинг</div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="entity-option">
+                                    <input type="radio" name="entityType" value="inventory">
+                                    <div class="entity-card">
+                                        <div class="entity-icon">📋</div>
+                                        <div class="entity-info">
+                                            <div class="entity-name">Остатки</div>
+                                            <div class="entity-desc">Склад, количество, локация</div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="entity-option">
+                                    <input type="radio" name="entityType" value="batches">
+                                    <div class="entity-card">
+                                        <div class="entity-icon">🏷️</div>
+                                        <div class="entity-info">
+                                            <div class="entity-name">Партии</div>
+                                            <div class="entity-desc">Номер партии, материал, поставщик</div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="entity-option">
+                                    <input type="radio" name="entityType" value="orders">
+                                    <div class="entity-card">
+                                        <div class="entity-icon">📑</div>
+                                        <div class="entity-info">
+                                            <div class="entity-name">Заказы</div>
+                                            <div class="entity-desc">Номер заказа, клиент, продукт</div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="import-section">
+                            <h4>2. Загрузите файл</h4>
+                            <div class="file-upload-area" onclick="document.getElementById('importFileInput').click()">
+                                <div class="upload-icon">📁</div>
+                                <div class="upload-text">
+                                    <div class="upload-title">Нажмите для выбора файла</div>
+                                    <div class="upload-subtitle">Поддерживаются форматы: CSV, Excel (.xlsx, .xls), JSON</div>
+                                </div>
+                                <input type="file" id="importFileInput" style="display: none;" 
+                                       accept=".csv,.xlsx,.xls,.json" onchange="handleImportFile(event)">
+                            </div>
+                            <div id="fileInfo" class="file-info" style="display: none;"></div>
+                        </div>
+
+                        <div class="import-section">
+                            <h4>3. Скачать шаблон (опционально)</h4>
+                            <div class="template-options">
+                                <button class="btn btn-secondary btn-sm" onclick="downloadTemplate('csv')">
+                                    📄 Скачать CSV шаблон
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="downloadTemplate('excel')">
+                                    📊 Скачать Excel шаблон
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="importStep2" class="import-step" style="display: none;">
+                        <div class="import-section">
+                            <h4>Предпросмотр данных</h4>
+                            <div class="preview-info">
+                                <div class="preview-stats">
+                                    <span id="previewCount">0</span> записей готово к импорту
+                                </div>
+                                <div class="preview-actions">
+                                    <button class="btn btn-secondary btn-sm" onclick="backToStep1()">
+                                        ← Назад
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="preview-table-container">
+                                <table class="table" id="previewTable">
+                                    <thead id="previewHeader"></thead>
+                                    <tbody id="previewBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="import-section">
+                            <h4>Настройки импорта</h4>
+                            <div class="import-options">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="skipDuplicates" checked>
+                                    Пропускать дубликаты (по коду/номеру)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="updateExisting">
+                                    Обновлять существующие записи
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="validateData" checked>
+                                    Проверять данные перед импортом
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button id="nextBtn" class="btn btn-primary" onclick="nextStep()" disabled>
+                                Далее →
+                            </button>
+                            <button id="importBtn" class="btn btn-success" onclick="executeImport()" style="display: none;">
+                                ✅ Импортировать данные
+                            </button>
+                            <button class="btn btn-secondary" onclick="hideModal('importModal')">
+                                Отмена
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File input for old import (backup) -->
             <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="handleFileImport(event)">
 
     <script>
@@ -1685,6 +1997,25 @@
                 document.querySelector('#materialModal h3').textContent = 'Добавить материал';
             } else if (modalId === 'supplierModal') {
                 document.querySelector('#supplierModal h3').textContent = 'Добавить поставщика';
+            } else if (modalId === 'importModal') {
+                // Reset import state
+                importDataState.entityType = null;
+                importDataState.file = null;
+                importDataState.parsedData = null;
+                importDataState.validatedData = null;
+                
+                // Reset UI
+                document.getElementById('importStep1').style.display = 'block';
+                document.getElementById('importStep2').style.display = 'none';
+                document.getElementById('nextBtn').style.display = 'inline-flex';
+                document.getElementById('importBtn').style.display = 'none';
+                document.getElementById('nextBtn').disabled = true;
+                document.getElementById('fileInfo').style.display = 'none';
+                
+                // Clear radio buttons
+                document.querySelectorAll('input[name="entityType"]').forEach(radio => {
+                    radio.checked = false;
+                });
             }
         }
 
@@ -2253,7 +2584,419 @@
         });
 
         // =============================================
-        // EXPORT/IMPORT FUNCTIONS
+        // ADVANCED IMPORT SYSTEM
+        // =============================================
+
+        let importDataState = {
+            entityType: null,
+            file: null,
+            parsedData: null,
+            validatedData: null
+        };
+
+        // Entity field mappings for templates and validation
+        const entityFields = {
+            materials: [
+                { key: 'code', label: 'Код материала', required: true, example: 'GR-PVD-001' },
+                { key: 'name', label: 'Наименование', required: true, example: 'Гранулят ПВД прозрачный' },
+                { key: 'type', label: 'Тип', required: true, example: 'granulate_ldpe' },
+                { key: 'unit', label: 'Единица измерения', required: true, example: 'кг' },
+                { key: 'standard_cost', label: 'Стандартная стоимость', required: false, example: '245.50' },
+                { key: 'min_stock_level', label: 'Минимальный остаток', required: false, example: '1000' },
+                { key: 'reorder_point', label: 'Точка перезаказа', required: false, example: '2000' },
+                { key: 'supplier_id', label: 'ID поставщика', required: false, example: '1' },
+                { key: 'description', label: 'Описание', required: false, example: 'Описание материала' }
+            ],
+            suppliers: [
+                { key: 'code', label: 'Код поставщика', required: true, example: 'SUP001' },
+                { key: 'name', label: 'Наименование', required: true, example: 'Dow Chemical Europe' },
+                { key: 'contact_person', label: 'Контактное лицо', required: false, example: 'John Smith' },
+                { key: 'email', label: 'Email', required: false, example: 'contact@company.com' },
+                { key: 'phone', label: 'Телефон', required: false, example: '+7-495-123-4567' },
+                { key: 'address', label: 'Адрес', required: false, example: 'Москва, ул. Примерная, 1' },
+                { key: 'is_active', label: 'Активный', required: false, example: 'true' }
+            ],
+            inventory: [
+                { key: 'material_id', label: 'ID материала', required: true, example: '1' },
+                { key: 'warehouse', label: 'Склад', required: true, example: 'MAG-1' },
+                { key: 'batch_number', label: 'Номер партии', required: false, example: '240115-001' },
+                { key: 'quantity', label: 'Количество', required: true, example: '1000' },
+                { key: 'reserved_quantity', label: 'Зарезервировано', required: false, example: '0' },
+                { key: 'location_code', label: 'Код локации', required: false, example: 'A1-05-02' }
+            ],
+            batches: [
+                { key: 'batch_number', label: 'Номер партии', required: true, example: '240115-001' },
+                { key: 'material_id', label: 'ID материала', required: true, example: '1' },
+                { key: 'supplier_id', label: 'ID поставщика', required: true, example: '1' },
+                { key: 'received_quantity', label: 'Получено количество', required: true, example: '2500' },
+                { key: 'production_date', label: 'Дата производства', required: false, example: '2024-01-10' },
+                { key: 'received_date', label: 'Дата получения', required: true, example: '2024-01-15' },
+                { key: 'quality_status', label: 'Статус качества', required: false, example: 'approved' }
+            ],
+            orders: [
+                { key: 'order_number', label: 'Номер заказа', required: true, example: 'ORD-240001' },
+                { key: 'customer', label: 'Клиент', required: true, example: 'ООО Пищепром' },
+                { key: 'product', label: 'Продукт', required: true, example: 'Пленка ПЭТ 12мкм' },
+                { key: 'quantity', label: 'Количество', required: true, example: '5000' },
+                { key: 'order_date', label: 'Дата заказа', required: true, example: '2024-01-20' },
+                { key: 'delivery_date', label: 'Дата поставки', required: false, example: '2024-01-25' },
+                { key: 'status', label: 'Статус', required: false, example: 'new' },
+                { key: 'priority', label: 'Приоритет', required: false, example: 'medium' }
+            ]
+        };
+
+        // Handle entity type selection
+        document.addEventListener('change', function(e) {
+            if (e.target.name === 'entityType') {
+                importDataState.entityType = e.target.value;
+                checkImportReadiness();
+            }
+        });
+
+        // Check if ready to proceed to next step
+        function checkImportReadiness() {
+            const nextBtn = document.getElementById('nextBtn');
+            const hasEntity = importDataState.entityType;
+            const hasFile = importDataState.file;
+            
+            if (nextBtn) {
+                nextBtn.disabled = !(hasEntity && hasFile);
+            }
+        }
+
+        // Handle file selection
+        function handleImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            importDataState.file = file;
+            
+            // Show file info
+            const fileInfo = document.getElementById('fileInfo');
+            if (fileInfo) {
+                fileInfo.style.display = 'block';
+                fileInfo.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="file-icon">📄</div>
+                        <div>
+                            <div style="font-weight: 600;">${file.name}</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                                ${(file.size / 1024).toFixed(1)} KB • ${file.type || 'Unknown type'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            checkImportReadiness();
+        }
+
+        // Download template files
+        function downloadTemplate(format) {
+            if (!importDataState.entityType) {
+                showToast('Сначала выберите тип данных', 'warning');
+                return;
+            }
+
+            const fields = entityFields[importDataState.entityType];
+            const headers = fields.map(f => f.label);
+            const example = fields.map(f => f.example);
+
+            if (format === 'csv') {
+                const csvContent = [
+                    headers.join(','),
+                    example.join(',')
+                ].join('\n');
+
+                downloadFile(csvContent, `${importDataState.entityType}_template.csv`, 'text/csv');
+            } else if (format === 'excel') {
+                // Simple Excel-like format (actually CSV with Excel extension)
+                const csvContent = [
+                    headers.join(','),
+                    example.join(',')
+                ].join('\n');
+
+                downloadFile(csvContent, `${importDataState.entityType}_template.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            }
+        }
+
+        // Utility function to download files
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Шаблон скачан', 'success');
+        }
+
+        // Parse different file formats
+        function parseFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    const extension = file.name.split('.').pop().toLowerCase();
+                    
+                    try {
+                        let data;
+                        
+                        if (extension === 'json') {
+                            data = JSON.parse(content);
+                        } else if (extension === 'csv') {
+                            data = parseCSV(content);
+                        } else if (['xlsx', 'xls'].includes(extension)) {
+                            // For now, treat Excel files as CSV (user should save as CSV)
+                            showToast('Пожалуйста, сохраните Excel файл как CSV', 'warning');
+                            reject(new Error('Excel files not supported yet. Please convert to CSV.'));
+                            return;
+                        } else {
+                            reject(new Error('Unsupported file format'));
+                            return;
+                        }
+                        
+                        resolve(data);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                
+                reader.onerror = () => reject(new Error('File reading failed'));
+                reader.readAsText(file);
+            });
+        }
+
+        // Simple CSV parser
+        function parseCSV(content) {
+            const lines = content.split('\n').filter(line => line.trim());
+            if (lines.length < 2) throw new Error('CSV должен содержать заголовки и данные');
+            
+            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                const row = {};
+                
+                headers.forEach((header, index) => {
+                    row[header] = values[index] || '';
+                });
+                
+                data.push(row);
+            }
+            
+            return data;
+        }
+
+        // Navigation between steps
+        function nextStep() {
+            if (!importDataState.file || !importDataState.entityType) {
+                showToast('Выберите тип данных и файл', 'warning');
+                return;
+            }
+
+            // Parse file and show preview
+            parseFile(importDataState.file)
+                .then(data => {
+                    importDataState.parsedData = data;
+                    showPreview(data);
+                    
+                    // Switch to step 2
+                    document.getElementById('importStep1').style.display = 'none';
+                    document.getElementById('importStep2').style.display = 'block';
+                    document.getElementById('nextBtn').style.display = 'none';
+                    document.getElementById('importBtn').style.display = 'inline-flex';
+                })
+                .catch(error => {
+                    showToast('Ошибка обработки файла: ' + error.message, 'error');
+                });
+        }
+
+        function backToStep1() {
+            document.getElementById('importStep1').style.display = 'block';
+            document.getElementById('importStep2').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'inline-flex';
+            document.getElementById('importBtn').style.display = 'none';
+        }
+
+        // Show data preview
+        function showPreview(data) {
+            if (!Array.isArray(data) || data.length === 0) {
+                showToast('Нет данных для предпросмотра', 'warning');
+                return;
+            }
+
+            const fields = entityFields[importDataState.entityType];
+            const previewHeader = document.getElementById('previewHeader');
+            const previewBody = document.getElementById('previewBody');
+            const previewCount = document.getElementById('previewCount');
+
+            // Build header
+            previewHeader.innerHTML = `
+                <tr>
+                    ${fields.map(field => `<th>${field.label}</th>`).join('')}
+                    <th>Статус</th>
+                </tr>
+            `;
+
+            // Build body (show first 10 rows)
+            const previewRows = data.slice(0, 10);
+            previewBody.innerHTML = previewRows.map(row => {
+                const validation = validateRow(row, fields);
+                const statusClass = validation.isValid ? 'badge-success' : 'badge-danger';
+                const statusText = validation.isValid ? '✅ ОК' : '❌ Ошибка';
+                
+                return `
+                    <tr>
+                        ${fields.map(field => {
+                            const value = getFieldValue(row, field);
+                            return `<td>${value || '-'}</td>`;
+                        }).join('')}
+                        <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    </tr>
+                `;
+            }).join('');
+
+            if (previewCount) {
+                previewCount.textContent = data.length;
+            }
+        }
+
+        // Get field value from row (flexible field matching)
+        function getFieldValue(row, field) {
+            // Try exact key match first
+            if (row.hasOwnProperty(field.key)) {
+                return row[field.key];
+            }
+            
+            // Try label match
+            if (row.hasOwnProperty(field.label)) {
+                return row[field.label];
+            }
+            
+            // Try case-insensitive matches
+            const keys = Object.keys(row);
+            const matchKey = keys.find(key => 
+                key.toLowerCase() === field.key.toLowerCase() ||
+                key.toLowerCase() === field.label.toLowerCase()
+            );
+            
+            return matchKey ? row[matchKey] : '';
+        }
+
+        // Validate a single row
+        function validateRow(row, fields) {
+            const errors = [];
+            
+            fields.forEach(field => {
+                if (field.required) {
+                    const value = getFieldValue(row, field);
+                    if (!value || value.toString().trim() === '') {
+                        errors.push(`${field.label} обязательно для заполнения`);
+                    }
+                }
+            });
+            
+            return {
+                isValid: errors.length === 0,
+                errors: errors
+            };
+        }
+
+        // Execute import
+        function executeImport() {
+            if (!importDataState.parsedData) {
+                showToast('Нет данных для импорта', 'error');
+                return;
+            }
+
+            const skipDuplicates = document.getElementById('skipDuplicates').checked;
+            const updateExisting = document.getElementById('updateExisting').checked;
+            const validateData = document.getElementById('validateData').checked;
+            
+            const fields = entityFields[importDataState.entityType];
+            const existingData = storage.getTable(importDataState.entityType);
+            
+            let imported = 0;
+            let skipped = 0;
+            let updated = 0;
+            let errors = 0;
+
+            importDataState.parsedData.forEach(row => {
+                try {
+                    // Validate if required
+                    if (validateData) {
+                        const validation = validateRow(row, fields);
+                        if (!validation.isValid) {
+                            errors++;
+                            return;
+                        }
+                    }
+
+                    // Convert row to proper format
+                    const record = {};
+                    fields.forEach(field => {
+                        const value = getFieldValue(row, field);
+                        if (value !== '') {
+                            if (['standard_cost', 'min_stock_level', 'reorder_point', 'quantity', 'reserved_quantity', 'received_quantity'].includes(field.key)) {
+                                record[field.key] = parseFloat(value);
+                            } else if (['material_id', 'supplier_id'].includes(field.key)) {
+                                record[field.key] = parseInt(value);
+                            } else if (field.key === 'is_active') {
+                                record[field.key] = value.toLowerCase() === 'true' || value === '1';
+                            } else {
+                                record[field.key] = value;
+                            }
+                        }
+                    });
+
+                    // Check for duplicates
+                    const identifierField = ['code', 'order_number', 'batch_number'].find(f => record[f]);
+                    let existingRecord = null;
+                    
+                    if (identifierField) {
+                        existingRecord = existingData.find(item => item[identifierField] === record[identifierField]);
+                    }
+
+                    if (existingRecord) {
+                        if (updateExisting) {
+                            storage.updateRecord(importDataState.entityType, existingRecord.id, record);
+                            updated++;
+                        } else if (skipDuplicates) {
+                            skipped++;
+                        } else {
+                            storage.addRecord(importDataState.entityType, record);
+                            imported++;
+                        }
+                    } else {
+                        storage.addRecord(importDataState.entityType, record);
+                        imported++;
+                    }
+                } catch (error) {
+                    console.error('Import error for row:', row, error);
+                    errors++;
+                }
+            });
+
+            // Show results
+            const message = `Импорт завершен: ${imported} добавлено, ${updated} обновлено, ${skipped} пропущено, ${errors} ошибок`;
+            showToast(message, errors > 0 ? 'warning' : 'success');
+            
+            storage.addActivity('data_import', `Импорт ${importDataState.entityType}: ${imported} записей`);
+            
+            // Close modal and refresh
+            hideModal('importModal');
+            refreshCurrentTab();
+            loadDashboard();
+        }
+
+        // =============================================
+        // EXPORT/IMPORT FUNCTIONS (Legacy)
         // =============================================
 
         function exportData() {
