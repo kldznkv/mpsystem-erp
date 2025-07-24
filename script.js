@@ -1,4 +1,6 @@
 // ERP System JavaScript
+const API_BASE_URL = window.location.origin + '/api/v1';
+
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
 });
@@ -9,7 +11,96 @@ function initializeApp() {
     setupRealTimeUpdates();
     drawProductionChart();
     setupPlanningModule();
+    checkBackendHealth();
     console.log('MPSYSTEM ERP Interface initialized');
+}
+
+// Backend Integration
+async function checkBackendHealth() {
+    try {
+        const response = await fetch('/health');
+        const data = await response.json();
+        console.log('✅ Backend connected:', data.message);
+        
+        // Show backend status in UI
+        const statusIndicator = document.createElement('div');
+        statusIndicator.className = 'backend-status connected';
+        statusIndicator.innerHTML = '🟢 API Connected';
+        statusIndicator.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #dcfce7;
+            color: #16a34a;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1000;
+            border: 1px solid #16a34a;
+        `;
+        document.body.appendChild(statusIndicator);
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+            statusIndicator.remove();
+        }, 3000);
+        
+    } catch (error) {
+        console.warn('⚠️ Backend not available, using mock data');
+        
+        // Show offline status
+        const statusIndicator = document.createElement('div');
+        statusIndicator.className = 'backend-status offline';
+        statusIndicator.innerHTML = '🟡 Offline Mode';
+        statusIndicator.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #fef3c7;
+            color: #d97706;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1000;
+            border: 1px solid #d97706;
+        `;
+        document.body.appendChild(statusIndicator);
+    }
+}
+
+// API Helper Functions
+async function apiGet(endpoint) {
+    try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.warn(`API GET ${endpoint} failed:`, error);
+        return null;
+    }
+}
+
+async function apiPost(endpoint, data = {}) {
+    try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.warn(`API POST ${endpoint} failed:`, error);
+        return null;
+    }
 }
 
 // Navigation System
@@ -428,27 +519,48 @@ function initializeDashboard() {
     updateActivities();
 }
 
-function updateKPICards() {
-    // Simulate real-time KPI updates
-    const kpiElements = {
-        'production-volume': { min: 2000, max: 3000 },
-        'efficiency': { min: 85, max: 95, suffix: '%' },
-        'orders-count': { min: 100, max: 200 },
-        'quality-score': { min: 96, max: 99.5, suffix: '%' }
-    };
+async function updateKPICards() {
+    // Try to get data from API first, fallback to mock data
+    const kpiData = await apiGet('/dashboard/kpi');
     
-    Object.keys(kpiElements).forEach(elementId => {
-        const element = document.getElementById(elementId);
-        if (element) {
-            const config = kpiElements[elementId];
-            const value = (Math.random() * (config.max - config.min) + config.min);
-            const formattedValue = config.suffix ? 
-                value.toFixed(1) + config.suffix : 
-                Math.round(value).toLocaleString();
-            
-            animateValue(element, formattedValue);
-        }
-    });
+    if (kpiData && kpiData.kpi) {
+        // Update KPI cards with real API data
+        const kpiMapping = {
+            'production-volume': kpiData.kpi.daily_production,
+            'efficiency': kpiData.kpi.production_efficiency,
+            'orders-count': kpiData.kpi.order_fulfillment,
+            'quality-score': kpiData.kpi.quality_rate
+        };
+        
+        Object.keys(kpiMapping).forEach(elementId => {
+            const element = document.getElementById(elementId);
+            if (element && kpiMapping[elementId]) {
+                const value = kpiMapping[elementId].value + kpiMapping[elementId].unit;
+                animateValue(element, value);
+            }
+        });
+    } else {
+        // Fallback to mock data
+        const kpiElements = {
+            'production-volume': { min: 2000, max: 3000 },
+            'efficiency': { min: 85, max: 95, suffix: '%' },
+            'orders-count': { min: 100, max: 200 },
+            'quality-score': { min: 96, max: 99.5, suffix: '%' }
+        };
+        
+        Object.keys(kpiElements).forEach(elementId => {
+            const element = document.getElementById(elementId);
+            if (element) {
+                const config = kpiElements[elementId];
+                const value = (Math.random() * (config.max - config.min) + config.min);
+                const formattedValue = config.suffix ? 
+                    value.toFixed(1) + config.suffix : 
+                    Math.round(value).toLocaleString();
+                
+                animateValue(element, formattedValue);
+            }
+        });
+    }
 }
 
 function animateValue(element, newValue) {

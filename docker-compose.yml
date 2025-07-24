@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - uploads:/app/uploads
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./mpsystem_erp.db
+      - DEBUG=true
+      - SECRET_KEY=development-secret-key
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - mpsystem_network
+
+  # Redis for caching and Celery
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - mpsystem_network
+
+  # PostgreSQL Database (optional - currently using SQLite)
+  # postgres:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_DB: mpsystem_erp
+  #     POSTGRES_USER: mpsystem
+  #     POSTGRES_PASSWORD: mpsystem_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   restart: unless-stopped
+  #   networks:
+  #     - mpsystem_network
+
+  # Celery Worker (for background tasks)
+  # celery_worker:
+  #   build: .
+  #   command: celery -A app.core.celery worker --loglevel=info
+  #   volumes:
+  #     - .:/app
+  #   environment:
+  #     - DATABASE_URL=sqlite+aiosqlite:///./mpsystem_erp.db
+  #     - REDIS_URL=redis://redis:6379
+  #   depends_on:
+  #     - redis
+  #   restart: unless-stopped
+  #   networks:
+  #     - mpsystem_network
+
+volumes:
+  redis_data:
+  uploads:
+  # postgres_data:
+
+networks:
+  mpsystem_network:
+    driver: bridge
