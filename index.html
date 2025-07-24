@@ -1673,7 +1673,7 @@
                 📊 Дашборд
             </button>
             <button class="nav-tab" onclick="showTab('planning')">
-                📋 Планирование
+                                        🛒 Закупки
             </button>
             <button class="nav-tab" onclick="showTab('orders')">
                 📑 Заказы
@@ -1752,124 +1752,190 @@
 
         <!-- Planning Tab -->
         <div id="planning" class="tab-content">
+            <div class="procurement-header">
+                <h2>🛒 Moduł zakupów</h2>
+                <div class="procurement-actions">
+                    <button class="btn btn-primary" onclick="generateMRPRequirements()">🔄 Generuj zapotrzebowania MRP</button>
+                    <button class="btn btn-secondary" onclick="showModal('procurementModal')">➕ Nowe zamówienie zakupu</button>
+                    <button class="btn btn-secondary" onclick="showSpotPurchaseModal()">⚡ Zakup spot</button>
+                </div>
+            </div>
+
+            <!-- MRP Requirements -->
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Планирование производства</h2>
-                    <button class="btn btn-primary" onclick="createPlan()">
-                        ➕ Создать план
+                    <h3>📋 Zapotrzebowania MRP</h3>
+                    <button class="btn btn-secondary" onclick="loadMRPRequirements()">🔄 Odśwież</button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Materiał</th>
+                                <th>Ilość</th>
+                                <th>Data potrzeby</th>
+                                <th>Priorytet</th>
+                                <th>Źródło</th>
+                                <th>Status</th>
+                                <th>Działania</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mrpRequirementsTable">
+                            <!-- MRP requirements will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Purchase Orders -->
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">
+                    <h3>📑 Zamówienia zakupu</h3>
+                    <div class="filter-buttons">
+                        <button class="btn btn-sm btn-secondary" onclick="filterPurchaseOrders('all')">Wszystkie</button>
+                        <button class="btn btn-sm btn-info" onclick="filterPurchaseOrders('draft')">Projekty</button>
+                        <button class="btn btn-sm btn-warning" onclick="filterPurchaseOrders('sent')">Wysłane</button>
+                        <button class="btn btn-sm btn-success" onclick="filterPurchaseOrders('confirmed')">Potwierdzone</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nr ZZ</th>
+                                <th>Dostawca</th>
+                                <th>Materiał</th>
+                                <th>Ilość</th>
+                                <th>Cena jedn.</th>
+                                <th>Wartość</th>
+                                <th>Termin dostawy</th>
+                                <th>Status</th>
+                                <th>Działania</th>
+                            </tr>
+                        </thead>
+                        <tbody id="purchaseOrdersTable">
+                            <!-- Purchase orders will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Supplier Performance -->
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">
+                    <h3>📊 Ocena dostawców</h3>
+                </div>
+                
+                <div class="supplier-performance-grid">
+                    <div class="performance-card">
+                        <h4>🏆 Najlepsi dostawcy</h4>
+                        <div class="performance-list">
+                            <div class="performance-item">
+                                <span class="supplier-name">BASF Polska</span>
+                                <span class="performance-score">96.8%</span>
+                            </div>
+                            <div class="performance-item">
+                                <span class="supplier-name">Siegwerk Druckfarben</span>
+                                <span class="performance-score">94.5%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-card">
+                        <h4>⚠️ Alerty jakościowe</h4>
+                        <div class="alert-list">
+                            <div class="alert-item">
+                                <span>Opóźnienie dostawy - PO-2024-0012</span>
+                                <span class="alert-time">2 dni</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-card">
+                        <h4>💰 Savings vs budżet</h4>
+                        <div class="savings-info">
+                            <div class="savings-item">
+                                <span class="savings-label">Ten miesiąc:</span>
+                                <span class="savings-value positive">+12,500 PLN</span>
+                            </div>
+                            <div class="savings-item">
+                                <span class="savings-label">YTD:</span>
+                                <span class="savings-value positive">+45,200 PLN</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Materials Management -->
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">
+                    <h3>📦 Zarządzanie materiałami</h3>
+                    <button class="btn btn-primary" onclick="showModal('materialModal')">
+                        ➕ Dodaj materiał
                     </button>
                 </div>
 
-                <div class="planning-timeline">
-                    <div class="timeline-header">
-                        <div class="timeline-date">Сегодня</div>
-                        <div class="timeline-date">Завтра</div>
-                        <div class="timeline-date">28.01</div>
-                        <div class="timeline-date">29.01</div>
-                        <div class="timeline-date">30.01</div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="production-line">
-                            <div class="line-name">Линия 1 (Экструзия)</div>
-                            <div class="timeline-slots">
-                                <div class="time-slot busy">ORD-001</div>
-                                <div class="time-slot available"></div>
-                                <div class="time-slot planned">ORD-003</div>
-                                <div class="time-slot available"></div>
-                                <div class="time-slot available"></div>
-                            </div>
-                        </div>
-                        <div class="production-line">
-                            <div class="line-name">Линия 2 (Печать)</div>
-                            <div class="timeline-slots">
-                                <div class="time-slot busy">ORD-002</div>
-                                <div class="time-slot busy">ORD-004</div>
-                                <div class="time-slot available"></div>
-                                <div class="time-slot planned">ORD-005</div>
-                                <div class="time-slot available"></div>
-                            </div>
-                        </div>
-                        <div class="production-line">
-                            <div class="line-name">Линия 3 (Ламинация)</div>
-                            <div class="timeline-slots">
-                                <div class="time-slot maintenance">ТО</div>
-                                <div class="time-slot available"></div>
-                                <div class="time-slot available"></div>
-                                <div class="time-slot available"></div>
-                                <div class="time-slot available"></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Szukaj materiałów..." onkeyup="filterMaterials(this.value)">
                 </div>
-                
-                <!-- Materials Management -->
-                <div class="card" style="margin-top: 2rem;">
-                    <div class="card-header">
-                        <h3>📦 Управление материалами</h3>
-                        <button class="btn btn-primary" onclick="showModal('materialModal')">
-                            ➕ Добавить материал
-                        </button>
-                    </div>
 
-                    <div class="search-container">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" placeholder="Поиск материалов..." onkeyup="filterMaterials(this.value)">
-                    </div>
-
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Код</th>
-                                    <th>Наименование</th>
-                                    <th>Тип</th>
-                                    <th>Единица</th>
-                                    <th>Стоимость</th>
-                                    <th>Мин. остаток</th>
-                                    <th>Поставщик</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody id="materialsTable">
-                                <!-- Materials will be populated here -->
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Kod</th>
+                                <th>Nazwa</th>
+                                <th>Typ</th>
+                                <th>Jednostka</th>
+                                <th>Koszt</th>
+                                <th>Min. zapas</th>
+                                <th>Dostawca</th>
+                                <th>Działania</th>
+                            </tr>
+                        </thead>
+                        <tbody id="materialsTable">
+                            <!-- Materials will be populated here -->
+                        </tbody>
+                    </table>
                 </div>
-                
-                <!-- Suppliers Management -->
-                <div class="card" style="margin-top: 2rem;">
-                    <div class="card-header">
-                        <h3>👥 Управление поставщиками</h3>
-                        <button class="btn btn-primary" onclick="showModal('supplierModal')">
-                            ➕ Добавить поставщика
-                        </button>
-                    </div>
+            </div>
+            
+            <!-- Suppliers Management -->
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">
+                    <h3>👥 Zarządzanie dostawcami</h3>
+                    <button class="btn btn-primary" onclick="showModal('supplierModal')">
+                        ➕ Dodaj dostawcę
+                    </button>
+                </div>
 
-                    <div class="search-container">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" placeholder="Поиск поставщиков..." onkeyup="filterSuppliers(this.value)">
-                    </div>
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Szukaj dostawców..." onkeyup="filterSuppliers(this.value)">
+                </div>
 
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Код</th>
-                                    <th>Наименование</th>
-                                    <th>Контакт</th>
-                                    <th>Email</th>
-                                    <th>Телефон</th>
-                                    <th>Рейтинг</th>
-                                    <th>Статус</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody id="suppliersTable">
-                                <!-- Suppliers will be populated here -->
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Kod</th>
+                                <th>Nazwa</th>
+                                <th>Kontakt</th>
+                                <th>Email</th>
+                                <th>Telefon</th>
+                                <th>Ocena</th>
+                                <th>Status</th>
+                                <th>Działania</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suppliersTable">
+                            <!-- Suppliers will be populated here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -3400,6 +3466,7 @@
                 }
                 this.updateStorageStatus();
                 this.initializeProductionRules();
+                this.initializeProcurementData();
             }
 
             // Initialize production rules and recipes
@@ -3496,6 +3563,55 @@
                         capacity_per_hour: 400,
                         operators: ['Петров А.И.'],
                         shift: 'day'
+                    }
+                ];
+            }
+
+            initializeProcurementData() {
+                const data = this.getData();
+                if (!data.procurement_requirements) {
+                    data.procurement_requirements = [];
+                    data.purchase_orders = [];
+                    data.supplier_contracts = this.getDefaultContracts();
+                    data.price_history = [];
+                    data.delivery_schedule = [];
+                    this.setData(data);
+                }
+            }
+
+            getDefaultContracts() {
+                return [
+                    {
+                        id: 1,
+                        supplier_id: 1,
+                        material_id: 1, // GR-PVD-001
+                        contract_number: 'CTR-2024-001',
+                        price: 240.00,
+                        currency: 'PLN',
+                        moq: 1000, // minimum order quantity
+                        lead_time_days: 7,
+                        payment_terms: '30 dni',
+                        valid_from: '2024-01-01',
+                        valid_to: '2024-12-31',
+                        discount_tiers: [
+                            { min_quantity: 5000, discount_percent: 2 },
+                            { min_quantity: 10000, discount_percent: 5 }
+                        ],
+                        status: 'active'
+                    },
+                    {
+                        id: 2,
+                        supplier_id: 1,
+                        material_id: 2, // GR-PET-001
+                        contract_number: 'CTR-2024-002',
+                        price: 300.00,
+                        currency: 'PLN',
+                        moq: 800,
+                        lead_time_days: 10,
+                        payment_terms: '30 dni',
+                        valid_from: '2024-01-01',
+                        valid_to: '2024-12-31',
+                        status: 'active'
                     }
                 ];
             }
@@ -4093,6 +4209,195 @@
                     start_time: startTime.toISOString(),
                     completion_time: completionTime.toISOString(),
                     production_time: productionTime
+                };
+            }
+
+            // =============================================
+            // MRP & PROCUREMENT LOGIC
+            // =============================================
+
+            generateMRPRequirements() {
+                const data = this.getData();
+                const requirements = [];
+                
+                // 1. Анализ новых заказов
+                const activeOrders = data.orders.filter(order => 
+                    ['new', 'scheduled', 'materials_reserved'].includes(order.status)
+                );
+                
+                activeOrders.forEach(order => {
+                    if (order.material_requirements) {
+                        order.material_requirements.forEach(req => {
+                            const material = data.materials.find(m => m.code === req.material_code);
+                            if (material) {
+                                requirements.push({
+                                    source: 'order',
+                                    source_id: order.id,
+                                    material_id: material.id,
+                                    material_code: req.material_code,
+                                    required_quantity: req.required_quantity,
+                                    required_date: order.delivery_date,
+                                    priority: order.priority,
+                                    description: `Dla zamówienia ${order.order_number}`
+                                });
+                            }
+                        });
+                    }
+                });
+
+                // 2. Анализ минимальных остатков
+                data.materials.forEach(material => {
+                    const inventory = data.inventory.filter(inv => inv.material_id === material.id);
+                    const totalAvailable = inventory.reduce((sum, inv) => 
+                        sum + (inv.quantity - (inv.reserved_quantity || 0)), 0
+                    );
+                    
+                    if (totalAvailable < material.reorder_point) {
+                        const orderQuantity = Math.max(
+                            material.min_stock_level * 2 - totalAvailable,
+                            material.min_stock_level
+                        );
+                        
+                        requirements.push({
+                            source: 'reorder_point',
+                            source_id: null,
+                            material_id: material.id,
+                            material_code: material.code,
+                            required_quantity: orderQuantity,
+                            required_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                            priority: 'medium',
+                            description: `Stan magazynowy poniżej minimum (${totalAvailable} < ${material.reorder_point})`
+                        });
+                    }
+                });
+
+                // 3. Grupowanie i optymalizacja
+                const groupedRequirements = this.groupRequirements(requirements);
+                
+                // Zapisz wymagania
+                data.procurement_requirements = groupedRequirements;
+                this.setData(data);
+                
+                this.addActivity('mrp_generated', `Wygenerowano ${groupedRequirements.length} zapotrzebowań zakupowych`);
+                return groupedRequirements;
+            }
+
+            groupRequirements(requirements) {
+                const grouped = {};
+                
+                requirements.forEach(req => {
+                    const key = `${req.material_id}_${req.required_date}`;
+                    
+                    if (!grouped[key]) {
+                        grouped[key] = {
+                            id: Date.now() + Math.random(),
+                            material_id: req.material_id,
+                            material_code: req.material_code,
+                            total_quantity: 0,
+                            required_date: req.required_date,
+                            priority: req.priority,
+                            sources: [],
+                            status: 'new',
+                            created_at: new Date().toISOString()
+                        };
+                    }
+                    
+                    grouped[key].total_quantity += req.required_quantity;
+                    grouped[key].sources.push({
+                        source: req.source,
+                        source_id: req.source_id,
+                        quantity: req.required_quantity,
+                        description: req.description
+                    });
+                    
+                    // Priorytet najwyższy ze wszystkich źródeł
+                    if (req.priority === 'high') grouped[key].priority = 'high';
+                    else if (req.priority === 'medium' && grouped[key].priority !== 'high') {
+                        grouped[key].priority = 'medium';
+                    }
+                });
+                
+                return Object.values(grouped);
+            }
+
+            createPurchaseOrder(requirementId, supplierId, negotiatedPrice) {
+                const data = this.getData();
+                const requirement = data.procurement_requirements.find(r => r.id == requirementId);
+                const supplier = data.suppliers.find(s => s.id === supplierId);
+                const material = data.materials.find(m => m.id === requirement.material_id);
+                
+                if (!requirement || !supplier || !material) {
+                    return { success: false, message: 'Nie znaleziono wymaganych danych' };
+                }
+
+                // Sprawdź kontrakt
+                const contract = data.supplier_contracts.find(c => 
+                    c.supplier_id === supplierId && 
+                    c.material_id === material.id && 
+                    c.status === 'active'
+                );
+
+                let finalPrice = negotiatedPrice;
+                let moq = 1000; // default
+                let leadTime = 14; // default
+
+                if (contract) {
+                    if (!negotiatedPrice) finalPrice = contract.price;
+                    moq = contract.moq;
+                    leadTime = contract.lead_time_days;
+                    
+                    // Sprawdź rabaty
+                    if (contract.discount_tiers) {
+                        const applicableDiscount = contract.discount_tiers
+                            .filter(tier => requirement.total_quantity >= tier.min_quantity)
+                            .reduce((max, tier) => tier.discount_percent > max.discount_percent ? tier : max, 
+                                   { discount_percent: 0 });
+                        
+                        if (applicableDiscount.discount_percent > 0) {
+                            finalPrice = finalPrice * (1 - applicableDiscount.discount_percent / 100);
+                        }
+                    }
+                }
+
+                // Optymalizacja ilości (MOQ, transport)
+                const optimizedQuantity = Math.max(requirement.total_quantity, moq);
+                
+                // Utwórz zamówienie zakupu
+                const purchaseOrder = {
+                    id: Date.now(),
+                    po_number: `PO-${new Date().getFullYear()}-${String(data.purchase_orders.length + 1).padStart(4, '0')}`,
+                    supplier_id: supplierId,
+                    material_id: material.id,
+                    quantity: optimizedQuantity,
+                    unit_price: finalPrice,
+                    total_value: optimizedQuantity * finalPrice,
+                    currency: contract?.currency || 'PLN',
+                    required_date: requirement.required_date,
+                    estimated_delivery: new Date(Date.now() + leadTime * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    payment_terms: contract?.payment_terms || '30 dni',
+                    status: 'draft',
+                    requirement_id: requirementId,
+                    created_at: new Date().toISOString(),
+                    created_by: 'Zakupowiec'
+                };
+
+                data.purchase_orders.push(purchaseOrder);
+                
+                // Oznacz wymaganie jako procesowane
+                requirement.status = 'processing';
+                requirement.po_id = purchaseOrder.id;
+                
+                this.setData(data);
+                this.addActivity('purchase_order_created', 
+                    `Utworzono ZZ ${purchaseOrder.po_number} dla ${material.name}`);
+                
+                return {
+                    success: true,
+                    purchase_order: purchaseOrder,
+                    optimized_quantity: optimizedQuantity,
+                    original_quantity: requirement.total_quantity,
+                    final_price: finalPrice,
+                    contract_price: contract?.price
                 };
             }
 
