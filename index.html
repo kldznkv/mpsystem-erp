@@ -21,13 +21,13 @@
             <nav>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" data-page="dashboard">
+                        <a href="#" class="nav-link" data-page="dashboard">
                             <span class="nav-icon">📊</span>
                             Панель управления
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-page="planning">
+                        <a href="#" class="nav-link active" data-page="planning">
                             <span class="nav-icon">📋</span>
                             Планирование
                         </a>
@@ -75,7 +75,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Dashboard Page -->
-            <div id="dashboard" class="page active">
+            <div id="dashboard" class="page">
                 <div class="page-header">
                     <h1 class="page-title">Панель управления</h1>
                     <p class="page-subtitle">Обзор ключевых показателей производства</p>
@@ -200,71 +200,517 @@
             </div>
 
             <!-- Planning Page -->
-            <div id="planning" class="page">
+            <div id="planning" class="page active">
                 <div class="page-header">
-                    <h1 class="page-title">Планирование производства</h1>
-                    <button class="btn btn-primary">Создать план</button>
+                    <div>
+                        <h1 class="page-title">Планирование производства</h1>
+                        <p class="page-subtitle">Оптимизация производственных процессов и управление очередью заказов</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-outline" onclick="optimizeQueue()">
+                            🔄 Оптимизировать очередь
+                        </button>
+                        <button class="btn btn-primary" onclick="createNewOrder()">
+                            ➕ Новый заказ
+                        </button>
+                    </div>
                 </div>
-                
-                <div class="table-card">
-                    <div class="table-header">
-                        <h3>Производственные планы</h3>
-                        <div class="table-actions">
-                            <input type="search" placeholder="Поиск..." class="search-input">
-                            <button class="btn btn-outline">Фильтры</button>
+
+                <!-- Planning Stats -->
+                <div class="planning-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-info">
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Новые заказы</div>
+                        </div>
+                        <div class="stat-trend">+3 за сегодня</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-info">
+                            <div class="stat-value">18</div>
+                            <div class="stat-label">В очереди</div>
+                        </div>
+                        <div class="stat-trend">Среднее время: 4.2ч</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-info">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">В производстве</div>
+                        </div>
+                        <div class="stat-trend">85% завершенности</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-info">
+                            <div class="stat-value">92%</div>
+                            <div class="stat-label">Эффективность линий</div>
+                        </div>
+                        <div class="stat-trend">Минимальных переналадок</div>
+                    </div>
+                </div>
+
+                <!-- Planning Tabs -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="new-orders">Новые заказы (24)</button>
+                        <button class="tab-btn" data-tab="queue">Очередь производства (18)</button>
+                        <button class="tab-btn" data-tab="in-progress">В производстве (12)</button>
+                        <button class="tab-btn" data-tab="optimization">Оптимизация</button>
+                    </div>
+
+                    <!-- New Orders Tab -->
+                    <div id="new-orders" class="tab-content active">
+                        <div class="table-card">
+                            <div class="table-header">
+                                <h3>Новые заказы - требуют планирования</h3>
+                                <div class="table-actions">
+                                    <input type="search" placeholder="Поиск по номеру заказа..." class="search-input">
+                                    <select class="filter-select">
+                                        <option>Все приоритеты</option>
+                                        <option>Критический</option>
+                                        <option>Высокий</option>
+                                        <option>Средний</option>
+                                        <option>Низкий</option>
+                                    </select>
+                                    <button class="btn btn-outline">Сортировать по приоритету</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Заказ</th>
+                                            <th>Клиент</th>
+                                            <th>Продукт</th>
+                                            <th>Количество</th>
+                                            <th>Приоритет</th>
+                                            <th>Срок поставки</th>
+                                            <th>Рекомендуемая линия</th>
+                                            <th>Материалы</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="order-row" data-priority="critical">
+                                            <td>
+                                                <div class="order-id">#ORD-2024-001</div>
+                                                <div class="order-date">15.01.2024</div>
+                                            </td>
+                                            <td>
+                                                <div class="client-name">ООО "ЭкоПак"</div>
+                                                <div class="client-type">VIP клиент</div>
+                                            </td>
+                                            <td>
+                                                <div class="product-name">Пленка ПВД прозрачная</div>
+                                                <div class="product-specs">150мкм, рукав 300мм</div>
+                                            </td>
+                                            <td>
+                                                <div class="quantity">2,500 кг</div>
+                                                <div class="quantity-info">≈ 125 рулонов</div>
+                                            </td>
+                                            <td>
+                                                <span class="priority-badge critical">
+                                                    🔴 Критический
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="delivery-date">22.01.2024</div>
+                                                <div class="time-left critical">Осталось: 3 дня</div>
+                                            </td>
+                                            <td>
+                                                <div class="recommended-line">
+                                                    <span class="line-name">Линия 1 (Экструзия)</span>
+                                                    <div class="line-efficiency">Загрузка: 78%</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="materials-status">
+                                                    <span class="status-badge in-stock">✅ В наличии</span>
+                                                    <div class="materials-details">ПВД: 2,600кг</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button class="btn btn-sm btn-primary" onclick="planOrder('ORD-2024-001')">
+                                                        📋 Планировать
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline" onclick="viewOrderDetails('ORD-2024-001')">
+                                                        👁️ Детали
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="order-row" data-priority="high">
+                                            <td>
+                                                <div class="order-id">#ORD-2024-002</div>
+                                                <div class="order-date">16.01.2024</div>
+                                            </td>
+                                            <td>
+                                                <div class="client-name">ТД "Полимер"</div>
+                                                <div class="client-type">Постоянный клиент</div>
+                                            </td>
+                                            <td>
+                                                <div class="product-name">Пленка ПВД белая</div>
+                                                <div class="product-specs">80мкм, рукав 500мм</div>
+                                            </td>
+                                            <td>
+                                                <div class="quantity">1,800 кг</div>
+                                                <div class="quantity-info">≈ 112 рулонов</div>
+                                            </td>
+                                            <td>
+                                                <span class="priority-badge high">
+                                                    🟡 Высокий
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="delivery-date">25.01.2024</div>
+                                                <div class="time-left">Осталось: 6 дней</div>
+                                            </td>
+                                            <td>
+                                                <div class="recommended-line">
+                                                    <span class="line-name">Линия 2 (Экструзия)</span>
+                                                    <div class="line-efficiency">Загрузка: 65%</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="materials-status">
+                                                    <span class="status-badge low-stock">⚠️ Мало на складе</span>
+                                                    <div class="materials-details">ПВД: 1,200кг из 1,900кг</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button class="btn btn-sm btn-primary" onclick="planOrder('ORD-2024-002')">
+                                                        📋 Планировать
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline" onclick="viewOrderDetails('ORD-2024-002')">
+                                                        👁️ Детали
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="order-row" data-priority="medium">
+                                            <td>
+                                                <div class="order-id">#ORD-2024-003</div>
+                                                <div class="order-date">16.01.2024</div>
+                                            </td>
+                                            <td>
+                                                <div class="client-name">ООО "Упаковочные технологии"</div>
+                                                <div class="client-type">Новый клиент</div>
+                                            </td>
+                                            <td>
+                                                <div class="product-name">Пленка ПВД черная</div>
+                                                <div class="product-specs">120мкм, рукав 400мм</div>
+                                            </td>
+                                            <td>
+                                                <div class="quantity">3,200 кг</div>
+                                                <div class="quantity-info">≈ 178 рулонов</div>
+                                            </td>
+                                            <td>
+                                                <span class="priority-badge medium">
+                                                    🔵 Средний
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="delivery-date">30.01.2024</div>
+                                                <div class="time-left">Осталось: 11 дней</div>
+                                            </td>
+                                            <td>
+                                                <div class="recommended-line">
+                                                    <span class="line-name">Линия 1 (Экструзия)</span>
+                                                    <div class="line-efficiency">Оптимальная для темных цветов</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="materials-status">
+                                                    <span class="status-badge in-stock">✅ В наличии</span>
+                                                    <div class="materials-details">ПВД: 3,400кг, Краситель: 32кг</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button class="btn btn-sm btn-primary" onclick="planOrder('ORD-2024-003')">
+                                                        📋 Планировать
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline" onclick="viewOrderDetails('ORD-2024-003')">
+                                                        👁️ Детали
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID плана</th>
-                                    <th>Продукт</th>
-                                    <th>Количество</th>
-                                    <th>Дата начала</th>
-                                    <th>Дата окончания</th>
-                                    <th>Статус</th>
-                                    <th>Прогресс</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#PL001</td>
-                                    <td>Продукт А</td>
-                                    <td>1,500 шт</td>
-                                    <td>15.01.2024</td>
-                                    <td>20.01.2024</td>
-                                    <td><span class="status-badge in-progress">Выполняется</span></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 65%;"></div>
+
+                    <!-- Production Queue Tab -->
+                    <div id="queue" class="tab-content">
+                        <div class="optimization-info">
+                            <div class="optimization-badge">
+                                <span class="optimization-icon">🎯</span>
+                                <div class="optimization-text">
+                                    <div class="optimization-title">Очередь оптимизирована автоматически</div>
+                                    <div class="optimization-details">Минимизация переналадок: прозрачные → белые → светлые → темные цвета</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="queue-timeline">
+                            <h3>Очередь производства - оптимизированная последовательность</h3>
+                            <div class="timeline-container">
+                                <div class="timeline-item transparent">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-header">
+                                            <span class="order-number">#ORD-2024-001</span>
+                                            <span class="estimated-time">Время: 4.5ч</span>
                                         </div>
-                                        <span class="progress-text">65%</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm">Детали</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#PL002</td>
-                                    <td>Продукт Б</td>
-                                    <td>800 шт</td>
-                                    <td>18.01.2024</td>
-                                    <td>25.01.2024</td>
-                                    <td><span class="status-badge planned">Запланировано</span></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 0%;"></div>
+                                        <div class="timeline-details">
+                                            <div class="product-info">Пленка ПВД прозрачная 150мкм → Линия 1</div>
+                                            <div class="timeline-meta">
+                                                <span class="priority critical">Критический</span>
+                                                <span class="materials">Материалы готовы</span>
+                                            </div>
                                         </div>
-                                        <span class="progress-text">0%</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm">Детали</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item white">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-header">
+                                            <span class="order-number">#ORD-2024-005</span>
+                                            <span class="estimated-time">Время: 3.2ч</span>
+                                        </div>
+                                        <div class="timeline-details">
+                                            <div class="product-info">Пленка ПВД белая 100мкм → Линия 1</div>
+                                            <div class="timeline-meta">
+                                                <span class="priority medium">Средний</span>
+                                                <span class="materials">Материалы готовы</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item light">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-header">
+                                            <span class="order-number">#ORD-2024-007</span>
+                                            <span class="estimated-time">Время: 2.8ч</span>
+                                        </div>
+                                        <div class="timeline-details">
+                                            <div class="product-info">Пленка ПВД желтая 80мкм → Линия 1</div>
+                                            <div class="timeline-meta">
+                                                <span class="priority low">Низкий</span>
+                                                <span class="materials">Материалы готовы</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item dark">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-header">
+                                            <span class="order-number">#ORD-2024-003</span>
+                                            <span class="estimated-time">Время: 6.1ч</span>
+                                        </div>
+                                        <div class="timeline-details">
+                                            <div class="product-info">Пленка ПВД черная 120мкм → Линия 1</div>
+                                            <div class="timeline-meta">
+                                                <span class="priority medium">Средний</span>
+                                                <span class="materials">Материалы готовы</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- In Progress Tab -->
+                    <div id="in-progress" class="tab-content">
+                        <div class="progress-overview">
+                            <h3>Заказы в производстве - мониторинг в реальном времени</h3>
+                            <div class="production-lines">
+                                <div class="production-line">
+                                    <div class="line-header">
+                                        <h4>Линия 1 - Экструзия</h4>
+                                        <div class="line-status active">🟢 Активна</div>
+                                    </div>
+                                    <div class="current-order">
+                                        <div class="order-progress">
+                                            <div class="progress-header">
+                                                <span class="order-id">#ORD-2024-015</span>
+                                                <span class="progress-percentage">65%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 65%;"></div>
+                                            </div>
+                                            <div class="progress-details">
+                                                <div class="product-name">Пленка ПВД прозрачная 120мкм</div>
+                                                <div class="progress-time">Выполнено: 2.6ч из 4.0ч | Осталось: 1.4ч</div>
+                                            </div>
+                                        </div>
+                                        <div class="production-stages">
+                                            <div class="stage completed">
+                                                <span class="stage-icon">✅</span>
+                                                <span class="stage-name">MAG 1</span>
+                                            </div>
+                                            <div class="stage completed">
+                                                <span class="stage-icon">✅</span>
+                                                <span class="stage-name">Экструзия</span>
+                                            </div>
+                                            <div class="stage active">
+                                                <span class="stage-icon">⚡</span>
+                                                <span class="stage-name">MAG 3</span>
+                                            </div>
+                                            <div class="stage pending">
+                                                <span class="stage-icon">⏳</span>
+                                                <span class="stage-name">UV-контроль</span>
+                                            </div>
+                                            <div class="stage pending">
+                                                <span class="stage-icon">⏳</span>
+                                                <span class="stage-name">Упаковка</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="production-line">
+                                    <div class="line-header">
+                                        <h4>Линия 2 - Экструзия</h4>
+                                        <div class="line-status active">🟢 Активна</div>
+                                    </div>
+                                    <div class="current-order">
+                                        <div class="order-progress">
+                                            <div class="progress-header">
+                                                <span class="order-id">#ORD-2024-012</span>
+                                                <span class="progress-percentage">23%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 23%;"></div>
+                                            </div>
+                                            <div class="progress-details">
+                                                <div class="product-name">Пленка ПВД белая 150мкм</div>
+                                                <div class="progress-time">Выполнено: 1.1ч из 4.8ч | Осталось: 3.7ч</div>
+                                            </div>
+                                        </div>
+                                        <div class="production-stages">
+                                            <div class="stage completed">
+                                                <span class="stage-icon">✅</span>
+                                                <span class="stage-name">MAG 1</span>
+                                            </div>
+                                            <div class="stage active">
+                                                <span class="stage-icon">⚡</span>
+                                                <span class="stage-name">Экструзия</span>
+                                            </div>
+                                            <div class="stage pending">
+                                                <span class="stage-icon">⏳</span>
+                                                <span class="stage-name">MAG 3</span>
+                                            </div>
+                                            <div class="stage pending">
+                                                <span class="stage-icon">⏳</span>
+                                                <span class="stage-name">UV-контроль</span>
+                                            </div>
+                                            <div class="stage pending">
+                                                <span class="stage-icon">⏳</span>
+                                                <span class="stage-name">Упаковка</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="production-line">
+                                    <div class="line-header">
+                                        <h4>Линия 3 - Упаковка</h4>
+                                        <div class="line-status maintenance">🟡 Обслуживание</div>
+                                    </div>
+                                    <div class="maintenance-info">
+                                        <div class="maintenance-text">
+                                            <span class="maintenance-title">Плановое техническое обслуживание</span>
+                                            <div class="maintenance-details">Завершение: 14:30 (через 2.5ч)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Optimization Tab -->
+                    <div id="optimization" class="tab-content">
+                        <div class="optimization-panel">
+                            <h3>Система оптимизации производства</h3>
+                            
+                            <div class="optimization-cards">
+                                <div class="optimization-card">
+                                    <div class="card-header">
+                                        <span class="card-icon">🎯</span>
+                                        <h4>Принципы оптимизации</h4>
+                                    </div>
+                                    <div class="card-content">
+                                        <ul class="optimization-rules">
+                                            <li>1. Прозрачные пленки (минимальная очистка)</li>
+                                            <li>2. Белые и натуральные цвета</li>
+                                            <li>3. Светлые оттенки</li>
+                                            <li>4. Темные цвета и черный (сложная очистка)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="optimization-card">
+                                    <div class="card-header">
+                                        <span class="card-icon">⚡</span>
+                                        <h4>Факторы учета</h4>
+                                    </div>
+                                    <div class="card-content">
+                                        <ul class="optimization-factors">
+                                            <li>🔴 Критичность заказов</li>
+                                            <li>📊 Загрузка производственных линий</li>
+                                            <li>📦 Доступность материалов</li>
+                                            <li>🔧 Техническая сложность</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="optimization-card">
+                                    <div class="card-header">
+                                        <span class="card-icon">📈</span>
+                                        <h4>Результаты оптимизации</h4>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="optimization-metrics">
+                                            <div class="metric">
+                                                <span class="metric-value">-35%</span>
+                                                <span class="metric-label">Время переналадок</span>
+                                            </div>
+                                            <div class="metric">
+                                                <span class="metric-value">+18%</span>
+                                                <span class="metric-label">Производительность</span>
+                                            </div>
+                                            <div class="metric">
+                                                <span class="metric-value">92%</span>
+                                                <span class="metric-label">Эффективность линий</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="optimization-actions">
+                                <button class="btn btn-primary" onclick="runOptimization()">
+                                    🚀 Запустить автооптимизацию
+                                </button>
+                                <button class="btn btn-outline" onclick="viewOptimizationReport()">
+                                    📊 Отчет по оптимизации
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
