@@ -583,35 +583,57 @@
 
             <!-- Procurement Tab -->
             <div id="procurement" class="tab-content">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Управление закупками</h3>
-                        <div class="flex gap-10">
-                            <button class="btn btn-primary">+ Новая закупка</button>
-                            <button class="btn btn-secondary">Планирование MRP</button>
+                <div class="dashboard-widgets">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">📦 Материалы</h3>
+                            <button class="btn btn-primary">+ Добавить материал</button>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Код</th>
+                                        <th>Название</th>
+                                        <th>Тип</th>
+                                        <th>Единица</th>
+                                        <th>Цена</th>
+                                        <th>Мин. остаток</th>
+                                        <th>Поставщик</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="materialsTable">
+                                    <!-- Materials will be populated here -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Поставщик</th>
-                                    <th>Материал</th>
-                                    <th>Количество</th>
-                                    <th>Статус</th>
-                                    <th>Дата поставки</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>ОАО "Химпром"</td>
-                                    <td>Гранулы PE</td>
-                                    <td>1000 кг</td>
-                                    <td><span class="status-badge status-approved">Заказано</span></td>
-                                    <td>20.01.2024</td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">🏢 Поставщики</h3>
+                            <button class="btn btn-primary">+ Добавить поставщика</button>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Код</th>
+                                        <th>Название</th>
+                                        <th>Контактное лицо</th>
+                                        <th>Email</th>
+                                        <th>Телефон</th>
+                                        <th>Рейтинг</th>
+                                        <th>Статус</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="suppliersTable">
+                                    <!-- Suppliers will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -747,9 +769,10 @@
                         <label for="productSelect">Продукт</label>
                         <select id="productSelect" required>
                             <option value="">Выберите продукт</option>
-                            <option value="pe20">Пленка PE 20мкм</option>
-                            <option value="pvc50">Пленка PVC 50мкм</option>
-                            <option value="pet30">Пленка PET 30мкм</option>
+                            <option value="Пленка PET прозрачная 30мкм">Пленка PET прозрачная 30мкм</option>
+                            <option value="Пленка LDPE 50мкм">Пленка LDPE 50мкм</option>
+                            <option value="Пленка PE 20мкм">Пленка PE 20мкм</option>
+                            <option value="Пленка PVC 50мкм">Пленка PVC 50мкм</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -916,25 +939,97 @@
                 this.saveToStorage();
             }
 
-            addOrder(order) {
-                order.id = 'ORD-' + Date.now().toString().slice(-6);
-                order.date = new Date().toISOString().split('T')[0];
-                order.status = 'Новый';
-                this.orders.push(order);
-                this.saveToStorage();
-                return order;
+            // Production Rules and Recipes
+            getDefaultProductionRecipes() {
+                return [
+                    {
+                        id: 1,
+                        product_name: 'Пленка PET прозрачная 30мкм',
+                        material_requirements: [
+                            { material_id: 1, quantity_per_unit: 0.5 },
+                            { material_id: 2, quantity_per_unit: 0.025 }
+                        ],
+                        setup_time_minutes: 60,
+                        production_time_per_unit: 0.5,
+                        line_types: ['extrusion']
+                    },
+                    {
+                        id: 2,
+                        product_name: 'Пленка LDPE 50мкм',
+                        material_requirements: [
+                            { material_id: 4, quantity_per_unit: 0.6 }
+                        ],
+                        setup_time_minutes: 45,
+                        production_time_per_unit: 0.4,
+                        line_types: ['extrusion']
+                    }
+                ];
             }
 
-            getOrders() {
-                return this.orders;
+            getDefaultProductionLines() {
+                return [
+                    {
+                        id: 1,
+                        name: 'Линия экструзии 1',
+                        type: 'extrusion',
+                        status: 'available',
+                        capacity_per_hour: 100,
+                        current_order_id: null
+                    },
+                    {
+                        id: 2,
+                        name: 'Линия экструзии 2',
+                        type: 'extrusion',
+                        status: 'maintenance',
+                        capacity_per_hour: 120,
+                        current_order_id: null
+                    }
+                ];
             }
 
-            getInventory() {
-                return this.inventory;
+            getDefaultContracts() {
+                return [
+                    {
+                        id: 1,
+                        supplier_id: 1,
+                        material_id: 1,
+                        price: 82.0,
+                        min_order_qty: 500,
+                        lead_time_days: 7,
+                        valid_from: '2024-01-01',
+                        valid_to: '2024-12-31'
+                    }
+                ];
             }
 
-            getProduction() {
-                return this.production;
+            // Enhanced order processing
+            processOrder(orderData) {
+                try {
+                    const order = this.addRecord('orders', {
+                        order_number: this.generateOrderNumber(),
+                        customer_name: orderData.customer_name || orderData.customer,
+                        product_name: orderData.product_name || orderData.product,
+                        quantity: orderData.quantity,
+                        order_date: new Date().toISOString().split('T')[0],
+                        delivery_date: orderData.deliveryDate,
+                        status: 'new',
+                        priority: 'medium'
+                    });
+
+                    this.addActivity('order_created', `Создан заказ ${order.order_number}`);
+                    return { success: true, order: order };
+                } catch (error) {
+                    return { success: false, error: error.message };
+                }
+            }
+
+            generateOrderNumber() {
+                const orders = this.getTable('orders');
+                const today = new Date();
+                const year = today.getFullYear().toString().slice(-2);
+                const month = (today.getMonth() + 1).toString().padStart(2, '0');
+                const count = orders.filter(o => o.order_number && o.order_number.startsWith(`ORD-${year}${month}`)).length + 1;
+                return `ORD-${year}${month}${count.toString().padStart(3, '0')}`;
             }
         }
 
@@ -963,6 +1058,14 @@
 
         function loadTabContent(tabName) {
             switch(tabName) {
+                case 'dashboard':
+                    updateDashboardStats();
+                    loadOrders(); // For dashboard active orders table
+                    break;
+                case 'procurement':
+                    loadMaterials();
+                    loadSuppliers();
+                    break;
                 case 'orders':
                     loadOrders();
                     break;
@@ -971,6 +1074,9 @@
                     break;
                 case 'production':
                     loadProduction();
+                    break;
+                case 'analytics':
+                    updateDashboardStats();
                     break;
             }
         }
@@ -984,100 +1090,263 @@
             document.getElementById(modalId).classList.remove('active');
         }
 
-        // Data Loading Functions
+        // Enhanced Data Loading Functions
         function loadOrders() {
-            const orders = storage.getOrders();
+            const orders = storage.getTable('orders');
             const tbody = document.getElementById('ordersTable');
             if (!tbody) return;
 
             tbody.innerHTML = orders.map(order => `
                 <tr>
-                    <td>${order.id}</td>
-                    <td>${order.customer}</td>
-                    <td>${order.product}</td>
-                    <td>${order.quantity} кг</td>
-                    <td><span class="status-badge status-${getStatusClass(order.status)}">${order.status}</span></td>
-                    <td>${order.date}</td>
+                    <td>${order.order_number || order.id}</td>
+                    <td>${order.customer_name || order.customer || '-'}</td>
+                    <td>${order.product_name || order.product || '-'}</td>
+                    <td>${order.quantity || 0} кг</td>
+                    <td><span class="status-badge status-${getStatusClass(order.status)}">${getStatusLabel(order.status)}</span></td>
+                    <td>${order.order_date || order.date || '-'}</td>
                     <td>
-                        <button class="btn btn-small btn-secondary">Редактировать</button>
+                        <button class="btn btn-small btn-secondary" onclick="editOrder(${order.id})">Редактировать</button>
+                        <button class="btn btn-small btn-danger" onclick="deleteOrder(${order.id})">Удалить</button>
                     </td>
                 </tr>
             `).join('');
         }
 
         function loadInventory() {
-            const inventory = storage.getInventory();
+            const inventory = storage.getTable('inventory');
+            const materials = storage.getTable('materials');
             const tbody = document.getElementById('inventoryTable');
             if (!tbody) return;
 
-            tbody.innerHTML = inventory.map(item => `
-                <tr>
-                    <td>${item.code}</td>
-                    <td>${item.name}</td>
-                    <td>${item.quantity}</td>
-                    <td>${item.unit}</td>
-                    <td>${item.lastUpdate}</td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = inventory.map(item => {
+                const material = materials.find(m => m.id === item.material_id);
+                return `
+                    <tr>
+                        <td>${material ? material.code : 'N/A'}</td>
+                        <td>${material ? material.name : 'Неизвестный материал'}</td>
+                        <td>
+                            <span style="color: ${item.available_quantity < 100 ? '#ef4444' : '#10b981'}">
+                                ${item.quantity || 0} (доступно: ${item.available_quantity || 0})
+                            </span>
+                            ${item.reserved_quantity > 0 ? `<br><small>🔒 Резерв: ${item.reserved_quantity}</small>` : ''}
+                        </td>
+                        <td>${material ? material.unit : 'шт'}</td>
+                        <td>${item.last_received || '-'}</td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function loadProduction() {
-            const production = storage.getProduction();
+            const productionQueue = storage.getTable('production_queue');
+            const productionLines = storage.getTable('production_lines');
             const tbody = document.getElementById('productionTable');
             if (!tbody) return;
 
-            tbody.innerHTML = production.map(item => `
+            tbody.innerHTML = productionQueue.map(item => {
+                const line = productionLines.find(l => l.id === item.line_id);
+                return `
+                    <tr>
+                        <td>${line ? line.name : 'Линия ' + item.line_id}</td>
+                        <td>${item.order_number || item.order_id}</td>
+                        <td><span class="status-badge status-${getStatusClass(item.status)}">${getStatusLabel(item.status)}</span></td>
+                        <td>${item.progress || 0}%</td>
+                        <td>${item.estimated_completion ? new Date(item.estimated_completion).toLocaleString() : '-'}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function loadMaterials() {
+            const materials = storage.getTable('materials');
+            const suppliers = storage.getTable('suppliers');
+            const tbody = document.getElementById('materialsTable');
+            if (!tbody) return;
+
+            tbody.innerHTML = materials.map(material => {
+                const supplier = suppliers.find(s => s.id === material.supplier_id);
+                return `
+                    <tr>
+                        <td><strong>${material.code}</strong></td>
+                        <td>${material.name}</td>
+                        <td><span class="status-badge status-new">${getTypeLabel(material.type)}</span></td>
+                        <td>${material.unit}</td>
+                        <td>${material.standard_cost ? material.standard_cost.toFixed(2) + ' ₽' : '-'}</td>
+                        <td>${material.min_stock_level || '-'}</td>
+                        <td>${supplier ? supplier.name : '-'}</td>
+                        <td>
+                            <button class="btn btn-small btn-secondary" onclick="editMaterial(${material.id})">✏️</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteMaterial(${material.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function loadSuppliers() {
+            const suppliers = storage.getTable('suppliers');
+            const tbody = document.getElementById('suppliersTable');
+            if (!tbody) return;
+
+            tbody.innerHTML = suppliers.map(supplier => `
                 <tr>
-                    <td>${item.line}</td>
-                    <td>${item.order}</td>
-                    <td><span class="status-badge status-${getStatusClass(item.status)}">${item.status}</span></td>
-                    <td>${item.progress}%</td>
-                    <td>${item.estimatedCompletion}</td>
+                    <td><strong>${supplier.code}</strong></td>
+                    <td>${supplier.name}</td>
+                    <td>${supplier.contact_person || '-'}</td>
+                    <td>${supplier.email || '-'}</td>
+                    <td>${supplier.phone || '-'}</td>
+                    <td>${supplier.overall_rating ? supplier.overall_rating.toFixed(1) + '/100' : '-'}</td>
+                    <td>
+                        <span class="status-badge ${supplier.is_active ? 'status-completed' : 'status-cancelled'}">
+                            ${supplier.is_active ? 'Активный' : 'Неактивный'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-small btn-secondary" onclick="editSupplier(${supplier.id})">✏️</button>
+                        <button class="btn btn-small btn-danger" onclick="deleteSupplier(${supplier.id})">🗑️</button>
+                    </td>
                 </tr>
             `).join('');
         }
 
-        // Order Creation
+        // Enhanced Order Creation
         function createOrder() {
             const form = document.getElementById('orderForm');
-            const formData = new FormData(form);
             
-            const order = {
-                customer: document.getElementById('customerSelect').value,
-                product: document.getElementById('productSelect').value,
+            const orderData = {
+                customer_name: document.getElementById('customerSelect').value,
+                product_name: document.getElementById('productSelect').value,
                 quantity: parseInt(document.getElementById('quantityInput').value),
                 deliveryDate: document.getElementById('deliveryDate').value
             };
 
-            if (!order.customer || !order.product || !order.quantity) {
+            if (!orderData.customer_name || !orderData.product_name || !orderData.quantity) {
                 alert('Пожалуйста, заполните все поля');
                 return;
             }
 
-            storage.addOrder(order);
-            hideModal('orderModal');
-            form.reset();
+            const result = storage.processOrder(orderData);
             
-            // Refresh data if on orders tab
-            const activeTab = document.querySelector('.tab-content.active');
-            if (activeTab && activeTab.id === 'orders') {
+            if (result.success) {
+                hideModal('orderModal');
+                form.reset();
+                
+                // Refresh data
                 loadOrders();
+                loadInventory();
+                loadProduction();
+                updateDashboardStats();
+                
+                showToast(`Заказ ${result.order.order_number} успешно создан!`);
+            } else {
+                showToast(result.error, 'error');
             }
-
-            showToast('Заказ успешно создан!');
         }
 
-        // Utility Functions
+        // Enhanced Utility Functions
         function getStatusClass(status) {
             const statusMap = {
-                'Новый': 'new',
-                'Утвержден': 'approved',
-                'В производстве': 'in-production',
-                'Выполнен': 'completed',
-                'Работает': 'completed',
-                'Ожидание': 'new'
+                'new': 'new',
+                'approved': 'approved',
+                'scheduled': 'in-production',
+                'in_production': 'in-production',
+                'completed': 'completed',
+                'shipped': 'completed',
+                'cancelled': 'cancelled',
+                'available': 'completed',
+                'maintenance': 'cancelled',
+                'draft': 'new',
+                'sent': 'approved',
+                'confirmed': 'approved',
+                'delivered': 'completed'
             };
             return statusMap[status] || 'new';
+        }
+
+        function getStatusLabel(status) {
+            const statusLabels = {
+                'new': 'Новый',
+                'approved': 'Утвержден',
+                'scheduled': 'Запланирован',
+                'in_production': 'В производстве',
+                'completed': 'Выполнен',
+                'shipped': 'Отгружен',
+                'cancelled': 'Отменен',
+                'available': 'Доступна',
+                'maintenance': 'Обслуживание',
+                'draft': 'Черновик',
+                'sent': 'Отправлен',
+                'confirmed': 'Подтвержден',
+                'delivered': 'Доставлен'
+            };
+            return statusLabels[status] || status;
+        }
+
+        function getTypeLabel(type) {
+            const types = {
+                'granulate_ldpe': 'Гранулят ПВД',
+                'granulate_hdpe': 'Гранулят ПНД',
+                'granulate_pp': 'Гранулят ПП',
+                'granulate_pet': 'Гранулят ПЭТ',
+                'ink_printing': 'Краска',
+                'adhesive_pu': 'Клей ПУ',
+                'adhesive_acrylic': 'Клей акриловый',
+                'solvent': 'Растворитель',
+                'additive': 'Добавка'
+            };
+            return types[type] || type;
+        }
+
+        function updateDashboardStats() {
+            const orders = storage.getTable('orders');
+            const productionQueue = storage.getTable('production_queue');
+            
+            // Update stats
+            document.getElementById('totalOrders').textContent = orders.filter(o => ['new', 'approved', 'scheduled', 'in_production'].includes(o.status)).length;
+            document.getElementById('productionEfficiency').textContent = '92%';
+            document.getElementById('warehouseLoad').textContent = '85%';
+            document.getElementById('todayProduction').textContent = '2.5т';
+        }
+
+        // CRUD Operations
+        function deleteOrder(id) {
+            if (confirm('Удалить заказ?')) {
+                storage.deleteRecord('orders', id);
+                loadOrders();
+                updateDashboardStats();
+                showToast('Заказ удален', 'success');
+            }
+        }
+
+        function deleteMaterial(id) {
+            if (confirm('Удалить материал?')) {
+                storage.deleteRecord('materials', id);
+                loadMaterials();
+                showToast('Материал удален', 'success');
+            }
+        }
+
+        function deleteSupplier(id) {
+            if (confirm('Удалить поставщика?')) {
+                storage.deleteRecord('suppliers', id);
+                loadSuppliers();
+                showToast('Поставщик удален', 'success');
+            }
+        }
+
+        function editOrder(id) {
+            // TODO: Implement order editing
+            showToast('Редактирование заказов будет добавлено в следующем обновлении', 'warning');
+        }
+
+        function editMaterial(id) {
+            // TODO: Implement material editing
+            showToast('Редактирование материалов будет добавлено в следующем обновлении', 'warning');
+        }
+
+        function editSupplier(id) {
+            // TODO: Implement supplier editing
+            showToast('Редактирование поставщиков будет добавлено в следующем обновлении', 'warning');
         }
 
         function showToast(message, type = 'success') {
