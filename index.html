@@ -1628,6 +1628,127 @@
              box-shadow: var(--shadow-lg);
          }
 
+         /* Procurement styles */
+         .procurement-header {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             margin-bottom: 2rem;
+             padding: 1.5rem;
+             background: var(--surface);
+             border-radius: var(--radius-lg);
+             box-shadow: var(--shadow-sm);
+         }
+
+         .procurement-actions {
+             display: flex;
+             gap: 1rem;
+             flex-wrap: wrap;
+         }
+
+         .filter-buttons {
+             display: flex;
+             gap: 0.5rem;
+             flex-wrap: wrap;
+         }
+
+         .supplier-performance-grid {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+             gap: 1.5rem;
+             margin-top: 1rem;
+         }
+
+         .performance-card {
+             background: var(--surface);
+             border-radius: var(--radius-lg);
+             padding: 1.5rem;
+             box-shadow: var(--shadow-sm);
+             border: 1px solid var(--border-light);
+         }
+
+         .performance-card h4 {
+             margin-bottom: 1rem;
+             color: var(--text-primary);
+             font-size: 1rem;
+         }
+
+         .performance-list {
+             display: flex;
+             flex-direction: column;
+             gap: 0.75rem;
+         }
+
+         .performance-item {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 0.75rem;
+             background: var(--bg-tertiary);
+             border-radius: var(--radius-md);
+         }
+
+         .supplier-name {
+             font-weight: 500;
+             color: var(--text-primary);
+         }
+
+         .performance-score {
+             font-weight: 600;
+             color: var(--success-color);
+         }
+
+         .alert-list {
+             display: flex;
+             flex-direction: column;
+             gap: 0.5rem;
+         }
+
+         .alert-item {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 0.75rem;
+             background: rgba(239, 68, 68, 0.1);
+             border-radius: var(--radius-md);
+             border: 1px solid rgba(239, 68, 68, 0.2);
+         }
+
+         .alert-time {
+             font-weight: 600;
+             color: var(--danger-color);
+         }
+
+         .savings-info {
+             display: flex;
+             flex-direction: column;
+             gap: 0.75rem;
+         }
+
+         .savings-item {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 0.75rem;
+             background: var(--bg-tertiary);
+             border-radius: var(--radius-md);
+         }
+
+         .savings-label {
+             font-weight: 500;
+             color: var(--text-secondary);
+         }
+
+         .savings-value.positive {
+             font-weight: 600;
+             color: var(--success-color);
+         }
+
+         .savings-value.negative {
+             font-weight: 600;
+             color: var(--danger-color);
+         }
+
          @media (max-width: 768px) {
              .detail-grid {
                  grid-template-columns: 1fr;
@@ -1640,6 +1761,15 @@
              .schedule-item {
                  grid-template-columns: 1fr;
                  text-align: center;
+             }
+
+             .procurement-header {
+                 flex-direction: column;
+                 gap: 1rem;
+             }
+
+             .procurement-actions {
+                 width: 100%;
              }
          }
     </style>
@@ -4564,10 +4694,12 @@
         }
 
         function loadPlanning() {
-            // Load planning data
+            // Load procurement data
+            loadMRPRequirements();
+            loadPurchaseOrders();
             loadMaterials();
             loadSuppliers();
-            showToast('Планирование загружено', 'success');
+            showToast('Moduł zakupów załadowany', 'success');
         }
 
         function loadOrders() {
@@ -4643,6 +4775,289 @@
         function loadAnalytics() {
             // Analytics module is already populated with static data
             showToast('Аналитика загружена', 'success');
+        }
+
+        // =============================================
+        // PROCUREMENT FUNCTIONS
+        // =============================================
+
+        function generateMRPRequirements() {
+            const requirements = storage.generateMRPRequirements();
+            loadMRPRequirements();
+            
+            if (requirements.length > 0) {
+                showToast(`Wygenerowano ${requirements.length} zapotrzebowań MRP`, 'success');
+                setTimeout(() => {
+                    let message = `📋 Zapotrzebowania MRP:\n\n`;
+                    requirements.forEach(req => {
+                        message += `• ${req.material_code}: ${req.total_quantity} kg\n`;
+                        message += `  Priorytet: ${req.priority}, Data: ${req.required_date}\n`;
+                        message += `  Źródła: ${req.sources.length}\n\n`;
+                    });
+                    alert(message);
+                }, 500);
+            } else {
+                showToast('Brak nowych zapotrzebowań MRP', 'info');
+            }
+        }
+
+        function loadMRPRequirements() {
+            const data = storage.getData();
+            const requirements = data.procurement_requirements || [];
+            const materials = data.materials || [];
+            const table = document.getElementById('mrpRequirementsTable');
+            
+            if (requirements.length === 0) {
+                table.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem;">Brak zapotrzebowań MRP</td></tr>';
+                return;
+            }
+
+            table.innerHTML = requirements.map(req => {
+                const material = materials.find(m => m.id === req.material_id);
+                const priorityClass = req.priority === 'high' ? 'badge-danger' : 
+                                    req.priority === 'medium' ? 'badge-warning' : 'badge-info';
+                const statusClass = req.status === 'new' ? 'badge-info' : 
+                                  req.status === 'processing' ? 'badge-warning' : 'badge-success';
+                
+                return `
+                    <tr>
+                        <td>
+                            <div><strong>${material ? material.name : 'Nieznany'}</strong></div>
+                            <small style="color: #64748b;">${req.material_code}</small>
+                        </td>
+                        <td><strong>${req.total_quantity}</strong> kg</td>
+                        <td>${new Date(req.required_date).toLocaleDateString()}</td>
+                        <td><span class="badge ${priorityClass}">${req.priority}</span></td>
+                        <td>
+                            <small>${req.sources.length} źródeł</small>
+                            <div style="font-size: 0.8em; color: #64748b;">
+                                ${req.sources.slice(0, 2).map(s => s.description).join(', ')}
+                                ${req.sources.length > 2 ? '...' : ''}
+                            </div>
+                        </td>
+                        <td><span class="badge ${statusClass}">${getRequirementStatusLabel(req.status)}</span></td>
+                        <td class="action-buttons">
+                            ${req.status === 'new' ? 
+                                `<button class="btn btn-sm btn-primary" onclick="createPurchaseOrderFromRequirement(${req.id})">
+                                    📑 Utwórz ZZ
+                                </button>` : 
+                                `<button class="btn btn-sm btn-secondary" onclick="viewRequirementDetails(${req.id})">
+                                    👁️ Szczegóły
+                                </button>`}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getRequirementStatusLabel(status) {
+            const labels = {
+                'new': 'Nowe',
+                'processing': 'W toku',
+                'completed': 'Zakończone'
+            };
+            return labels[status] || status;
+        }
+
+        function loadPurchaseOrders() {
+            const data = storage.getData();
+            const purchaseOrders = data.purchase_orders || [];
+            const suppliers = data.suppliers || [];
+            const materials = data.materials || [];
+            const table = document.getElementById('purchaseOrdersTable');
+            
+            if (purchaseOrders.length === 0) {
+                table.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem;">Brak zamówień zakupu</td></tr>';
+                return;
+            }
+
+            table.innerHTML = purchaseOrders.map(po => {
+                const supplier = suppliers.find(s => s.id === po.supplier_id);
+                const material = materials.find(m => m.id === po.material_id);
+                const statusClass = getPOStatusClass(po.status);
+                
+                return `
+                    <tr>
+                        <td><strong>${po.po_number}</strong></td>
+                        <td>${supplier ? supplier.name : 'Nieznany'}</td>
+                        <td>
+                            <div>${material ? material.name : 'Nieznany'}</div>
+                            <small style="color: #64748b;">${material ? material.code : ''}</small>
+                        </td>
+                        <td>${po.quantity} kg</td>
+                        <td>${po.unit_price.toFixed(2)} ${po.currency}</td>
+                        <td><strong>${po.total_value.toFixed(2)} ${po.currency}</strong></td>
+                        <td>${new Date(po.estimated_delivery).toLocaleDateString()}</td>
+                        <td><span class="badge ${statusClass}">${getPOStatusLabel(po.status)}</span></td>
+                        <td class="action-buttons">
+                            <button class="btn btn-sm btn-info" onclick="viewPODetails(${po.id})">👁️</button>
+                            ${po.status === 'draft' ? 
+                                `<button class="btn btn-sm btn-primary" onclick="sendPO(${po.id})">📤</button>` : ''}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getPOStatusClass(status) {
+            const classes = {
+                'draft': 'badge-secondary',
+                'sent': 'badge-warning',
+                'confirmed': 'badge-success',
+                'delivered': 'badge-info',
+                'cancelled': 'badge-danger'
+            };
+            return classes[status] || 'badge-secondary';
+        }
+
+        function getPOStatusLabel(status) {
+            const labels = {
+                'draft': 'Projekt',
+                'sent': 'Wysłane',
+                'confirmed': 'Potwierdzone',
+                'delivered': 'Dostarczone',
+                'cancelled': 'Anulowane'
+            };
+            return labels[status] || status;
+        }
+
+        function createPurchaseOrderFromRequirement(requirementId) {
+            const data = storage.getData();
+            const requirement = data.procurement_requirements.find(r => r.id == requirementId);
+            const material = data.materials.find(m => m.id === requirement.material_id);
+            
+            if (!requirement || !material) {
+                showToast('Nie znaleziono wymagania lub materiału', 'error');
+                return;
+            }
+
+            // Znajdź dostawców dla tego materiału
+            const suppliers = data.suppliers.filter(s => s.is_active);
+            const contracts = data.supplier_contracts.filter(c => 
+                c.material_id === material.id && c.status === 'active'
+            );
+
+            let supplierOptions = '';
+            if (contracts.length > 0) {
+                contracts.forEach(contract => {
+                    const supplier = suppliers.find(s => s.id === contract.supplier_id);
+                    if (supplier) {
+                        supplierOptions += `<option value="${supplier.id}" data-price="${contract.price}" data-moq="${contract.moq}">
+                            ${supplier.name} - ${contract.price} ${contract.currency} (MOQ: ${contract.moq} kg)
+                        </option>`;
+                    }
+                });
+            } else {
+                suppliers.forEach(supplier => {
+                    supplierOptions += `<option value="${supplier.id}">
+                        ${supplier.name} (brak kontraktu)
+                    </option>`;
+                });
+            }
+
+            const formHtml = `
+                <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 600px; margin: 2rem auto;">
+                    <h3>📑 Tworzenie zamówienia zakupu</h3>
+                    <p><strong>Materiał:</strong> ${material.name} (${material.code})</p>
+                    <p><strong>Wymagana ilość:</strong> ${requirement.total_quantity} kg</p>
+                    <p><strong>Data potrzeby:</strong> ${new Date(requirement.required_date).toLocaleDateString()}</p>
+                    
+                    <form id="createPOForm">
+                        <div style="margin: 1rem 0;">
+                            <label><strong>Dostawca:</strong></label>
+                            <select id="poSupplier" required style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;">
+                                <option value="">Wybierz dostawcę...</option>
+                                ${supplierOptions}
+                            </select>
+                        </div>
+                        
+                        <div style="margin: 1rem 0;">
+                            <label><strong>Ilość (kg):</strong></label>
+                            <input type="number" id="poQuantity" value="${requirement.total_quantity}" min="1" required 
+                                   style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;">
+                        </div>
+                        
+                        <div style="margin: 1rem 0;">
+                            <label><strong>Cena jednostkowa (PLN):</strong></label>
+                            <input type="number" id="poPrice" step="0.01" placeholder="Zostanie uzupełniona z kontraktu" 
+                                   style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;">
+                        </div>
+                        
+                        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                            <button type="button" onclick="this.closest('div').parentElement.parentElement.remove()" 
+                                    style="flex: 1; padding: 0.75rem; background: #6b7280; color: white; border: none; border-radius: 6px;">
+                                Anuluj
+                            </button>
+                            <button type="submit" style="flex: 1; padding: 0.75rem; background: #3b82f6; color: white; border: none; border-radius: 6px;">
+                                Utwórz zamówienie
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            // Create and show modal
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;';
+            modal.innerHTML = formHtml;
+            document.body.appendChild(modal);
+
+            // Handle supplier selection
+            document.getElementById('poSupplier').addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const price = selectedOption.getAttribute('data-price');
+                const moq = selectedOption.getAttribute('data-moq');
+                
+                if (price) {
+                    document.getElementById('poPrice').value = price;
+                }
+                if (moq) {
+                    const currentQty = parseFloat(document.getElementById('poQuantity').value);
+                    if (currentQty < parseFloat(moq)) {
+                        document.getElementById('poQuantity').value = moq;
+                    }
+                }
+            });
+
+            // Handle form submission
+            document.getElementById('createPOForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const supplierId = parseInt(document.getElementById('poSupplier').value);
+                const quantity = parseFloat(document.getElementById('poQuantity').value);
+                const price = parseFloat(document.getElementById('poPrice').value);
+                
+                if (!supplierId || !quantity || !price) {
+                    alert('Proszę wypełnić wszystkie pola');
+                    return;
+                }
+
+                const result = storage.createPurchaseOrder(requirementId, supplierId, price);
+                
+                if (result.success) {
+                    showToast(`Utworzono zamówienie ${result.purchase_order.po_number}`, 'success');
+                    loadMRPRequirements();
+                    loadPurchaseOrders();
+                    modal.remove();
+                    
+                    setTimeout(() => {
+                        let message = `📑 Zamówienie zakupu utworzone:\n\n`;
+                        message += `Nr: ${result.purchase_order.po_number}\n`;
+                        message += `Ilość: ${result.optimized_quantity} kg\n`;
+                        message += `Cena: ${result.final_price.toFixed(2)} PLN/kg\n`;
+                        message += `Wartość: ${result.purchase_order.total_value.toFixed(2)} PLN\n`;
+                        message += `Dostawa: ${result.purchase_order.estimated_delivery}\n`;
+                        
+                        if (result.optimized_quantity > result.original_quantity) {
+                            message += `\n⚠️ Ilość została zwiększona z ${result.original_quantity} do ${result.optimized_quantity} kg (MOQ)`;
+                        }
+                        
+                        alert(message);
+                    }, 500);
+                } else {
+                    showToast(result.message, 'error');
+                }
+            });
         }
 
         // Action functions
