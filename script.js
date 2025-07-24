@@ -607,18 +607,188 @@ function initializePlanning() {
 // Warehouse Page
 function initializeWarehouse() {
     console.log('Warehouse page initialized');
-    
-    // Add event listeners for warehouse actions
-    const addItemBtn = document.querySelector('#warehouse .btn-primary');
-    if (addItemBtn) {
-        addItemBtn.addEventListener('click', function() {
-            showNotification('Функция добавления товара будет доступна в следующей версии', 'info');
-        });
-    }
-    
-    // Simulate warehouse stats updates
+    setupWarehouseTabs();
     updateWarehouseStats();
     setupTableSearch();
+}
+
+function setupWarehouseTabs() {
+    const warehousePage = document.getElementById('warehouse');
+    if (!warehousePage) return;
+    
+    const tabButtons = warehousePage.querySelectorAll('.warehouse-tabs .tab-btn');
+    const tabContents = warehousePage.querySelectorAll('.warehouse-tabs .tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Show target content
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+}
+
+// Warehouse Functions
+function generateMRPRequirements() {
+    showNotification('Формирование потребностей MRP...', 'info');
+    setTimeout(() => {
+        showNotification('Потребности MRP обновлены! Найдено 6 критических позиций', 'success');
+    }, 2000);
+}
+
+function receiveDelivery() {
+    showNotification('Открытие формы приемки поставки...', 'info');
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📦 Приемка поставки</h3>
+                <button class="modal-close" onclick="closeModal(this)">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="receive-sections">
+                    <div class="receive-section">
+                        <h4>🚚 Информация о поставке</h4>
+                        <div class="form-group">
+                            <label>Номер поставки:</label>
+                            <input type="text" placeholder="POST-240119-001" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Поставщик:</label>
+                            <select class="form-select">
+                                <option>Dow Chemical Europe</option>
+                                <option>Siegwerk Druckfarben</option>
+                                <option>Henkel Adhesives</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>CMR номер:</label>
+                            <input type="text" placeholder="DE-12345-2024" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="receive-section">
+                        <h4>📋 Документы</h4>
+                        <div class="documents-checklist">
+                            <label><input type="checkbox"> CMR - Международная накладная</label>
+                            <label><input type="checkbox"> WZ - Товарная накладная</label>
+                            <label><input type="checkbox"> CoA - Сертификат анализа</label>
+                            <label><input type="checkbox"> TDS - Техническая спецификация</label>
+                            <label><input type="checkbox"> SDS - Паспорт безопасности</label>
+                            <label><input type="checkbox"> DoC - Декларация соответствия</label>
+                        </div>
+                    </div>
+                    
+                    <div class="receive-section">
+                        <h4>⚖️ Количественная приемка</h4>
+                        <div class="quantity-check">
+                            <div class="form-group">
+                                <label>Заявленный вес:</label>
+                                <input type="number" placeholder="5000" class="form-input"> кг
+                            </div>
+                            <div class="form-group">
+                                <label>Фактический вес:</label>
+                                <input type="number" placeholder="4985" class="form-input"> кг
+                            </div>
+                            <div class="form-group">
+                                <label>Расхождение:</label>
+                                <span class="weight-diff">-15 кг (-0.3%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal(this)">Отменить</button>
+                <button class="btn btn-primary" onclick="confirmReceiving()">✅ Принять поставку</button>
+            </div>
+        </div>
+    `;
+    
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+function confirmReceiving() {
+    showNotification('Поставка принята! Партия 240119-001 создана и направлена на контроль качества', 'success');
+    closeModal(document.querySelector('.modal-overlay'));
+}
+
+function viewBatchDetails(batchNumber) {
+    showNotification(`Просмотр детальной информации по партии ${batchNumber}`, 'info');
+}
+
+function receiveSpecificDelivery(deliveryId) {
+    showNotification(`Начата приемка поставки ${deliveryId}`, 'info');
+    receiveDelivery();
+}
+
+function viewDeliveryDetails(deliveryId) {
+    showNotification(`Просмотр деталей поставки ${deliveryId}`, 'info');
+}
+
+function traceFromProduct() {
+    const input = document.querySelector('.traceability-search .trace-input');
+    const value = input.value.trim();
+    if (value) {
+        showNotification(`Поиск сырья для продукта ${value}...`, 'info');
+        setTimeout(() => {
+            showNotification('Трейсабилити выполнен! Найдено 3 партии сырья', 'success');
+        }, 1500);
+    } else {
+        showNotification('Введите номер партии продукта', 'error');
+    }
+}
+
+function traceFromMaterial() {
+    const inputs = document.querySelectorAll('.traceability-search .trace-input');
+    const value = inputs[1].value.trim();
+    if (value) {
+        showNotification(`Поиск продуктов из сырья ${value}...`, 'info');
+        setTimeout(() => {
+            showNotification('Трейсабилити выполнен! Найдено 8 готовых изделий', 'success');
+        }, 1500);
+    } else {
+        showNotification('Введите номер партии сырья', 'error');
+    }
+}
+
+function approveQuality(batchNumber) {
+    showNotification(`Партия ${batchNumber} одобрена к использованию`, 'success');
+}
+
+function blockQuality(batchNumber) {
+    showNotification(`Партия ${batchNumber} заблокирована`, 'error');
+}
+
+function exportInventory() {
+    showNotification('Экспорт остатков в Excel...', 'info');
 }
 
 function updateWarehouseStats() {
@@ -636,10 +806,233 @@ function updateWarehouseStats() {
     }
 }
 
-// Orders Page
+// Procurement Page
 function initializeOrders() {
-    console.log('Orders page initialized');
-    showNotification('Модуль заказов находится в разработке', 'info');
+    console.log('Procurement page initialized');
+    setupProcurementTabs();
+    updateProcurementStats();
+}
+
+function setupProcurementTabs() {
+    const procurementPage = document.getElementById('orders');
+    if (!procurementPage) return;
+    
+    const tabButtons = procurementPage.querySelectorAll('.procurement-tabs .tab-btn');
+    const tabContents = procurementPage.querySelectorAll('.procurement-tabs .tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Show target content
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+}
+
+function updateProcurementStats() {
+    const stats = {
+        mrpRequirements: Math.floor(Math.random() * 10) + 20,
+        ordersInTransit: Math.floor(Math.random() * 5) + 15,
+        activeSuppliers: Math.floor(Math.random() * 10) + 40,
+        savings: (Math.random() * 2 + 0.5).toFixed(1) + 'M ₽'
+    };
+    
+    const statElements = document.querySelectorAll('.procurement-stats .stat-value');
+    if (statElements.length >= 4) {
+        statElements[0].textContent = stats.mrpRequirements;
+        statElements[1].textContent = stats.ordersInTransit;
+        statElements[2].textContent = stats.activeSuppliers;
+        statElements[3].textContent = stats.savings;
+    }
+}
+
+// Procurement Functions
+function createSpotPurchase() {
+    showNotification('Открытие формы срочной закупки...', 'info');
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚡ Spot закупка</h3>
+                <button class="modal-close" onclick="closeModal(this)">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="spot-purchase-form">
+                    <div class="form-section">
+                        <h4>📦 Материал</h4>
+                        <div class="form-group">
+                            <label>Тип материала:</label>
+                            <select class="form-select">
+                                <option>Гранулят ПВД</option>
+                                <option>Краска печатная</option>
+                                <option>Клей полиуретановый</option>
+                                <option>Базовая пленка</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Количество:</label>
+                            <input type="number" placeholder="1000" class="form-input"> кг
+                        </div>
+                        <div class="form-group">
+                            <label>Крайний срок:</label>
+                            <input type="date" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4>💰 Условия</h4>
+                        <div class="form-group">
+                            <label>Максимальная цена:</label>
+                            <input type="number" placeholder="250" class="form-input"> ₽/кг
+                        </div>
+                        <div class="form-group">
+                            <label>Условия поставки:</label>
+                            <select class="form-select">
+                                <option>DAP Москва</option>
+                                <option>FCA Склад поставщика</option>
+                                <option>DDP Наш склад</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal(this)">Отменить</button>
+                <button class="btn btn-primary" onclick="sendSpotRequest()">📤 Отправить запрос</button>
+            </div>
+        </div>
+    `;
+    
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+function sendSpotRequest() {
+    showNotification('Запрос отправлен 5 поставщикам! Ожидаем предложения', 'success');
+    closeModal(document.querySelector('.modal-overlay'));
+}
+
+function createPurchaseOrder() {
+    showNotification('Открытие формы создания заказа поставщику...', 'info');
+}
+
+function refreshMRP() {
+    showNotification('Обновление потребностей MRP...', 'info');
+    setTimeout(() => {
+        showNotification('MRP обновлен! Найдено 3 новые критические потребности', 'success');
+        updateProcurementStats();
+    }, 2000);
+}
+
+function groupRequirements() {
+    showNotification('Группировка заказов по поставщикам...', 'info');
+    setTimeout(() => {
+        showNotification('Заказы сгруппированы! Оптимизация транспортных расходов на 15%', 'success');
+    }, 1500);
+}
+
+function createPOFromRequirement(materialCode) {
+    showNotification(`Создание заказа поставщику для материала ${materialCode}...`, 'info');
+    
+    setTimeout(() => {
+        showNotification(`Заказ PO-2024-0158 создан и отправлен поставщику`, 'success');
+    }, 1000);
+}
+
+function findAlternativeSupplier(materialCode) {
+    showNotification(`Поиск альтернативных поставщиков для ${materialCode}...`, 'info');
+    
+    setTimeout(() => {
+        showNotification('Найдено 3 альтернативных поставщика с лучшими ценами', 'success');
+    }, 1500);
+}
+
+function followUpOrder(orderId) {
+    showNotification(`Отправка напоминания по заказу ${orderId}...`, 'info');
+    setTimeout(() => {
+        showNotification('Напоминание отправлено поставщику', 'success');
+    }, 1000);
+}
+
+function trackDelivery(orderId) {
+    showNotification(`Отслеживание доставки заказа ${orderId}...`, 'info');
+    setTimeout(() => {
+        showNotification('Трекинг активирован. Уведомления о статусе доставки включены', 'success');
+    }, 1000);
+}
+
+function prepareReceiving(orderId) {
+    showNotification(`Подготовка приемки для заказа ${orderId}...`, 'info');
+    setTimeout(() => {
+        showNotification('Склад уведомлен. Документы подготовлены для приемки', 'success');
+    }, 1000);
+}
+
+function escalateOrder(orderId) {
+    showNotification(`Эскалация проблемного заказа ${orderId}...`, 'info');
+    setTimeout(() => {
+        showNotification('Уведомление отправлено менеджеру поставщика и руководству', 'error');
+    }, 1000);
+}
+
+function findAlternativeForOrder(orderId) {
+    showNotification(`Поиск альтернативного поставщика для заказа ${orderId}...`, 'info');
+    setTimeout(() => {
+        showNotification('Найден альтернативный поставщик. Отправка запроса...', 'success');
+    }, 2000);
+}
+
+function viewSupplierDetails(supplierId) {
+    showNotification(`Открытие карточки поставщика ${supplierId}...`, 'info');
+}
+
+function reviewSupplier(supplierId) {
+    showNotification(`Инициирована ревизия поставщика ${supplierId}`, 'error');
+}
+
+function exportContracts() {
+    showNotification('Экспорт договоров в Excel...', 'info');
+}
+
+function createContract() {
+    showNotification('Открытие формы создания нового договора...', 'info');
+}
+
+function renewContract(contractId) {
+    showNotification(`Начата процедура продления договора ${contractId}...`, 'info');
+    setTimeout(() => {
+        showNotification('Запрос на продление отправлен поставщику', 'success');
+    }, 1000);
+}
+
+function viewContract(contractId) {
+    showNotification(`Просмотр договора ${contractId}...`, 'info');
 }
 
 // Table Search Functionality

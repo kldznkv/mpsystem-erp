@@ -718,99 +718,1207 @@
             <!-- Warehouse Page -->
             <div id="warehouse" class="page">
                 <div class="page-header">
-                    <h1 class="page-title">Управление складом</h1>
-                    <button class="btn btn-primary">Добавить товар</button>
-                </div>
-
-                <div class="warehouse-stats">
-                    <div class="stat-card">
-                        <div class="stat-icon">📦</div>
-                        <div class="stat-info">
-                            <div class="stat-value">12,450</div>
-                            <div class="stat-label">Всего позиций</div>
-                        </div>
+                    <div>
+                        <h1 class="page-title">Управление складом</h1>
+                        <p class="page-subtitle">Система складского учета и трейсабилити от сырья до готовой продукции</p>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">⚠️</div>
-                        <div class="stat-info">
-                            <div class="stat-value">23</div>
-                            <div class="stat-label">Низкий остаток</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">📈</div>
-                        <div class="stat-info">
-                            <div class="stat-value">98.5%</div>
-                            <div class="stat-label">Заполненность</div>
-                        </div>
+                    <div class="header-actions">
+                        <button class="btn btn-outline" onclick="generateMRPRequirements()">
+                            📊 Сформировать потребности MRP
+                        </button>
+                        <button class="btn btn-primary" onclick="receiveDelivery()">
+                            📦 Принять поставку
+                        </button>
                     </div>
                 </div>
 
-                <div class="table-card">
-                    <div class="table-header">
-                        <h3>Остатки на складе</h3>
-                        <div class="table-actions">
-                            <input type="search" placeholder="Поиск товара..." class="search-input">
-                            <select class="filter-select">
-                                <option>Все категории</option>
-                                <option>Сырье</option>
-                                <option>Готовая продукция</option>
-                                <option>Упаковка</option>
-                            </select>
+                <!-- Warehouse Overview Stats -->
+                <div class="warehouse-overview">
+                    <div class="warehouse-card mag1">
+                        <div class="warehouse-header">
+                            <h3>📦 МАГ 1 - Сырье и материалы</h3>
+                            <div class="warehouse-status">Основной склад</div>
+                        </div>
+                        <div class="warehouse-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Гранулаты:</span>
+                                <span class="stat-value">127.5 т</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Краски:</span>
+                                <span class="stat-value">2,450 кг</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Клеи:</span>
+                                <span class="stat-value">890 кг</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Базовые пленки:</span>
+                                <span class="stat-value">15,600 м²</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Артикул</th>
-                                    <th>Наименование</th>
-                                    <th>Категория</th>
-                                    <th>Остаток</th>
-                                    <th>Мин. остаток</th>
-                                    <th>Единица</th>
-                                    <th>Статус</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>ART001</td>
-                                    <td>Материал А-500</td>
-                                    <td>Сырье</td>
-                                    <td>450</td>
-                                    <td>100</td>
-                                    <td>кг</td>
-                                    <td><span class="status-badge in-stock">В наличии</span></td>
-                                    <td>
-                                        <button class="btn btn-sm">Редактировать</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>ART002</td>
-                                    <td>Упаковка тип Б</td>
-                                    <td>Упаковка</td>
-                                    <td>25</td>
-                                    <td>50</td>
-                                    <td>шт</td>
-                                    <td><span class="status-badge low-stock">Низкий остаток</span></td>
-                                    <td>
-                                        <button class="btn btn-sm">Пополнить</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+                    <div class="warehouse-card mag1-1">
+                        <div class="warehouse-header">
+                            <h3>⚠️ МАГ 1.1 - ADR</h3>
+                            <div class="warehouse-status adr">Опасные грузы</div>
+                        </div>
+                        <div class="warehouse-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Растворители:</span>
+                                <span class="stat-value">1,200 л</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Катализаторы:</span>
+                                <span class="stat-value">150 кг</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Специальные клеи:</span>
+                                <span class="stat-value">320 кг</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warehouse-card production">
+                        <div class="warehouse-header">
+                            <h3>🏭 МАГ 2-9 - Производство</h3>
+                            <div class="warehouse-status">Межоперационные склады</div>
+                        </div>
+                        <div class="production-flow">
+                            <div class="flow-item">
+                                <span class="flow-stage">МАГ 2 - Экструзия</span>
+                                <span class="flow-amount">45.2 т</span>
+                            </div>
+                            <div class="flow-item">
+                                <span class="flow-stage">МАГ 3 - Пресвет</span>
+                                <span class="flow-amount">12.8 т</span>
+                            </div>
+                            <div class="flow-item">
+                                <span class="flow-stage">МАГ 4 - Печать</span>
+                                <span class="flow-amount">8.5 т</span>
+                            </div>
+                            <div class="flow-item">
+                                <span class="flow-stage">МАГ 5 - Готовые</span>
+                                <span class="flow-amount">156.7 т</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warehouse Tabs -->
+                <div class="warehouse-tabs">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="inventory">Остатки по складам</button>
+                        <button class="tab-btn" data-tab="deliveries">Поступления</button>
+                        <button class="tab-btn" data-tab="traceability">Трейсабилити</button>
+                        <button class="tab-btn" data-tab="quality">Качество и документы</button>
+                    </div>
+
+                    <!-- Inventory Tab -->
+                    <div id="inventory" class="tab-content active">
+                        <div class="table-card">
+                            <div class="table-header">
+                                <h3>Остатки на складах - детализация по партиям</h3>
+                                <div class="table-actions">
+                                    <input type="search" placeholder="Поиск по артикулу, партии..." class="search-input">
+                                    <select class="filter-select">
+                                        <option>Все склады</option>
+                                        <option>МАГ 1 - Сырье</option>
+                                        <option>МАГ 1.1 - ADR</option>
+                                        <option>МАГ 2-9 - Производство</option>
+                                        <option>МАГ 5 - Готовые</option>
+                                    </select>
+                                    <select class="filter-select">
+                                        <option>Все статусы</option>
+                                        <option>Свободный</option>
+                                        <option>Зарезервирован</option>
+                                        <option>На контроле</option>
+                                        <option>Заблокирован</option>
+                                    </select>
+                                    <button class="btn btn-outline" onclick="exportInventory()">📊 Экспорт</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Склад</th>
+                                            <th>Артикул</th>
+                                            <th>Наименование</th>
+                                            <th>Партия</th>
+                                            <th>Остаток</th>
+                                            <th>Резерв</th>
+                                            <th>Доступно</th>
+                                            <th>Дата поступления</th>
+                                            <th>Статус качества</th>
+                                            <th>Локация</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="warehouse-tag mag1">МАГ 1</span></td>
+                                            <td>GR-PVD-001</td>
+                                            <td>Гранулят ПВД прозрачный</td>
+                                            <td>
+                                                <div class="batch-info">
+                                                    <span class="batch-number">240115-001</span>
+                                                    <span class="supplier">Dow Chemical</span>
+                                                </div>
+                                            </td>
+                                            <td>2,500 кг</td>
+                                            <td>800 кг</td>
+                                            <td><strong>1,700 кг</strong></td>
+                                            <td>15.01.2024</td>
+                                            <td><span class="quality-badge approved">✅ Одобрен</span></td>
+                                            <td>A1-05-02</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline" onclick="viewBatchDetails('240115-001')">
+                                                    📋 Детали
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="warehouse-tag mag1">МАГ 1</span></td>
+                                            <td>PA-INK-R01</td>
+                                            <td>Краска красная RAL 3020</td>
+                                            <td>
+                                                <div class="batch-info">
+                                                    <span class="batch-number">240116-R01</span>
+                                                    <span class="supplier">Siegwerk</span>
+                                                </div>
+                                            </td>
+                                            <td>150 кг</td>
+                                            <td>0 кг</td>
+                                            <td><strong>150 кг</strong></td>
+                                            <td>16.01.2024</td>
+                                            <td><span class="quality-badge pending">⏳ На контроле</span></td>
+                                            <td>C2-12-01</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline" onclick="viewBatchDetails('240116-R01')">
+                                                    📋 Детали
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="warehouse-tag adr">МАГ 1.1</span></td>
+                                            <td>ADH-PU-001</td>
+                                            <td>Клей полиуретановый 2К</td>
+                                            <td>
+                                                <div class="batch-info">
+                                                    <span class="batch-number">240114-PU1</span>
+                                                    <span class="supplier">Henkel</span>
+                                                </div>
+                                            </td>
+                                            <td>320 кг</td>
+                                            <td>120 кг</td>
+                                            <td><strong>200 кг</strong></td>
+                                            <td>14.01.2024</td>
+                                            <td><span class="quality-badge approved">✅ Одобрен</span></td>
+                                            <td>ADR-01-A</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline" onclick="viewBatchDetails('240114-PU1')">
+                                                    📋 Детали
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="warehouse-tag production">МАГ 2</span></td>
+                                            <td>SF-PVD-TR01</td>
+                                            <td>Рукав ПВД прозрачный 150мкм</td>
+                                            <td>
+                                                <div class="batch-info">
+                                                    <span class="batch-number">P240118-001</span>
+                                                    <span class="supplier">Внутреннее</span>
+                                                </div>
+                                            </td>
+                                            <td>1,250 кг</td>
+                                            <td>1,250 кг</td>
+                                            <td><strong>0 кг</strong></td>
+                                            <td>18.01.2024</td>
+                                            <td><span class="quality-badge approved">✅ Одобрен</span></td>
+                                            <td>PROD-E1</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline" onclick="viewBatchDetails('P240118-001')">
+                                                    📋 Детали
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deliveries Tab -->
+                    <div id="deliveries" class="tab-content">
+                        <div class="deliveries-overview">
+                            <h3>Поступления материалов - контроль документооборота</h3>
+                            
+                            <div class="delivery-cards">
+                                <div class="delivery-card pending">
+                                    <div class="delivery-header">
+                                        <span class="delivery-number">POST-240119-001</span>
+                                        <span class="delivery-status pending">🟡 Ожидается</span>
+                                    </div>
+                                    <div class="delivery-details">
+                                        <div class="delivery-supplier">
+                                            <strong>Dow Chemical Europe</strong>
+                                            <span>Заказ: PO-2024-0156</span>
+                                        </div>
+                                        <div class="delivery-items">
+                                            <div class="delivery-item">
+                                                <span>Гранулят ПВД LDPE 020C</span>
+                                                <span>5,000 кг</span>
+                                            </div>
+                                        </div>
+                                        <div class="delivery-eta">
+                                            <span>Плановая дата: 19.01.2024 14:00</span>
+                                        </div>
+                                        <div class="delivery-documents">
+                                            <div class="doc-status">
+                                                <span class="doc-missing">❌ CMR</span>
+                                                <span class="doc-missing">❌ CoA</span>
+                                                <span class="doc-missing">❌ TDS</span>
+                                                <span class="doc-missing">❌ SDS</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="delivery-actions">
+                                        <button class="btn btn-sm btn-primary" onclick="receiveSpecificDelivery('POST-240119-001')">
+                                            📦 Принять поставку
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="delivery-card received">
+                                    <div class="delivery-header">
+                                        <span class="delivery-number">POST-240118-003</span>
+                                        <span class="delivery-status received">🟢 Принято</span>
+                                    </div>
+                                    <div class="delivery-details">
+                                        <div class="delivery-supplier">
+                                            <strong>Siegwerk Druckfarben AG</strong>
+                                            <span>Заказ: PO-2024-0154</span>
+                                        </div>
+                                        <div class="delivery-items">
+                                            <div class="delivery-item">
+                                                <span>Краска синяя RAL 5017</span>
+                                                <span>200 кг → 198.5 кг</span>
+                                            </div>
+                                        </div>
+                                        <div class="delivery-received">
+                                            <span>Принято: 18.01.2024 11:30</span>
+                                            <span>Партия: 240118-B01</span>
+                                        </div>
+                                        <div class="delivery-documents">
+                                            <div class="doc-status">
+                                                <span class="doc-ok">✅ CMR</span>
+                                                <span class="doc-ok">✅ CoA</span>
+                                                <span class="doc-ok">✅ TDS</span>
+                                                <span class="doc-ok">✅ SDS</span>
+                                                <span class="doc-ok">✅ DoC</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="delivery-actions">
+                                        <button class="btn btn-sm btn-outline" onclick="viewDeliveryDetails('POST-240118-003')">
+                                            📋 Детали приемки
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Traceability Tab -->
+                    <div id="traceability" class="tab-content">
+                        <div class="traceability-panel">
+                            <h3>🔍 Система трейсабилити</h3>
+                            <p class="panel-description">Полная прослеживаемость от сырья до готового изделия и обратно</p>
+                            
+                            <div class="traceability-search">
+                                <div class="search-section">
+                                    <h4>Поиск по готовому изделию</h4>
+                                    <div class="search-controls">
+                                        <input type="text" placeholder="Введите номер партии готового изделия..." class="trace-input">
+                                        <button class="btn btn-primary" onclick="traceFromProduct()">🔍 Найти сырье</button>
+                                    </div>
+                                </div>
+
+                                <div class="search-section">
+                                    <h4>Поиск по сырью</h4>
+                                    <div class="search-controls">
+                                        <input type="text" placeholder="Введите номер партии сырья..." class="trace-input">
+                                        <button class="btn btn-primary" onclick="traceFromMaterial()">🔍 Найти изделия</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Example trace result -->
+                            <div class="trace-result">
+                                <div class="trace-header">
+                                    <h4>Результат трейсабилити для партии: P240118-001</h4>
+                                    <span class="trace-type">Рукав → Сырье</span>
+                                </div>
+                                
+                                <div class="trace-chain">
+                                    <div class="trace-step">
+                                        <div class="step-number">1</div>
+                                        <div class="step-content">
+                                            <h5>🎯 Готовый продукт</h5>
+                                            <div class="step-details">
+                                                <span><strong>Партия:</strong> P240118-001</span>
+                                                <span><strong>Продукт:</strong> Рукав ПВД прозрачный 150мкм</span>
+                                                <span><strong>Линия:</strong> Экструдер 1</span>
+                                                <span><strong>Дата производства:</strong> 18.01.2024 08:30-16:45</span>
+                                                <span><strong>Оператор:</strong> Иванов И.И.</span>
+                                                <span><strong>Количество:</strong> 1,250 кг</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="trace-arrow">⬇</div>
+
+                                    <div class="trace-step">
+                                        <div class="step-number">2</div>
+                                        <div class="step-content">
+                                            <h5>🧪 Использованное сырье</h5>
+                                            <div class="materials-used">
+                                                <div class="material-trace">
+                                                    <span><strong>Гранулят:</strong> 240115-001 (Dow Chemical)</span>
+                                                    <span><strong>Использовано:</strong> 1,300 кг из партии 240115-001</span>
+                                                    <span><strong>Остаток партии:</strong> 1,200 кг</span>
+                                                </div>
+                                                <div class="material-trace">
+                                                    <span><strong>Добавки:</strong> 240112-STB1 (стабилизатор)</span>
+                                                    <span><strong>Использовано:</strong> 13 кг из партии 240112-STB1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="trace-arrow">⬇</div>
+
+                                    <div class="trace-step">
+                                        <div class="step-number">3</div>
+                                        <div class="step-content">
+                                            <h5>📋 Документы качества</h5>
+                                            <div class="quality-docs">
+                                                <div class="doc-link">
+                                                    <span>📄 CoA - Dow Chemical - 240115-001</span>
+                                                    <button class="btn btn-sm btn-outline">Скачать</button>
+                                                </div>
+                                                <div class="doc-link">
+                                                    <span>📄 Протокол качества экструзии</span>
+                                                    <button class="btn btn-sm btn-outline">Скачать</button>
+                                                </div>
+                                                <div class="doc-link">
+                                                    <span>📄 TDS - Technical Data Sheet</span>
+                                                    <button class="btn btn-sm btn-outline">Скачать</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quality Tab -->
+                    <div id="quality" class="tab-content">
+                        <div class="quality-panel">
+                            <h3>📋 Управление качеством и документооборотом</h3>
+                            
+                            <div class="quality-stats">
+                                <div class="quality-stat">
+                                    <div class="stat-icon">✅</div>
+                                    <div class="stat-info">
+                                        <div class="stat-value">156</div>
+                                        <div class="stat-label">Одобренных партий</div>
+                                    </div>
+                                </div>
+                                <div class="quality-stat">
+                                    <div class="stat-icon">⏳</div>
+                                    <div class="stat-info">
+                                        <div class="stat-value">12</div>
+                                        <div class="stat-label">На контроле</div>
+                                    </div>
+                                </div>
+                                <div class="quality-stat">
+                                    <div class="stat-icon">❌</div>
+                                    <div class="stat-info">
+                                        <div class="stat-value">3</div>
+                                        <div class="stat-label">Заблокированных</div>
+                                    </div>
+                                </div>
+                                <div class="quality-stat">
+                                    <div class="stat-icon">📄</div>
+                                    <div class="stat-info">
+                                        <div class="stat-value">98.5%</div>
+                                        <div class="stat-label">Комплектность документов</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-card">
+                                <div class="table-header">
+                                    <h3>Партии на контроле качества</h3>
+                                    <div class="table-actions">
+                                        <select class="filter-select">
+                                            <option>Все статусы</option>
+                                            <option>Ожидает контроля</option>
+                                            <option>На проверке</option>
+                                            <option>Требует документы</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="table-container">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Партия</th>
+                                                <th>Материал</th>
+                                                <th>Поставщик</th>
+                                                <th>Дата поступления</th>
+                                                <th>Документы</th>
+                                                <th>Статус контроля</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>240116-R01</strong></td>
+                                                <td>Краска красная RAL 3020</td>
+                                                <td>Siegwerk</td>
+                                                <td>16.01.2024</td>
+                                                <td>
+                                                    <div class="documents-status">
+                                                        <span class="doc-ok">✅ CoA</span>
+                                                        <span class="doc-ok">✅ TDS</span>
+                                                        <span class="doc-missing">❌ DoC</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="quality-badge pending">⏳ Ожидает DoC</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary" onclick="approveQuality('240116-R01')">
+                                                        ✅ Одобрить
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline" onclick="blockQuality('240116-R01')">
+                                                        ❌ Заблокировать
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Other pages (placeholder content) -->
+            <!-- Procurement Page -->
             <div id="orders" class="page">
                 <div class="page-header">
-                    <h1 class="page-title">Управление заказами</h1>
+                    <div>
+                        <h1 class="page-title">Закупки и снабжение</h1>
+                        <p class="page-subtitle">Управление поставщиками, закупками и контроль поставок</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-outline" onclick="createSpotPurchase()">
+                            ⚡ Spot закупка
+                        </button>
+                        <button class="btn btn-primary" onclick="createPurchaseOrder()">
+                            ➕ Новый заказ поставщику
+                        </button>
+                    </div>
                 </div>
-                <div class="placeholder-content">
-                    <p>Модуль управления заказами находится в разработке</p>
+
+                <!-- Procurement Stats -->
+                <div class="procurement-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-info">
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Активных потребностей MRP</div>
+                        </div>
+                        <div class="stat-trend">+3 за сегодня</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🚚</div>
+                        <div class="stat-info">
+                            <div class="stat-value">18</div>
+                            <div class="stat-label">Заказов в пути</div>
+                        </div>
+                        <div class="stat-trend">Среднее время: 4.2 дня</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <div class="stat-value">47</div>
+                            <div class="stat-label">Активных поставщиков</div>
+                        </div>
+                        <div class="stat-trend">Средняя оценка: 4.2/5</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <div class="stat-value">1.2M ₽</div>
+                            <div class="stat-label">Экономия vs бюджет</div>
+                        </div>
+                        <div class="stat-trend">+8.5% за месяц</div>
+                    </div>
+                </div>
+
+                <!-- Procurement Tabs -->
+                <div class="procurement-tabs">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="mrp-requirements">Потребности MRP (24)</button>
+                        <button class="tab-btn" data-tab="purchase-orders">Заказы поставщикам (18)</button>
+                        <button class="tab-btn" data-tab="suppliers">Поставщики (47)</button>
+                        <button class="tab-btn" data-tab="contracts">Договоры и цены</button>
+                    </div>
+
+                    <!-- MRP Requirements Tab -->
+                    <div id="mrp-requirements" class="tab-content active">
+                        <div class="requirements-panel">
+                            <div class="panel-header">
+                                <h3>📊 Автоматические потребности из системы MRP</h3>
+                                <div class="panel-actions">
+                                    <button class="btn btn-outline" onclick="refreshMRP()">🔄 Обновить MRP</button>
+                                    <button class="btn btn-outline" onclick="groupRequirements()">📦 Группировать заказы</button>
+                                </div>
+                            </div>
+
+                            <div class="requirements-summary">
+                                <div class="summary-card urgent">
+                                    <h4>🔴 Критические потребности</h4>
+                                    <div class="summary-list">
+                                        <div class="requirement-item">
+                                            <span>Гранулят ПВД прозрачный - 5,000 кг</span>
+                                            <span class="requirement-date critical">До 22.01.2024</span>
+                                        </div>
+                                        <div class="requirement-item">
+                                            <span>Краска синяя RAL 5017 - 300 кг</span>
+                                            <span class="requirement-date critical">До 23.01.2024</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="summary-card normal">
+                                    <h4>🟡 Плановые потребности</h4>
+                                    <div class="summary-list">
+                                        <div class="requirement-item">
+                                            <span>Клей ПУ двухкомпонентный - 500 кг</span>
+                                            <span class="requirement-date">До 28.01.2024</span>
+                                        </div>
+                                        <div class="requirement-item">
+                                            <span>Базовая пленка BOPP - 2,000 м²</span>
+                                            <span class="requirement-date">До 30.01.2024</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-card">
+                                <div class="table-header">
+                                    <h3>Детализация потребностей MRP</h3>
+                                    <div class="table-actions">
+                                        <select class="filter-select">
+                                            <option>Все приоритеты</option>
+                                            <option>Критические</option>
+                                            <option>Высокие</option>
+                                            <option>Средние</option>
+                                        </select>
+                                        <select class="filter-select">
+                                            <option>Все типы материалов</option>
+                                            <option>Гранулаты</option>
+                                            <option>Краски</option>
+                                            <option>Клеи</option>
+                                            <option>Базовые пленки</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="table-container">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Материал</th>
+                                                <th>Потребность</th>
+                                                <th>Остаток</th>
+                                                <th>К заказу</th>
+                                                <th>Крайний срок</th>
+                                                <th>Источник потребности</th>
+                                                <th>Рекомендуемый поставщик</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="requirement-critical">
+                                                <td>
+                                                    <div class="material-info">
+                                                        <span class="material-name">Гранулят ПВД LDPE 020C</span>
+                                                        <span class="material-code">GR-PVD-001</span>
+                                                    </div>
+                                                </td>
+                                                <td><strong>5,000 кг</strong></td>
+                                                <td class="low-stock">1,200 кг</td>
+                                                <td><strong class="critical">3,800 кг</strong></td>
+                                                <td>
+                                                    <span class="deadline critical">22.01.2024</span>
+                                                    <span class="days-left critical">Осталось: 3 дня</span>
+                                                </td>
+                                                <td>
+                                                    <div class="source-info">
+                                                        <span>Заказ #ORD-2024-001</span>
+                                                        <span>Заказ #ORD-2024-002</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="supplier-recommendation">
+                                                        <span class="supplier-name">Dow Chemical Europe</span>
+                                                        <div class="supplier-details">
+                                                            <span>MOQ: 1,000 кг</span>
+                                                            <span>Срок: 2-3 дня</span>
+                                                            <span>Цена: 245 ₽/кг</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="action-buttons">
+                                                        <button class="btn btn-sm btn-primary" onclick="createPOFromRequirement('GR-PVD-001')">
+                                                            📋 Создать заказ
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline" onclick="findAlternativeSupplier('GR-PVD-001')">
+                                                            🔄 Альтернативы
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="requirement-normal">
+                                                <td>
+                                                    <div class="material-info">
+                                                        <span class="material-name">Краска синяя RAL 5017</span>
+                                                        <span class="material-code">PA-INK-B01</span>
+                                                    </div>
+                                                </td>
+                                                <td><strong>300 кг</strong></td>
+                                                <td class="normal-stock">150 кг</td>
+                                                <td><strong>150 кг</strong></td>
+                                                <td>
+                                                    <span class="deadline">28.01.2024</span>
+                                                    <span class="days-left">Осталось: 9 дней</span>
+                                                </td>
+                                                <td>
+                                                    <div class="source-info">
+                                                        <span>Заказ #ORD-2024-003</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="supplier-recommendation">
+                                                        <span class="supplier-name">Siegwerk Druckfarben</span>
+                                                        <div class="supplier-details">
+                                                            <span>MOQ: 100 кг</span>
+                                                            <span>Срок: 5-7 дней</span>
+                                                            <span>Цена: 1,850 ₽/кг</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="action-buttons">
+                                                        <button class="btn btn-sm btn-primary" onclick="createPOFromRequirement('PA-INK-B01')">
+                                                            📋 Создать заказ
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline" onclick="findAlternativeSupplier('PA-INK-B01')">
+                                                            🔄 Альтернативы
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Purchase Orders Tab -->
+                    <div id="purchase-orders" class="tab-content">
+                        <div class="orders-panel">
+                            <h3>🚚 Мониторинг заказов поставщикам</h3>
+                            
+                            <div class="orders-timeline">
+                                <div class="timeline-header">
+                                    <h4>Статусы заказов в системе</h4>
+                                </div>
+                                
+                                <div class="orders-by-status">
+                                    <div class="status-group">
+                                        <h5>📋 Отправлено поставщику (3)</h5>
+                                        <div class="order-card">
+                                            <div class="order-header">
+                                                <span class="order-number">PO-2024-0157</span>
+                                                <span class="order-status sent">📤 Отправлено</span>
+                                            </div>
+                                            <div class="order-details">
+                                                <div class="order-supplier">
+                                                    <strong>Dow Chemical Europe</strong>
+                                                    <span>Отправлено: 19.01.2024 09:15</span>
+                                                </div>
+                                                <div class="order-items">
+                                                    <span>Гранулят ПВД LDPE 020C - 5,000 кг</span>
+                                                    <span class="order-value">1,225,000 ₽</span>
+                                                </div>
+                                                <div class="order-deadline">
+                                                    <span>Ожидаем подтверждения до: 20.01.2024</span>
+                                                </div>
+                                            </div>
+                                            <div class="order-actions">
+                                                <button class="btn btn-sm btn-outline" onclick="followUpOrder('PO-2024-0157')">
+                                                    📞 Напомнить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="status-group">
+                                        <h5>✅ Подтверждено поставщиком (8)</h5>
+                                        <div class="order-card">
+                                            <div class="order-header">
+                                                <span class="order-number">PO-2024-0156</span>
+                                                <span class="order-status confirmed">✅ Подтверждено</span>
+                                            </div>
+                                            <div class="order-details">
+                                                <div class="order-supplier">
+                                                    <strong>Siegwerk Druckfarben AG</strong>
+                                                    <span>Подтверждено: 18.01.2024 14:30</span>
+                                                </div>
+                                                <div class="order-items">
+                                                    <span>Краска красная RAL 3020 - 200 кг</span>
+                                                    <span class="order-value">370,000 ₽</span>
+                                                </div>
+                                                <div class="order-delivery">
+                                                    <span>Плановая доставка: 22.01.2024</span>
+                                                    <span>Условия: DAP Москва</span>
+                                                </div>
+                                            </div>
+                                            <div class="order-actions">
+                                                <button class="btn btn-sm btn-outline" onclick="trackDelivery('PO-2024-0156')">
+                                                    📍 Отследить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="status-group">
+                                        <h5>🚛 В транспорте (5)</h5>
+                                        <div class="order-card">
+                                            <div class="order-header">
+                                                <span class="order-number">PO-2024-0155</span>
+                                                <span class="order-status transit">🚛 В пути</span>
+                                            </div>
+                                            <div class="order-details">
+                                                <div class="order-supplier">
+                                                    <strong>Henkel Adhesives</strong>
+                                                    <span>Отгружено: 17.01.2024 16:00</span>
+                                                </div>
+                                                <div class="order-items">
+                                                    <span>Клей ПУ 2К - 500 кг</span>
+                                                    <span class="order-value">825,000 ₽</span>
+                                                </div>
+                                                <div class="order-tracking">
+                                                    <span>CMR: DE-12345-2024</span>
+                                                    <span>ETA: 20.01.2024 12:00</span>
+                                                </div>
+                                            </div>
+                                            <div class="order-actions">
+                                                <button class="btn btn-sm btn-primary" onclick="prepareReceiving('PO-2024-0155')">
+                                                    📦 Подготовить приемку
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="status-group">
+                                        <h5>⚠️ Проблемные заказы (2)</h5>
+                                        <div class="order-card problem">
+                                            <div class="order-header">
+                                                <span class="order-number">PO-2024-0154</span>
+                                                <span class="order-status delayed">⚠️ Задержка</span>
+                                            </div>
+                                            <div class="order-details">
+                                                <div class="order-supplier">
+                                                    <strong>Polymer Solutions Ltd</strong>
+                                                    <span>Задержка: 3 дня</span>
+                                                </div>
+                                                <div class="order-items">
+                                                    <span>Базовая пленка BOPP - 1,500 м²</span>
+                                                    <span class="order-value">450,000 ₽</span>
+                                                </div>
+                                                <div class="order-problem">
+                                                    <span class="problem-reason">Причина: Технические проблемы на заводе</span>
+                                                    <span>Новая дата: 25.01.2024</span>
+                                                </div>
+                                            </div>
+                                            <div class="order-actions">
+                                                <button class="btn btn-sm btn-primary" onclick="escalateOrder('PO-2024-0154')">
+                                                    📞 Эскалация
+                                                </button>
+                                                <button class="btn btn-sm btn-outline" onclick="findAlternativeForOrder('PO-2024-0154')">
+                                                    🔄 Найти альтернативу
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Suppliers Tab -->
+                    <div id="suppliers" class="tab-content">
+                        <div class="suppliers-panel">
+                            <h3>👥 База поставщиков и оценка эффективности</h3>
+                            
+                            <div class="suppliers-overview">
+                                <div class="supplier-categories">
+                                    <div class="category-card">
+                                        <h4>🧪 Гранулаты (12 поставщиков)</h4>
+                                        <div class="top-suppliers">
+                                            <div class="supplier-item">
+                                                <span class="supplier-rating">★★★★★ 4.8</span>
+                                                <span>Dow Chemical Europe</span>
+                                            </div>
+                                            <div class="supplier-item">
+                                                <span class="supplier-rating">★★★★☆ 4.5</span>
+                                                <span>SABIC Polymers</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <h4>🎨 Краски (8 поставщиков)</h4>
+                                        <div class="top-suppliers">
+                                            <div class="supplier-item">
+                                                <span class="supplier-rating">★★★★★ 4.9</span>
+                                                <span>Siegwerk Druckfarben</span>
+                                            </div>
+                                            <div class="supplier-item">
+                                                <span class="supplier-rating">★★★★☆ 4.3</span>
+                                                <span>Flint Group</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <h4>🔗 Клеи (6 поставщиков)</h4>
+                                        <div class="top-suppliers">
+                                            <div class="supplier-item">
+                                                <span class="supplier-rating">★★★★★ 4.7</span>
+                                                <span>Henkel Adhesives</span>
+                                            </div>
+                                            <div class="supplier-item">
+                                                <span class="supplier-rating">★★★★☆ 4.4</span>
+                                                <span>Bostik Industrial</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-card">
+                                <div class="table-header">
+                                    <h3>Детальная оценка поставщиков</h3>
+                                    <div class="table-actions">
+                                        <select class="filter-select">
+                                            <option>Все категории</option>
+                                            <option>Гранулаты</option>
+                                            <option>Краски</option>
+                                            <option>Клеи</option>
+                                            <option>Базовые пленки</option>
+                                        </select>
+                                        <select class="filter-select">
+                                            <option>Все рейтинги</option>
+                                            <option>★★★★★ Отличные</option>
+                                            <option>★★★★☆ Хорошие</option>
+                                            <option>★★★☆☆ Средние</option>
+                                            <option>Проблемные</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="table-container">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Поставщик</th>
+                                                <th>Категория</th>
+                                                <th>Общий рейтинг</th>
+                                                <th>Терминовость (40%)</th>
+                                                <th>Качество (30%)</th>
+                                                <th>Документы (20%)</th>
+                                                <th>Сотрудничество (10%)</th>
+                                                <th>Оборот за год</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="supplier-excellent">
+                                                <td>
+                                                    <div class="supplier-info">
+                                                        <strong>Dow Chemical Europe</strong>
+                                                        <span>Основной поставщик</span>
+                                                    </div>
+                                                </td>
+                                                <td>Гранулаты ПВД/ПНД</td>
+                                                <td>
+                                                    <div class="rating">
+                                                        <span class="rating-stars">★★★★★</span>
+                                                        <span class="rating-value">4.8</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="metric excellent">98%</span></td>
+                                                <td><span class="metric excellent">99%</span></td>
+                                                <td><span class="metric excellent">100%</span></td>
+                                                <td><span class="metric good">85%</span></td>
+                                                <td><strong>12.5M ₽</strong></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline" onclick="viewSupplierDetails('dow-chemical')">
+                                                        📋 Карточка
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="supplier-good">
+                                                <td>
+                                                    <div class="supplier-info">
+                                                        <strong>Siegwerk Druckfarben AG</strong>
+                                                        <span>Основной поставщик</span>
+                                                    </div>
+                                                </td>
+                                                <td>Краски печатные</td>
+                                                <td>
+                                                    <div class="rating">
+                                                        <span class="rating-stars">★★★★★</span>
+                                                        <span class="rating-value">4.9</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="metric excellent">99%</span></td>
+                                                <td><span class="metric excellent">100%</span></td>
+                                                <td><span class="metric excellent">98%</span></td>
+                                                <td><span class="metric excellent">95%</span></td>
+                                                <td><strong>5.8M ₽</strong></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline" onclick="viewSupplierDetails('siegwerk')">
+                                                        📋 Карточка
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="supplier-problem">
+                                                <td>
+                                                    <div class="supplier-info">
+                                                        <strong>Polymer Solutions Ltd</strong>
+                                                        <span>Альтернативный</span>
+                                                    </div>
+                                                </td>
+                                                <td>Базовые пленки</td>
+                                                <td>
+                                                    <div class="rating">
+                                                        <span class="rating-stars">★★☆☆☆</span>
+                                                        <span class="rating-value">2.8</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="metric poor">65%</span></td>
+                                                <td><span class="metric good">85%</span></td>
+                                                <td><span class="metric poor">70%</span></td>
+                                                <td><span class="metric poor">60%</span></td>
+                                                <td><strong>1.2M ₽</strong></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline" onclick="viewSupplierDetails('polymer-solutions')">
+                                                        📋 Карточка
+                                                    </button>
+                                                    <button class="btn btn-sm btn-primary" onclick="reviewSupplier('polymer-solutions')">
+                                                        ⚠️ Ревизия
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contracts Tab -->
+                    <div id="contracts" class="tab-content">
+                        <div class="contracts-panel">
+                            <h3>📋 Договоры и ценообразование</h3>
+                            
+                            <div class="contracts-overview">
+                                <div class="contract-stats">
+                                    <div class="contract-stat">
+                                        <div class="stat-icon">📋</div>
+                                        <div class="stat-info">
+                                            <div class="stat-value">23</div>
+                                            <div class="stat-label">Активных договоров</div>
+                                        </div>
+                                    </div>
+                                    <div class="contract-stat">
+                                        <div class="stat-icon">💰</div>
+                                        <div class="stat-info">
+                                            <div class="stat-value">⬇ 5.2%</div>
+                                            <div class="stat-label">Снижение цен за квартал</div>
+                                        </div>
+                                    </div>
+                                    <div class="contract-stat">
+                                        <div class="stat-icon">⚠️</div>
+                                        <div class="stat-info">
+                                            <div class="stat-value">3</div>
+                                            <div class="stat-label">Договоров истекает в феврале</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pricing-tables">
+                                <div class="pricing-card">
+                                    <div class="pricing-header">
+                                        <h4>💰 Актуальные цены - Гранулаты</h4>
+                                        <span class="update-date">Обновлено: 19.01.2024</span>
+                                    </div>
+                                    <div class="pricing-table">
+                                        <table class="price-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Материал</th>
+                                                    <th>Основной поставщик</th>
+                                                    <th>Цена</th>
+                                                    <th>Альтернатива #1</th>
+                                                    <th>Цена</th>
+                                                    <th>Экономия</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>ПВД LDPE 020C</td>
+                                                    <td>Dow Chemical</td>
+                                                    <td class="price-main">245 ₽/кг</td>
+                                                    <td>SABIC Polymers</td>
+                                                    <td class="price-alt">238 ₽/кг</td>
+                                                    <td class="savings">-7 ₽/кг</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ПНД HDPE 6070</td>
+                                                    <td>SABIC Polymers</td>
+                                                    <td class="price-main">232 ₽/кг</td>
+                                                    <td>LyondellBasell</td>
+                                                    <td class="price-alt">235 ₽/кг</td>
+                                                    <td class="increase">+3 ₽/кг</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="pricing-card">
+                                    <div class="pricing-header">
+                                        <h4>🎨 Актуальные цены - Краски</h4>
+                                        <span class="update-date">Обновлено: 18.01.2024</span>
+                                    </div>
+                                    <div class="pricing-table">
+                                        <table class="price-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Краска</th>
+                                                    <th>Основной поставщик</th>
+                                                    <th>Цена</th>
+                                                    <th>Альтернатива #1</th>
+                                                    <th>Цена</th>
+                                                    <th>Экономия</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Красная RAL 3020</td>
+                                                    <td>Siegwerk</td>
+                                                    <td class="price-main">1,850 ₽/кг</td>
+                                                    <td>Flint Group</td>
+                                                    <td class="price-alt">1,780 ₽/кг</td>
+                                                    <td class="savings">-70 ₽/кг</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Синяя RAL 5017</td>
+                                                    <td>Siegwerk</td>
+                                                    <td class="price-main">1,920 ₽/кг</td>
+                                                    <td>Sun Chemical</td>
+                                                    <td class="price-alt">1,950 ₽/кг</td>
+                                                    <td class="increase">+30 ₽/кг</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="contracts-list">
+                                <div class="table-card">
+                                    <div class="table-header">
+                                        <h3>Активные договоры и сроки действия</h3>
+                                        <div class="table-actions">
+                                            <button class="btn btn-outline" onclick="exportContracts()">📊 Экспорт</button>
+                                            <button class="btn btn-primary" onclick="createContract()">➕ Новый договор</button>
+                                        </div>
+                                    </div>
+                                    <div class="table-container">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Поставщик</th>
+                                                    <th>Номер договора</th>
+                                                    <th>Категория материалов</th>
+                                                    <th>Дата заключения</th>
+                                                    <th>Действует до</th>
+                                                    <th>Статус</th>
+                                                    <th>Объем за год</th>
+                                                    <th>Действия</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="contract-expiring">
+                                                    <td><strong>Dow Chemical Europe</strong></td>
+                                                    <td>CT-2023-001</td>
+                                                    <td>Гранулаты ПВД/ПНД</td>
+                                                    <td>15.02.2023</td>
+                                                    <td><span class="expiring">15.02.2024</span></td>
+                                                    <td><span class="contract-badge expiring">⚠️ Истекает</span></td>
+                                                    <td>12.5M ₽</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-primary" onclick="renewContract('CT-2023-001')">
+                                                            🔄 Продлить
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr class="contract-active">
+                                                    <td><strong>Siegwerk Druckfarben</strong></td>
+                                                    <td>CT-2023-008</td>
+                                                    <td>Краски печатные</td>
+                                                    <td>20.06.2023</td>
+                                                    <td>20.06.2024</td>
+                                                    <td><span class="contract-badge active">✅ Активный</span></td>
+                                                    <td>5.8M ₽</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline" onclick="viewContract('CT-2023-008')">
+                                                            📋 Просмотр
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
