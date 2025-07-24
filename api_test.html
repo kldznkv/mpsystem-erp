@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPSYSTEM ERP - API Test Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .status-indicator.connected {
+            background: #dcfce7;
+            color: #16a34a;
+            border: 1px solid #16a34a;
+        }
+
+        .status-indicator.disconnected {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #dc2626;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            background: #f1f5f9;
+        }
+
+        .tab-button.active {
+            background: #3b82f6;
+            color: white;
+            border-bottom-color: #1d4ed8;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h3 {
+            margin-bottom: 20px;
+            color: #1e293b;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .response-area {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .response-area pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+        }
+
+        .file-upload {
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: #3b82f6;
+            background: #f8fafc;
+        }
+
+        .file-upload.dragover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .results-table th {
+            background: #f1f5f9;
+            font-weight: 600;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #16a34a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏭 MPSYSTEM ERP - API Test Interface</h1>
+            <p>Тестирование CRUD операций и импорта данных</p>
+            <div id="apiStatus" class="status-indicator disconnected">🔴 Проверка соединения...</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('materials')">📦 Материалы</button>
+            <button class="tab-button" onclick="showTab('suppliers')">👥 Поставщики</button>
+            <button class="tab-button" onclick="showTab('batches')">🏷️ Партии</button>
+            <button class="tab-button" onclick="showTab('inventory')">📊 Остатки</button>
+            <button class="tab-button" onclick="showTab('import')">📤 Импорт CSV</button>
+        </div>
+
+        <!-- Materials Tab -->
+        <div id="materials" class="tab-content active">
+            <div class="form-section">
+                <h3>Создать материал</h3>
+                <form id="materialForm" class="form-grid">
+                    <div class="form-group">
+                        <label for="materialCode">Код материала</label>
+                        <input type="text" id="materialCode" name="code" required placeholder="GR-PVD-001">
+                    </div>
+                    <div class="form-group">
+                        <label for="materialName">Наименование</label>
+                        <input type="text" id="materialName" name="name" required placeholder="Гранулят ПВД прозрачный">
+                    </div>
+                    <div class="form-group">
+                        <label for="materialType">Тип материала</label>
+                        <select id="materialType" name="type" required>
+                            <option value="granulate_ldpe">Гранулят ПВД</option>
+                            <option value="granulate_hdpe">Гранулят ПНД</option>
+                            <option value="granulate_pp">Гранулят ПП</option>
+                            <option value="ink_printing">Краска для печати</option>
+                            <option value="adhesive_pu">Клей ПУ</option>
+                            <option value="adhesive_acrylic">Клей акриловый</option>
+                            <option value="solvent">Растворитель</option>
+                            <option value="additive">Добавка</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialUnit">Единица измерения</label>
+                        <select id="materialUnit" name="unit" required>
+                            <option value="кг">кг</option>
+                            <option value="л">л</option>
+                            <option value="м">м</option>
+                            <option value="шт">шт</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialDescription">Описание</label>
+                        <textarea id="materialDescription" name="description" rows="3" placeholder="Описание материала"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialCost">Стандартная стоимость</label>
+                        <input type="number" id="materialCost" name="standard_cost" step="0.01" placeholder="245.50">
+                    </div>
+                    <div class="form-group">
+                        <label for="materialMinStock">Минимальный остаток</label>
+                        <input type="number" id="materialMinStock" name="min_stock_level" step="0.01" placeholder="1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="materialReorderPoint">Точка перезаказа</label>
+                        <input type="number" id="materialReorderPoint" name="reorder_point" step="0.01" placeholder="2000">
+                    </div>
+                </form>
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="createMaterial()">Создать материал</button>
+                    <button class="btn btn-secondary" onclick="getMaterials()">Получить список</button>
+                    <button class="btn btn-secondary" onclick="getLowStockMaterials()">Низкие остатки</button>
+                </div>
+            </div>
+            <div id="materialResults" class="response-area" style="display: none;"></div>
+        </div>
+
+        <!-- Suppliers Tab -->
+        <div id="suppliers" class="tab-content">
+            <div class="form-section">
+                <h3>Создать поставщика</h3>
+                <form id="supplierForm" class="form-grid">
+                    <div class="form-group">
+                        <label for="supplierCode">Код поставщика</label>
+                        <input type="text" id="supplierCode" name="code" required placeholder="SUP001">
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierName">Наименование</label>
+                        <input type="text" id="supplierName" name="name" required placeholder="Dow Chemical Europe">
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierContact">Контактное лицо</label>
+                        <input type="text" id="supplierContact" name="contact_person" placeholder="John Smith">
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierEmail">Email</label>
+                        <input type="email" id="supplierEmail" name="email" placeholder="john.smith@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierPhone">Телефон</label>
+                        <input type="tel" id="supplierPhone" name="phone" placeholder="+7-495-123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierAddress">Адрес</label>
+                        <textarea id="supplierAddress" name="address" rows="3" placeholder="Адрес поставщика"></textarea>
+                    </div>
+                </form>
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="createSupplier()">Создать поставщика</button>
+                    <button class="btn btn-secondary" onclick="getSuppliers()">Получить список</button>
+                </div>
+            </div>
+            <div id="supplierResults" class="response-area" style="display: none;"></div>
+        </div>
+
+        <!-- Batches Tab -->
+        <div id="batches" class="tab-content">
+            <div class="form-section">
+                <h3>Принять партию (поставку)</h3>
+                <form id="batchForm" class="form-grid">
+                    <div class="form-group">
+                        <label for="batchNumber">Номер партии</label>
+                        <input type="text" id="batchNumber" name="batch_number" required placeholder="240119-001">
+                    </div>
+                    <div class="form-group">
+                        <label for="batchMaterial">ID материала</label>
+                        <input type="number" id="batchMaterial" name="material_id" required placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="batchSupplier">ID поставщика</label>
+                        <input type="number" id="batchSupplier" name="supplier_id" required placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="batchQuantity">Полученное количество</label>
+                        <input type="number" id="batchQuantity" name="received_quantity" step="0.01" required placeholder="1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="batchProductionDate">Дата производства</label>
+                        <input type="date" id="batchProductionDate" name="production_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="batchReceivedDate">Дата получения</label>
+                        <input type="date" id="batchReceivedDate" name="received_date" required>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <h4>Документы качества:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                            <label><input type="checkbox" name="has_coa"> CoA (Certificate of Analysis)</label>
+                            <label><input type="checkbox" name="has_tds"> TDS (Technical Data Sheet)</label>
+                            <label><input type="checkbox" name="has_sds"> SDS (Safety Data Sheet)</label>
+                            <label><input type="checkbox" name="has_doc"> DoC (Declaration of Compliance)</label>
+                            <label><input type="checkbox" name="has_cmr"> CMR (Transport Document)</label>
+                        </div>
+                    </div>
+                </form>
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="createBatch()">Принять партию</button>
+                    <button class="btn btn-secondary" onclick="getBatches()">Получить партии</button>
+                    <button class="btn btn-secondary" onclick="getPendingQualityBatches()">Ожидающие контроля</button>
+                </div>
+            </div>
+            <div id="batchResults" class="response-area" style="display: none;"></div>
+        </div>
+
+        <!-- Inventory Tab -->
+        <div id="inventory" class="tab-content">
+            <div class="form-section">
+                <h3>Запросы остатков</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="warehouseFilter">Фильтр по складу (ID)</label>
+                        <input type="number" id="warehouseFilter" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="materialFilter">Фильтр по материалу (ID)</label>
+                        <input type="number" id="materialFilter" placeholder="1">
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="getInventory()">Получить остатки</button>
+                    <button class="btn btn-secondary" onclick="getWarehouseStats()">Статистика складов</button>
+                </div>
+            </div>
+            <div id="inventoryResults" class="response-area" style="display: none;"></div>
+        </div>
+
+        <!-- Import Tab -->
+        <div id="import" class="tab-content">
+            <div class="form-section">
+                <h3>Импорт данных из CSV</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Тип импорта</label>
+                        <select id="importType">
+                            <option value="materials">Материалы</option>
+                            <option value="suppliers">Поставщики</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" id="hasHeader" checked> Файл содержит заголовки</label>
+                    </div>
+                </div>
+                
+                <div class="file-upload" id="fileUpload" onclick="document.getElementById('csvFile').click()">
+                    <input type="file" id="csvFile" accept=".csv" style="display: none;" onchange="handleFileSelect(this)">
+                    <p>📁 Нажмите для выбора CSV файла или перетащите сюда</p>
+                    <p style="font-size: 14px; color: #6b7280;">Поддерживаются файлы .csv</p>
+                </div>
+                
+                <div id="fileInfo" style="display: none; margin-top: 15px; padding: 15px; background: #f0f9ff; border-radius: 8px;">
+                    <p><strong>Выбранный файл:</strong> <span id="fileName"></span></p>
+                    <p><strong>Размер:</strong> <span id="fileSize"></span></p>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="importCSV()" id="importBtn" disabled>Импортировать данные</button>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h4>Формат CSV для материалов:</h4>
+                    <pre style="background: #f8fafc; padding: 15px; border-radius: 8px; font-size: 13px;">code,name,type,unit,description,min_stock_level,standard_cost
+GR-PVD-001,Гранулят ПВД прозрачный,granulate_ldpe,кг,Описание,1000,245.50</pre>
+                    
+                    <h4>Формат CSV для поставщиков:</h4>
+                    <pre style="background: #f8fafc; padding: 15px; border-radius: 8px; font-size: 13px;">code,name,contact_person,email,phone,address
+SUP001,Dow Chemical Europe,John Smith,john@dow.com,+49-123-456789,Germany</pre>
+                </div>
+            </div>
+            <div id="importResults" class="response-area" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/v1';
+        let selectedFile = null;
+
+        // Check API connection status
+        async function checkApiStatus() {
+            try {
+                const response = await fetch('http://localhost:8000/health');
+                const data = await response.json();
+                document.getElementById('apiStatus').textContent = '🟢 API подключено';
+                document.getElementById('apiStatus').className = 'status-indicator connected';
+            } catch (error) {
+                document.getElementById('apiStatus').textContent = '🔴 API недоступно';
+                document.getElementById('apiStatus').className = 'status-indicator disconnected';
+            }
+        }
+
+        // Tab management
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // API Functions
+        async function apiRequest(endpoint, method = 'GET', data = null, isFormData = false) {
+            const url = `${API_BASE}${endpoint}`;
+            const options = {
+                method,
+                headers: isFormData ? {} : {
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            if (data) {
+                options.body = isFormData ? data : JSON.stringify(data);
+            }
+
+            try {
+                const response = await fetch(url, options);
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${result.detail || 'Unknown error'}`);
+                }
+                
+                return result;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        function showResult(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.innerHTML = isError ? 
+                `<div class="error">❌ Ошибка: ${data}</div>` :
+                `<div class="success">✅ Успешно</div><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        // Materials functions
+        async function createMaterial() {
+            const form = document.getElementById('materialForm');
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (value) {
+                    if (['standard_cost', 'min_stock_level', 'reorder_point'].includes(key)) {
+                        data[key] = parseFloat(value);
+                    } else {
+                        data[key] = value;
+                    }
+                }
+            }
+
+            try {
+                const result = await apiRequest('/warehouse/materials', 'POST', data);
+                showResult('materialResults', result);
+                form.reset();
+            } catch (error) {
+                showResult('materialResults', error.message, true);
+            }
+        }
+
+        async function getMaterials() {
+            try {
+                const result = await apiRequest('/warehouse/materials');
+                showResult('materialResults', result);
+            } catch (error) {
+                showResult('materialResults', error.message, true);
+            }
+        }
+
+        async function getLowStockMaterials() {
+            try {
+                const result = await apiRequest('/warehouse/materials/low-stock');
+                showResult('materialResults', result);
+            } catch (error) {
+                showResult('materialResults', error.message, true);
+            }
+        }
+
+        // Suppliers functions
+        async function createSupplier() {
+            const form = document.getElementById('supplierForm');
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (value) data[key] = value;
+            }
+
+            try {
+                const result = await apiRequest('/warehouse/suppliers', 'POST', data);
+                showResult('supplierResults', result);
+                form.reset();
+            } catch (error) {
+                showResult('supplierResults', error.message, true);
+            }
+        }
+
+        async function getSuppliers() {
+            try {
+                const result = await apiRequest('/warehouse/suppliers');
+                showResult('supplierResults', result);
+            } catch (error) {
+                showResult('supplierResults', error.message, true);
+            }
+        }
+
+        // Batches functions
+        async function createBatch() {
+            const form = document.getElementById('batchForm');
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (value) {
+                    if (['material_id', 'supplier_id'].includes(key)) {
+                        data[key] = parseInt(value);
+                    } else if (key === 'received_quantity') {
+                        data[key] = parseFloat(value);
+                    } else if (['production_date', 'received_date'].includes(key)) {
+                        data[key] = value + 'T00:00:00';
+                    } else {
+                        data[key] = value;
+                    }
+                }
+            }
+
+            // Handle checkboxes
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                data[cb.name] = cb.checked;
+            });
+
+            try {
+                const result = await apiRequest('/warehouse/batches', 'POST', data);
+                showResult('batchResults', result);
+                form.reset();
+            } catch (error) {
+                showResult('batchResults', error.message, true);
+            }
+        }
+
+        async function getBatches() {
+            try {
+                const result = await apiRequest('/warehouse/batches');
+                showResult('batchResults', result);
+            } catch (error) {
+                showResult('batchResults', error.message, true);
+            }
+        }
+
+        async function getPendingQualityBatches() {
+            try {
+                const result = await apiRequest('/warehouse/batches/pending-quality');
+                showResult('batchResults', result);
+            } catch (error) {
+                showResult('batchResults', error.message, true);
+            }
+        }
+
+        // Inventory functions
+        async function getInventory() {
+            let endpoint = '/warehouse/inventory';
+            const params = new URLSearchParams();
+            
+            const warehouseId = document.getElementById('warehouseFilter').value;
+            const materialId = document.getElementById('materialFilter').value;
+            
+            if (warehouseId) params.append('warehouse_id', warehouseId);
+            if (materialId) params.append('material_id', materialId);
+            
+            if (params.toString()) {
+                endpoint += '?' + params.toString();
+            }
+
+            try {
+                const result = await apiRequest(endpoint);
+                showResult('inventoryResults', result);
+            } catch (error) {
+                showResult('inventoryResults', error.message, true);
+            }
+        }
+
+        async function getWarehouseStats() {
+            try {
+                const result = await apiRequest('/warehouse/summary/stats');
+                showResult('inventoryResults', result);
+            } catch (error) {
+                showResult('inventoryResults', error.message, true);
+            }
+        }
+
+        // File upload functions
+        function handleFileSelect(input) {
+            const file = input.files[0];
+            if (file) {
+                selectedFile = file;
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(2) + ' KB';
+                document.getElementById('fileInfo').style.display = 'block';
+                document.getElementById('importBtn').disabled = false;
+            }
+        }
+
+        async function importCSV() {
+            if (!selectedFile) {
+                alert('Пожалуйста, выберите файл');
+                return;
+            }
+
+            const importType = document.getElementById('importType').value;
+            const hasHeader = document.getElementById('hasHeader').checked;
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('has_header', hasHeader);
+            formData.append('delimiter', ',');
+
+            try {
+                const endpoint = `/warehouse/import/${importType}`;
+                const result = await apiRequest(endpoint, 'POST', formData, true);
+                showResult('importResults', result);
+            } catch (error) {
+                showResult('importResults', error.message, true);
+            }
+        }
+
+        // Drag and drop support
+        const fileUpload = document.getElementById('fileUpload');
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.classList.add('dragover');
+        });
+
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.classList.remove('dragover');
+        });
+
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('csvFile').files = files;
+                handleFileSelect(document.getElementById('csvFile'));
+            }
+        });
+
+        // Set today's date for batch received date
+        document.getElementById('batchReceivedDate').value = new Date().toISOString().split('T')[0];
+
+        // Initialize
+        checkApiStatus();
+        setInterval(checkApiStatus, 30000); // Check every 30 seconds
+    </script>
+</body>
+</html>

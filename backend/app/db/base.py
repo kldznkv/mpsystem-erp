@@ -28,3 +28,9 @@ class TimestampMixin:
 class BaseModel(Base, TimestampMixin):
     """Base model with timestamps for all tables"""
     __abstract__ = True
+
+
+# Import all models to ensure they're registered with SQLAlchemy
+from app.models.warehouse import *
+from app.models.procurement import *
+from app.models.production import *
