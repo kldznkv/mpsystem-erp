@@ -1801,6 +1801,76 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Materials Management -->
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <h3>📦 Управление материалами</h3>
+                        <button class="btn btn-primary" onclick="showModal('materialModal')">
+                            ➕ Добавить материал
+                        </button>
+                    </div>
+
+                    <div class="search-container">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Поиск материалов..." onkeyup="filterMaterials(this.value)">
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Код</th>
+                                    <th>Наименование</th>
+                                    <th>Тип</th>
+                                    <th>Единица</th>
+                                    <th>Стоимость</th>
+                                    <th>Мин. остаток</th>
+                                    <th>Поставщик</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="materialsTable">
+                                <!-- Materials will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Suppliers Management -->
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <h3>👥 Управление поставщиками</h3>
+                        <button class="btn btn-primary" onclick="showModal('supplierModal')">
+                            ➕ Добавить поставщика
+                        </button>
+                    </div>
+
+                    <div class="search-container">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Поиск поставщиков..." onkeyup="filterSuppliers(this.value)">
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Код</th>
+                                    <th>Наименование</th>
+                                    <th>Контакт</th>
+                                    <th>Email</th>
+                                    <th>Телефон</th>
+                                    <th>Рейтинг</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="suppliersTable">
+                                <!-- Suppliers will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1809,7 +1879,7 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Заказы</h2>
-                    <button class="btn btn-primary" onclick="createOrder()">
+                    <button class="btn btn-primary" onclick="showModal('orderModal')">
                         ➕ Новый заказ
                     </button>
                 </div>
@@ -1867,6 +1937,33 @@
                         <div class="order-dates">
                             <small>Заказ: 23.01.2024 | Поставка: 30.01.2024</small>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- Orders Table Management -->
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <h3>📑 Управление заказами</h3>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Номер заказа</th>
+                                    <th>Клиент</th>
+                                    <th>Продукт</th>
+                                    <th>Количество</th>
+                                    <th>Дата заказа</th>
+                                    <th>Статус</th>
+                                    <th>Приоритет</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTable">
+                                <!-- Orders will be populated here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1933,6 +2030,66 @@
                                 <span class="quantity">50000 шт</span>
                             </div>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- Inventory Management -->
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <h3>📋 Управление остатками</h3>
+                        <button class="btn btn-primary" onclick="showModal('inventoryModal')">
+                            ➕ Добавить остаток
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Материал</th>
+                                    <th>Склад</th>
+                                    <th>Партия</th>
+                                    <th>Количество</th>
+                                    <th>Зарезервировано</th>
+                                    <th>Доступно</th>
+                                    <th>Локация</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTable">
+                                <!-- Inventory will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Batches Management -->
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <h3>🏷️ Управление партиями</h3>
+                        <button class="btn btn-primary" onclick="showModal('batchModal')">
+                            ➕ Принять партию
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Номер партии</th>
+                                    <th>Материал</th>
+                                    <th>Поставщик</th>
+                                    <th>Количество</th>
+                                    <th>Дата получения</th>
+                                    <th>Статус качества</th>
+                                    <th>Документы</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="batchesTable">
+                                <!-- Batches will be populated here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -2858,6 +3015,336 @@
                 </div>
             </div>
 
+            <!-- CRUD Modals -->
+            
+            <!-- Material Modal -->
+            <div id="materialModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Добавить материал</h3>
+                        <button class="modal-close" onclick="hideModal('materialModal')">&times;</button>
+                    </div>
+                    
+                    <form id="materialForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="materialCode">Код материала *</label>
+                                <input type="text" id="materialCode" name="code" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="materialName">Наименование *</label>
+                                <input type="text" id="materialName" name="name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="materialType">Тип материала *</label>
+                                <select id="materialType" name="type" required>
+                                    <option value="">Выберите тип</option>
+                                    <option value="granulate_ldpe">Гранулят ПВД</option>
+                                    <option value="granulate_hdpe">Гранулят ПНД</option>
+                                    <option value="granulate_pp">Гранулят ПП</option>
+                                    <option value="film_pet">Пленка ПЭТ</option>
+                                    <option value="film_ldpe">Пленка ПВД</option>
+                                    <option value="dye">Краситель</option>
+                                    <option value="additive">Добавка</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="materialUnit">Единица измерения *</label>
+                                <select id="materialUnit" name="unit" required>
+                                    <option value="">Выберите единицу</option>
+                                    <option value="кг">кг</option>
+                                    <option value="т">т</option>
+                                    <option value="м">м</option>
+                                    <option value="п.м.">п.м.</option>
+                                    <option value="шт">шт</option>
+                                    <option value="л">л</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="materialCost">Стандартная стоимость (₽)</label>
+                                <input type="number" id="materialCost" name="standard_cost" step="0.01" min="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="materialMinStock">Минимальный остаток</label>
+                                <input type="number" id="materialMinStock" name="min_stock_level" min="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="materialReorderPoint">Точка перезаказа</label>
+                                <input type="number" id="materialReorderPoint" name="reorder_point" min="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="materialSupplier">Поставщик</label>
+                                <select id="materialSupplier" name="supplier_id">
+                                    <option value="">Выберите поставщика</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="materialDescription">Описание</label>
+                                <textarea id="materialDescription" name="description" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideModal('materialModal')">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Supplier Modal -->
+            <div id="supplierModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Добавить поставщика</h3>
+                        <button class="modal-close" onclick="hideModal('supplierModal')">&times;</button>
+                    </div>
+                    
+                    <form id="supplierForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="supplierCode">Код поставщика *</label>
+                                <input type="text" id="supplierCode" name="code" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="supplierName">Наименование *</label>
+                                <input type="text" id="supplierName" name="name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="supplierContact">Контактное лицо</label>
+                                <input type="text" id="supplierContact" name="contact_person">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="supplierEmail">Email</label>
+                                <input type="email" id="supplierEmail" name="email">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="supplierPhone">Телефон</label>
+                                <input type="tel" id="supplierPhone" name="phone">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="supplierActive">Статус</label>
+                                <select id="supplierActive" name="is_active">
+                                    <option value="true">Активный</option>
+                                    <option value="false">Неактивный</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="supplierAddress">Адрес</label>
+                                <textarea id="supplierAddress" name="address" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideModal('supplierModal')">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Inventory Modal -->
+            <div id="inventoryModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Добавить остаток</h3>
+                        <button class="modal-close" onclick="hideModal('inventoryModal')">&times;</button>
+                    </div>
+                    
+                    <form id="inventoryForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="inventoryMaterialSelect">Материал *</label>
+                                <select id="inventoryMaterialSelect" name="material_id" required>
+                                    <option value="">Выберите материал</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inventoryWarehouse">Склад *</label>
+                                <select id="inventoryWarehouse" name="warehouse" required>
+                                    <option value="">Выберите склад</option>
+                                    <option value="MAG-1">Склад сырья</option>
+                                    <option value="MAG-2">Склад готовой продукции</option>
+                                    <option value="MAG-3">Склад упаковки</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inventoryBatch">Номер партии</label>
+                                <input type="text" id="inventoryBatch" name="batch_number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inventoryQuantity">Количество *</label>
+                                <input type="number" id="inventoryQuantity" name="quantity" required min="0" step="0.01">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inventoryReserved">Зарезервировано</label>
+                                <input type="number" id="inventoryReserved" name="reserved_quantity" min="0" step="0.01" value="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inventoryLocation">Код локации</label>
+                                <input type="text" id="inventoryLocation" name="location_code" placeholder="A1-05-02">
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideModal('inventoryModal')">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Batch Modal -->
+            <div id="batchModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Принять партию</h3>
+                        <button class="modal-close" onclick="hideModal('batchModal')">&times;</button>
+                    </div>
+                    
+                    <form id="batchForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="batchNumber">Номер партии *</label>
+                                <input type="text" id="batchNumber" name="batch_number" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="batchMaterialSelect">Материал *</label>
+                                <select id="batchMaterialSelect" name="material_id" required>
+                                    <option value="">Выберите материал</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="batchSupplierSelect">Поставщик *</label>
+                                <select id="batchSupplierSelect" name="supplier_id" required>
+                                    <option value="">Выберите поставщика</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="batchQuantity">Получено количество *</label>
+                                <input type="number" id="batchQuantity" name="received_quantity" required min="0" step="0.01">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="batchProductionDate">Дата производства</label>
+                                <input type="date" id="batchProductionDate" name="production_date">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="batchReceivedDate">Дата получения *</label>
+                                <input type="date" id="batchReceivedDate" name="received_date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="batchQualityStatus">Статус качества</label>
+                                <select id="batchQualityStatus" name="quality_status">
+                                    <option value="pending">На проверке</option>
+                                    <option value="approved">Одобрено</option>
+                                    <option value="rejected">Отклонено</option>
+                                    <option value="quarantine">Карантин</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideModal('batchModal')">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Modal -->
+            <div id="orderModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Создать заказ</h3>
+                        <button class="modal-close" onclick="hideModal('orderModal')">&times;</button>
+                    </div>
+                    
+                    <form id="orderForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="orderNumber">Номер заказа *</label>
+                                <input type="text" id="orderNumber" name="order_number" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderCustomer">Клиент *</label>
+                                <input type="text" id="orderCustomer" name="customer" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderProduct">Продукт *</label>
+                                <input type="text" id="orderProduct" name="product" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderQuantity">Количество *</label>
+                                <input type="number" id="orderQuantity" name="quantity" required min="0" step="0.01">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderDate">Дата заказа *</label>
+                                <input type="date" id="orderDate" name="order_date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderDeliveryDate">Дата поставки</label>
+                                <input type="date" id="orderDeliveryDate" name="delivery_date">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderStatus">Статус</label>
+                                <select id="orderStatus" name="status">
+                                    <option value="new">Новый</option>
+                                    <option value="in_progress">В работе</option>
+                                    <option value="completed">Завершен</option>
+                                    <option value="cancelled">Отменен</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderPriority">Приоритет</label>
+                                <select id="orderPriority" name="priority">
+                                    <option value="low">Низкий</option>
+                                    <option value="medium">Средний</option>
+                                    <option value="high">Высокий</option>
+                                    <option value="urgent">Критичный</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideModal('orderModal')">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <!-- File input for old import (backup) -->
             <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="handleFileImport(event)">
 
@@ -3256,17 +3743,22 @@
         }
 
         function loadPlanning() {
-            // Planning module is already populated with static data
+            // Load planning data
+            loadMaterials();
+            loadSuppliers();
             showToast('Планирование загружено', 'success');
         }
 
         function loadOrders() {
-            // Orders module is already populated with static data
+            // Load orders data
+            loadOrdersTable();
             showToast('Заказы загружены', 'success');
         }
 
         function loadWarehouse() {
-            // Warehouse module is already populated with static data
+            // Load warehouse data
+            loadInventory();
+            loadBatches();
             showToast('Склад загружен', 'success');
         }
 
@@ -3280,22 +3772,230 @@
             showToast('Аналитика загружена', 'success');
         }
 
-        // Simplified action functions
+        // Action functions
         function createPlan() {
             showToast('Функция создания плана - в разработке', 'info');
         }
 
-        function createOrder() {
-            showToast('Функция создания заказа - в разработке', 'info');
-        }
-
         function receiveDelivery() {
-            showToast('Функция приемки поставки - в разработке', 'info');
+            showModal('batchModal');
         }
 
         function refreshProduction() {
             loadProduction();
             showToast('Данные производства обновлены', 'success');
+        }
+
+        // =============================================
+        // MATERIALS FUNCTIONS
+        // =============================================
+
+        function loadMaterials() {
+            const materials = storage.getTable('materials');
+            const suppliers = storage.getTable('suppliers');
+            const materialsTable = document.getElementById('materialsTable');
+            
+            if (materials.length === 0) {
+                materialsTable.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <div class="empty-state-icon">📦</div>
+                            <p>Нет материалов для отображения</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            materialsTable.innerHTML = materials.map(material => {
+                const supplier = suppliers.find(s => s.id === material.supplier_id);
+                return `
+                    <tr>
+                        <td>${material.code}</td>
+                        <td>${material.name}</td>
+                        <td>${getTypeLabel(material.type)}</td>
+                        <td>${material.unit}</td>
+                        <td>${material.standard_cost ? material.standard_cost.toFixed(2) + ' ₽' : '-'}</td>
+                        <td>${material.min_stock_level || '-'}</td>
+                        <td>${supplier ? supplier.name : '-'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-secondary" onclick="editMaterial(${material.id})" title="Редактировать">✏️</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteMaterial(${material.id})" title="Удалить">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterMaterials(searchTerm) {
+            const materials = storage.getTable('materials');
+            const suppliers = storage.getTable('suppliers');
+            const filtered = materials.filter(material => 
+                material.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                material.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                getTypeLabel(material.type).toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            const materialsTable = document.getElementById('materialsTable');
+            materialsTable.innerHTML = filtered.map(material => {
+                const supplier = suppliers.find(s => s.id === material.supplier_id);
+                return `
+                    <tr>
+                        <td>${material.code}</td>
+                        <td>${material.name}</td>
+                        <td>${getTypeLabel(material.type)}</td>
+                        <td>${material.unit}</td>
+                        <td>${material.standard_cost ? material.standard_cost.toFixed(2) + ' ₽' : '-'}</td>
+                        <td>${material.min_stock_level || '-'}</td>
+                        <td>${supplier ? supplier.name : '-'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-secondary" onclick="editMaterial(${material.id})" title="Редактировать">✏️</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteMaterial(${material.id})" title="Удалить">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getTypeLabel(type) {
+            const types = {
+                'granulate_ldpe': 'Гранулят ПВД',
+                'granulate_hdpe': 'Гранулят ПНД', 
+                'granulate_pp': 'Гранулят ПП',
+                'film_pet': 'Пленка ПЭТ',
+                'film_ldpe': 'Пленка ПВД',
+                'dye': 'Краситель',
+                'additive': 'Добавка'
+            };
+            return types[type] || type;
+        }
+
+        function deleteMaterial(id) {
+            if (confirm('Вы уверены, что хотите удалить этот материал?')) {
+                const deleted = storage.deleteRecord('materials', id);
+                storage.addActivity('material_deleted', `Удален материал ${deleted.code}`);
+                showToast('Материал удален', 'success');
+                loadMaterials();
+                loadDashboard();
+            }
+        }
+
+        function editMaterial(id) {
+            const material = storage.getTable('materials').find(m => m.id === id);
+            if (!material) return;
+
+            // Fill form with existing data
+            document.getElementById('materialCode').value = material.code;
+            document.getElementById('materialName').value = material.name;
+            document.getElementById('materialType').value = material.type;
+            document.getElementById('materialUnit').value = material.unit;
+            document.getElementById('materialCost').value = material.standard_cost || '';
+            document.getElementById('materialMinStock').value = material.min_stock_level || '';
+            document.getElementById('materialReorderPoint').value = material.reorder_point || '';
+            document.getElementById('materialSupplier').value = material.supplier_id || '';
+            document.getElementById('materialDescription').value = material.description || '';
+
+            // Set edit mode
+            document.getElementById('materialForm').dataset.editId = id;
+            document.querySelector('#materialModal h3').textContent = 'Редактировать материал';
+            
+            // Load suppliers for select
+            loadSuppliersSelect();
+            
+            showModal('materialModal');
+        }
+
+        // =============================================
+        // SUPPLIERS FUNCTIONS  
+        // =============================================
+
+        function loadSuppliers() {
+            const suppliers = storage.getTable('suppliers');
+            const suppliersTable = document.getElementById('suppliersTable');
+            
+            if (suppliers.length === 0) {
+                suppliersTable.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <div class="empty-state-icon">👥</div>
+                            <p>Нет поставщиков для отображения</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            suppliersTable.innerHTML = suppliers.map(supplier => `
+                <tr>
+                    <td>${supplier.code}</td>
+                    <td>${supplier.name}</td>
+                    <td>${supplier.contact_person || '-'}</td>
+                    <td>${supplier.email || '-'}</td>
+                    <td>${supplier.phone || '-'}</td>
+                    <td>⭐⭐⭐⭐⭐</td>
+                    <td><span class="badge ${supplier.is_active ? 'badge-success' : 'badge-danger'}">${supplier.is_active ? 'Активный' : 'Неактивный'}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" onclick="editSupplier(${supplier.id})" title="Редактировать">✏️</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteSupplier(${supplier.id})" title="Удалить">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterSuppliers(searchTerm) {
+            const suppliers = storage.getTable('suppliers');
+            const filtered = suppliers.filter(supplier => 
+                supplier.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (supplier.contact_person && supplier.contact_person.toLowerCase().includes(searchTerm.toLowerCase()))
+            );
+            
+            const suppliersTable = document.getElementById('suppliersTable');
+            suppliersTable.innerHTML = filtered.map(supplier => `
+                <tr>
+                    <td>${supplier.code}</td>
+                    <td>${supplier.name}</td>
+                    <td>${supplier.contact_person || '-'}</td>
+                    <td>${supplier.email || '-'}</td>
+                    <td>${supplier.phone || '-'}</td>
+                    <td>⭐⭐⭐⭐⭐</td>
+                    <td><span class="badge ${supplier.is_active ? 'badge-success' : 'badge-danger'}">${supplier.is_active ? 'Активный' : 'Неактивный'}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" onclick="editSupplier(${supplier.id})" title="Редактировать">✏️</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteSupplier(${supplier.id})" title="Удалить">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteSupplier(id) {
+            if (confirm('Вы уверены, что хотите удалить этого поставщика?')) {
+                const deleted = storage.deleteRecord('suppliers', id);
+                storage.addActivity('supplier_deleted', `Удален поставщик ${deleted.name}`);
+                showToast('Поставщик удален', 'success');
+                loadSuppliers();
+                loadDashboard();
+            }
+        }
+
+        function editSupplier(id) {
+            const supplier = storage.getTable('suppliers').find(s => s.id === id);
+            if (!supplier) return;
+
+            // Fill form with existing data
+            document.getElementById('supplierCode').value = supplier.code;
+            document.getElementById('supplierName').value = supplier.name;
+            document.getElementById('supplierContact').value = supplier.contact_person || '';
+            document.getElementById('supplierEmail').value = supplier.email || '';
+            document.getElementById('supplierPhone').value = supplier.phone || '';
+            document.getElementById('supplierActive').value = supplier.is_active.toString();
+            document.getElementById('supplierAddress').value = supplier.address || '';
+
+            // Set edit mode
+            document.getElementById('supplierForm').dataset.editId = id;
+            document.querySelector('#supplierModal h3').textContent = 'Редактировать поставщика';
+            
+            showModal('supplierModal');
         }
 
         function filterOrders(status) {
@@ -3562,6 +4262,134 @@
 
         function printWarehouseLabel() {
             showToast('Печать этикетки - в разработке', 'info');
+        }
+
+        // =============================================
+        // ADDITIONAL CRUD FUNCTIONS
+        // =============================================
+
+        function loadInventory() {
+            const inventory = storage.getTable('inventory');
+            const materials = storage.getTable('materials');
+            const inventoryTable = document.getElementById('inventoryTable');
+            
+            if (inventory.length === 0) {
+                inventoryTable.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem;">Нет остатков для отображения</td></tr>`;
+                return;
+            }
+
+            inventoryTable.innerHTML = inventory.map(item => {
+                const material = materials.find(m => m.id === item.material_id);
+                const available = item.quantity - (item.reserved_quantity || 0);
+                return `
+                    <tr>
+                        <td>${material ? material.name : 'Неизвестный материал'}</td>
+                        <td>${item.warehouse}</td>
+                        <td>${item.batch_number || '-'}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.reserved_quantity || 0}</td>
+                        <td>${available}</td>
+                        <td>${item.location_code || '-'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="deleteInventory(${item.id})" title="Удалить">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function loadBatches() {
+            const batches = storage.getTable('batches');
+            const materials = storage.getTable('materials');
+            const suppliers = storage.getTable('suppliers');
+            const batchesTable = document.getElementById('batchesTable');
+            
+            if (batches.length === 0) {
+                batchesTable.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem;">Нет партий для отображения</td></tr>`;
+                return;
+            }
+
+            batchesTable.innerHTML = batches.map(batch => {
+                const material = materials.find(m => m.id === batch.material_id);
+                const supplier = suppliers.find(s => s.id === batch.supplier_id);
+                return `
+                    <tr>
+                        <td>${batch.batch_number}</td>
+                        <td>${material ? material.name : 'Неизвестный материал'}</td>
+                        <td>${supplier ? supplier.name : 'Неизвестный поставщик'}</td>
+                        <td>${batch.received_quantity}</td>
+                        <td>${new Date(batch.received_date).toLocaleDateString()}</td>
+                        <td><span class="badge badge-success">Одобрено</span></td>
+                        <td>📄</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="deleteBatch(${batch.id})" title="Удалить">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function loadOrdersTable() {
+            const orders = storage.getTable('orders');
+            const ordersTable = document.getElementById('ordersTable');
+            
+            if (orders.length === 0) {
+                ordersTable.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem;">Нет заказов для отображения</td></tr>`;
+                return;
+            }
+
+            ordersTable.innerHTML = orders.map(order => `
+                <tr>
+                    <td>${order.order_number}</td>
+                    <td>${order.customer}</td>
+                    <td>${order.product}</td>
+                    <td>${order.quantity}</td>
+                    <td>${new Date(order.order_date).toLocaleDateString()}</td>
+                    <td><span class="badge badge-info">Новый</span></td>
+                    <td><span class="badge badge-warning">Средний</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteOrder(${order.id})" title="Удалить">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteInventory(id) {
+            if (confirm('Удалить остаток?')) {
+                storage.deleteRecord('inventory', id);
+                loadInventory();
+                showToast('Остаток удален', 'success');
+            }
+        }
+
+        function deleteBatch(id) {
+            if (confirm('Удалить партию?')) {
+                storage.deleteRecord('batches', id);
+                loadBatches();
+                showToast('Партия удалена', 'success');
+            }
+        }
+
+        function deleteOrder(id) {
+            if (confirm('Удалить заказ?')) {
+                storage.deleteRecord('orders', id);
+                loadOrdersTable();
+                showToast('Заказ удален', 'success');
+            }
+        }
+
+        function loadMaterialsSelect(selectId) {
+            const materials = storage.getTable('materials');
+            const select = document.getElementById(selectId);
+            select.innerHTML = '<option value="">Выберите материал</option>' + 
+                materials.map(m => `<option value="${m.id}">${m.name} (${m.code})</option>`).join('');
+        }
+
+        function loadSuppliersSelect(selectId = 'materialSupplier') {
+            const suppliers = storage.getTable('suppliers');
+            const select = document.getElementById(selectId);
+            select.innerHTML = '<option value="">Выберите поставщика</option>' + 
+                suppliers.map(s => `<option value="${s.id}">${s.name} (${s.code})</option>`).join('');
         }
 
         // =============================================
