@@ -943,6 +943,564 @@
             padding-top: 1.5rem;
             margin-top: 2rem;
         }
+
+        /* Simplified Interface Styles */
+        .dashboard-widgets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .widget-content {
+            padding: 1rem;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .task-status.completed {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .task-status.pending {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 0.75rem;
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            color: #92400e;
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+
+        /* Planning Timeline */
+        .planning-timeline {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .timeline-header {
+            display: grid;
+            grid-template-columns: 200px repeat(5, 1fr);
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .timeline-date {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            border-right: 1px solid var(--border-light);
+        }
+
+        .timeline-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .production-line {
+            display: grid;
+            grid-template-columns: 200px repeat(5, 1fr);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .production-line:last-child {
+            border-bottom: none;
+        }
+
+        .line-name {
+            padding: 1rem;
+            font-weight: 600;
+            background: var(--bg-tertiary);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-slots {
+            display: contents;
+        }
+
+        .time-slot {
+            padding: 1rem;
+            border-right: 1px solid var(--border-light);
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .time-slot.busy {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        .time-slot.available {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .time-slot.planned {
+            background: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+        }
+
+        .time-slot.maintenance {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+
+        /* Orders Grid */
+        .orders-filter {
+            margin-bottom: 2rem;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .order-card {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .order-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .order-number {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--primary-color);
+        }
+
+        .order-info {
+            margin-bottom: 1rem;
+        }
+
+        .order-customer {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-product {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .order-quantity {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .order-dates {
+            color: var(--text-tertiary);
+        }
+
+        /* Warehouse */
+        .warehouse-overview {
+            margin-bottom: 2rem;
+        }
+
+        .warehouse-stats {
+            display: flex;
+            justify-content: space-around;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .warehouse-sections {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .warehouse-section h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .material-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .material-card {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+        }
+
+        .material-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .material-quantity {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .material-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .material-status.low {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        .material-status.ok {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .finished-goods {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .goods-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+        }
+
+        .quantity {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Production Lines */
+        .production-lines {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .production-line-card {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+
+        .line-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .line-header h3 {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .line-status {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .line-status.running {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .line-status.maintenance {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+
+        .line-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .current-order {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            transition: width 0.3s ease;
+        }
+
+        .line-metrics {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .production-summary {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+
+        .production-summary h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Analytics */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .analytics-card {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+
+        .analytics-card h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .chart-placeholder {
+            display: flex;
+            align-items: end;
+            height: 150px;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(180deg, var(--primary-color), var(--primary-light));
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            min-height: 20px;
+        }
+
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .plan-progress {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .plan-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-color) 87%, var(--bg-tertiary) 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .plan-circle::before {
+            content: '';
+            width: 80px;
+            height: 80px;
+            background: var(--surface);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .plan-percentage {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            z-index: 1;
+            position: relative;
+        }
+
+        .plan-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .efficiency-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .efficiency-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .efficiency-item span:first-child {
+            min-width: 80px;
+            font-weight: 600;
+        }
+
+        .efficiency-bar {
+            flex: 1;
+            height: 24px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .efficiency-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), #34d399);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            padding-right: 0.5rem;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-widgets {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-header,
+            .production-line {
+                grid-template-columns: 150px repeat(3, 1fr);
+            }
+
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .plan-progress {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -971,22 +1529,22 @@
     <nav class="nav-container">
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="showTab('dashboard')">
-                📊 Dashboard
+                📊 Дашборд
             </button>
-            <button class="nav-tab" onclick="showTab('materials')">
-                📦 Материалы
-            </button>
-            <button class="nav-tab" onclick="showTab('suppliers')">
-                👥 Поставщики
-            </button>
-            <button class="nav-tab" onclick="showTab('inventory')">
-                📋 Остатки
-            </button>
-            <button class="nav-tab" onclick="showTab('batches')">
-                🏷️ Партии
+            <button class="nav-tab" onclick="showTab('planning')">
+                📋 Планирование
             </button>
             <button class="nav-tab" onclick="showTab('orders')">
                 📑 Заказы
+            </button>
+            <button class="nav-tab" onclick="showTab('warehouse')">
+                🏭 Склад
+            </button>
+            <button class="nav-tab" onclick="showTab('production')">
+                ⚙️ Производство
+            </button>
+            <button class="nav-tab" onclick="showTab('analytics')">
+                📈 Аналитика
             </button>
         </div>
     </nav>
@@ -997,170 +1555,110 @@
         <div id="dashboard" class="tab-content active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value" id="totalMaterials">0</div>
-                    <div class="stat-label">Всего материалов</div>
+                    <div class="stat-value" id="totalOrders">0</div>
+                    <div class="stat-label">Заказы в работе</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="totalSuppliers">0</div>
-                    <div class="stat-label">Поставщики</div>
+                    <div class="stat-value" id="productionEfficiency">92%</div>
+                    <div class="stat-label">Эффективность</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="totalBatches">0</div>
-                    <div class="stat-label">Партии</div>
+                    <div class="stat-value" id="warehouseLoad">85%</div>
+                    <div class="stat-label">Загрузка склада</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="lowStockCount">0</div>
-                    <div class="stat-label">Низкие остатки</div>
+                    <div class="stat-value" id="todayProduction">2.5т</div>
+                    <div class="stat-label">Произведено сегодня</div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Последние операции</h2>
+            <div class="dashboard-widgets">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📋 Планы на сегодня</h3>
+                    </div>
+                    <div class="widget-content">
+                        <div class="task-item">
+                            <span class="task-status completed">✓</span>
+                            <span>Запуск производства заказа #ORD-240001</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-status pending">⏳</span>
+                            <span>Приемка материалов от поставщика</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-status pending">⏳</span>
+                            <span>Отгрузка готовой продукции</span>
+                        </div>
+                    </div>
                 </div>
-                <div id="recentActivities">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📝</div>
-                        <p>Операции будут отображаться здесь</p>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>⚠️ Критические уведомления</h3>
+                    </div>
+                    <div class="widget-content">
+                        <div class="alert alert-warning">
+                            Низкий остаток: Гранулят ПВД (500 кг)
+                        </div>
+                        <div class="alert alert-info">
+                            Плановое ТО оборудования завтра
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Materials Tab -->
-        <div id="materials" class="tab-content">
+        <!-- Planning Tab -->
+        <div id="planning" class="tab-content">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Управление материалами</h2>
-                    <button class="btn btn-primary" onclick="showModal('materialModal')">
-                        ➕ Добавить материал
+                    <h2 class="card-title">Планирование производства</h2>
+                    <button class="btn btn-primary" onclick="createPlan()">
+                        ➕ Создать план
                     </button>
                 </div>
 
-                <div class="search-container">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" placeholder="Поиск материалов..." onkeyup="filterMaterials(this.value)">
-                </div>
-
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Код</th>
-                                <th>Наименование</th>
-                                <th>Тип</th>
-                                <th>Единица</th>
-                                <th>Стоимость</th>
-                                <th>Мин. остаток</th>
-                                <th>Поставщик</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="materialsTable">
-                            <!-- Materials will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Suppliers Tab -->
-        <div id="suppliers" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Управление поставщиками</h2>
-                    <button class="btn btn-primary" onclick="showModal('supplierModal')">
-                        ➕ Добавить поставщика
-                    </button>
-                </div>
-
-                <div class="search-container">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" placeholder="Поиск поставщиков..." onkeyup="filterSuppliers(this.value)">
-                </div>
-
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Код</th>
-                                <th>Наименование</th>
-                                <th>Контакт</th>
-                                <th>Email</th>
-                                <th>Телефон</th>
-                                <th>Рейтинг</th>
-                                <th>Статус</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="suppliersTable">
-                            <!-- Suppliers will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Inventory Tab -->
-        <div id="inventory" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Управление остатками</h2>
-                    <button class="btn btn-primary" onclick="showModal('inventoryModal')">
-                        ➕ Добавить остаток
-                    </button>
-                </div>
-
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Материал</th>
-                                <th>Склад</th>
-                                <th>Партия</th>
-                                <th>Количество</th>
-                                <th>Зарезервировано</th>
-                                <th>Доступно</th>
-                                <th>Локация</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inventoryTable">
-                            <!-- Inventory will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Batches Tab -->
-        <div id="batches" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Управление партиями</h2>
-                    <button class="btn btn-primary" onclick="showModal('batchModal')">
-                        ➕ Принять партию
-                    </button>
-                </div>
-
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Номер партии</th>
-                                <th>Материал</th>
-                                <th>Поставщик</th>
-                                <th>Количество</th>
-                                <th>Дата получения</th>
-                                <th>Статус качества</th>
-                                <th>Документы</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="batchesTable">
-                            <!-- Batches will be populated here -->
-                        </tbody>
-                    </table>
+                <div class="planning-timeline">
+                    <div class="timeline-header">
+                        <div class="timeline-date">Сегодня</div>
+                        <div class="timeline-date">Завтра</div>
+                        <div class="timeline-date">28.01</div>
+                        <div class="timeline-date">29.01</div>
+                        <div class="timeline-date">30.01</div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="production-line">
+                            <div class="line-name">Линия 1 (Экструзия)</div>
+                            <div class="timeline-slots">
+                                <div class="time-slot busy">ORD-001</div>
+                                <div class="time-slot available"></div>
+                                <div class="time-slot planned">ORD-003</div>
+                                <div class="time-slot available"></div>
+                                <div class="time-slot available"></div>
+                            </div>
+                        </div>
+                        <div class="production-line">
+                            <div class="line-name">Линия 2 (Печать)</div>
+                            <div class="timeline-slots">
+                                <div class="time-slot busy">ORD-002</div>
+                                <div class="time-slot busy">ORD-004</div>
+                                <div class="time-slot available"></div>
+                                <div class="time-slot planned">ORD-005</div>
+                                <div class="time-slot available"></div>
+                            </div>
+                        </div>
+                        <div class="production-line">
+                            <div class="line-name">Линия 3 (Ламинация)</div>
+                            <div class="timeline-slots">
+                                <div class="time-slot maintenance">ТО</div>
+                                <div class="time-slot available"></div>
+                                <div class="time-slot available"></div>
+                                <div class="time-slot available"></div>
+                                <div class="time-slot available"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1169,30 +1667,283 @@
         <div id="orders" class="tab-content">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Заказы на производство</h2>
-                    <button class="btn btn-primary" onclick="showModal('orderModal')">
-                        ➕ Создать заказ
+                    <h2 class="card-title">Заказы</h2>
+                    <button class="btn btn-primary" onclick="createOrder()">
+                        ➕ Новый заказ
                     </button>
                 </div>
 
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Номер заказа</th>
-                                <th>Клиент</th>
-                                <th>Продукт</th>
-                                <th>Количество</th>
-                                <th>Дата заказа</th>
-                                <th>Статус</th>
-                                <th>Приоритет</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ordersTable">
-                            <!-- Orders will be populated here -->
-                        </tbody>
-                    </table>
+                <div class="orders-filter">
+                    <select class="form-select" onchange="filterOrders(this.value)">
+                        <option value="all">Все заказы</option>
+                        <option value="new">Новые</option>
+                        <option value="in_progress">В работе</option>
+                        <option value="completed">Завершенные</option>
+                    </select>
+                </div>
+
+                <div class="orders-grid">
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span class="order-number">#ORD-240001</span>
+                            <span class="badge badge-warning">В работе</span>
+                        </div>
+                        <div class="order-info">
+                            <div class="order-customer">ООО "Пищепром"</div>
+                            <div class="order-product">Пленка ПЭТ 12мкм, 1500мм</div>
+                            <div class="order-quantity">5000 п.м.</div>
+                        </div>
+                        <div class="order-dates">
+                            <small>Заказ: 20.01.2024 | Поставка: 25.01.2024</small>
+                        </div>
+                    </div>
+
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span class="order-number">#ORD-240002</span>
+                            <span class="badge badge-danger">Критичный</span>
+                        </div>
+                        <div class="order-info">
+                            <div class="order-customer">ИП Смирнов</div>
+                            <div class="order-product">Пакеты с логотипом</div>
+                            <div class="order-quantity">10000 шт.</div>
+                        </div>
+                        <div class="order-dates">
+                            <small>Заказ: 22.01.2024 | Поставка: 24.01.2024</small>
+                        </div>
+                    </div>
+
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span class="order-number">#ORD-240003</span>
+                            <span class="badge badge-info">Запланирован</span>
+                        </div>
+                        <div class="order-info">
+                            <div class="order-customer">ТД "Мегастрой"</div>
+                            <div class="order-product">Стрейч-пленка 500мм</div>
+                            <div class="order-quantity">2000 кг</div>
+                        </div>
+                        <div class="order-dates">
+                            <small>Заказ: 23.01.2024 | Поставка: 30.01.2024</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warehouse Tab -->
+        <div id="warehouse" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Управление складом</h2>
+                    <button class="btn btn-primary" onclick="receiveDelivery()">
+                        📦 Принять поставку
+                    </button>
+                </div>
+
+                <div class="warehouse-overview">
+                    <div class="warehouse-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">1247</span>
+                            <span class="stat-text">т сырья</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">23</span>
+                            <span class="stat-text">номенклатуры</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">85%</span>
+                            <span class="stat-text">заполнено</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warehouse-sections">
+                    <div class="warehouse-section">
+                        <h3>📦 Сырье и материалы</h3>
+                        <div class="material-grid">
+                            <div class="material-card">
+                                <div class="material-name">Гранулят ПВД</div>
+                                <div class="material-quantity">500 кг</div>
+                                <div class="material-status low">Низкий остаток</div>
+                            </div>
+                            <div class="material-card">
+                                <div class="material-name">Гранулят ПП</div>
+                                <div class="material-quantity">750 кг</div>
+                                <div class="material-status ok">Норма</div>
+                            </div>
+                            <div class="material-card">
+                                <div class="material-name">Краситель синий</div>
+                                <div class="material-quantity">25 кг</div>
+                                <div class="material-status ok">Норма</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warehouse-section">
+                        <h3>📋 Готовая продукция</h3>
+                        <div class="finished-goods">
+                            <div class="goods-item">
+                                <span>Пленка ПЭТ 12мкм</span>
+                                <span class="quantity">150 рулонов</span>
+                            </div>
+                            <div class="goods-item">
+                                <span>Пакеты фасовочные</span>
+                                <span class="quantity">50000 шт</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Production Tab -->
+        <div id="production" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Производственные линии</h2>
+                    <button class="btn btn-secondary" onclick="refreshProduction()">
+                        🔄 Обновить
+                    </button>
+                </div>
+
+                <div class="production-lines">
+                    <div class="production-line-card">
+                        <div class="line-header">
+                            <h3>Линия 1 - Экструзия</h3>
+                            <span class="line-status running">Работает</span>
+                        </div>
+                        <div class="line-details">
+                            <div class="current-order">Заказ: #ORD-240001</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                            <div class="line-metrics">
+                                <span>Прогресс: 65%</span>
+                                <span>Скорость: 120 м/мин</span>
+                                <span>Осталось: 2ч 15мин</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="production-line-card">
+                        <div class="line-header">
+                            <h3>Линия 2 - Печать</h3>
+                            <span class="line-status running">Работает</span>
+                        </div>
+                        <div class="line-details">
+                            <div class="current-order">Заказ: #ORD-240002</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 30%"></div>
+                            </div>
+                            <div class="line-metrics">
+                                <span>Прогресс: 30%</span>
+                                <span>Скорость: 85 м/мин</span>
+                                <span>Осталось: 4ч 20мин</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="production-line-card">
+                        <div class="line-header">
+                            <h3>Линия 3 - Ламинация</h3>
+                            <span class="line-status maintenance">Обслуживание</span>
+                        </div>
+                        <div class="line-details">
+                            <div class="current-order">Плановое ТО</div>
+                            <div class="line-metrics">
+                                <span>Начало: 08:00</span>
+                                <span>Окончание: 12:00</span>
+                                <span>Ответственный: Петров А.И.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="production-summary">
+                    <h3>Сводка за сегодня</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span class="summary-label">Произведено</span>
+                            <span class="summary-value">2.5 тонн</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Время работы</span>
+                            <span class="summary-value">18.5 часов</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Эффективность</span>
+                            <span class="summary-value">92%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Аналитика и отчеты</h2>
+                    <select class="form-select" style="width: auto;">
+                        <option>За сегодня</option>
+                        <option>За неделю</option>
+                        <option>За месяц</option>
+                    </select>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>📊 Производительность</h3>
+                        <div class="chart-placeholder">
+                            <div class="chart-bar" style="height: 60%"></div>
+                            <div class="chart-bar" style="height: 80%"></div>
+                            <div class="chart-bar" style="height: 75%"></div>
+                            <div class="chart-bar" style="height: 90%"></div>
+                            <div class="chart-bar" style="height: 85%"></div>
+                        </div>
+                        <div class="chart-labels">
+                            <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>💰 Выполнение плана</h3>
+                        <div class="plan-progress">
+                            <div class="plan-circle">
+                                <span class="plan-percentage">87%</span>
+                            </div>
+                            <div class="plan-details">
+                                <div>План: 100 тонн</div>
+                                <div>Факт: 87 тонн</div>
+                                <div>Осталось: 13 тонн</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>⚡ Эффективность оборудования</h3>
+                        <div class="efficiency-list">
+                            <div class="efficiency-item">
+                                <span>Линия 1</span>
+                                <div class="efficiency-bar">
+                                    <div class="efficiency-fill" style="width: 95%">95%</div>
+                                </div>
+                            </div>
+                            <div class="efficiency-item">
+                                <span>Линия 2</span>
+                                <div class="efficiency-bar">
+                                    <div class="efficiency-fill" style="width: 88%">88%</div>
+                                </div>
+                            </div>
+                            <div class="efficiency-item">
+                                <span>Линия 3</span>
+                                <div class="efficiency-bar">
+                                    <div class="efficiency-fill" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1934,20 +2685,20 @@
                 case 'dashboard':
                     loadDashboard();
                     break;
-                case 'materials':
-                    loadMaterials();
-                    break;
-                case 'suppliers':
-                    loadSuppliers();
-                    break;
-                case 'inventory':
-                    loadInventory();
-                    break;
-                case 'batches':
-                    loadBatches();
+                case 'planning':
+                    loadPlanning();
                     break;
                 case 'orders':
                     loadOrders();
+                    break;
+                case 'warehouse':
+                    loadWarehouse();
+                    break;
+                case 'production':
+                    loadProduction();
+                    break;
+                case 'analytics':
+                    loadAnalytics();
                     break;
             }
         }
@@ -2044,38 +2795,62 @@
         // =============================================
 
         function loadDashboard() {
-            const materials = storage.getTable('materials');
-            const suppliers = storage.getTable('suppliers');
-            const batches = storage.getTable('batches');
-            const inventory = storage.getTable('inventory');
-            const activities = storage.getTable('activities');
+            updateDashboardStats();
+        }
 
-            // Update stats
-            document.getElementById('totalMaterials').textContent = materials.length;
-            document.getElementById('totalSuppliers').textContent = suppliers.length;
-            document.getElementById('totalBatches').textContent = batches.length;
-            
-            // Calculate low stock count
-            const lowStockCount = materials.filter(m => {
-                const inventoryItem = inventory.find(i => i.material_id === m.id);
-                return inventoryItem && m.min_stock_level && inventoryItem.available_quantity < m.min_stock_level;
-            }).length;
-            document.getElementById('lowStockCount').textContent = lowStockCount;
+        function updateDashboardStats() {
+            // Simulate real-time data
+            document.getElementById('totalOrders').textContent = '12';
+            document.getElementById('productionEfficiency').textContent = '92%';
+            document.getElementById('warehouseLoad').textContent = '85%';
+            document.getElementById('todayProduction').textContent = '2.5т';
+        }
 
-            // Load recent activities
-            const activitiesHtml = activities.length > 0 ? activities.map(activity => `
-                <div style="padding: 1rem; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between;">
-                    <span>${activity.description}</span>
-                    <span style="color: var(--gray-500); font-size: 0.875rem;">${new Date(activity.timestamp).toLocaleString()}</span>
-                </div>
-            `).join('') : `
-                <div class="empty-state">
-                    <div class="empty-state-icon">📝</div>
-                    <p>Операции будут отображаться здесь</p>
-                </div>
-            `;
+        function loadPlanning() {
+            // Planning module is already populated with static data
+            showToast('Планирование загружено', 'success');
+        }
 
-            document.getElementById('recentActivities').innerHTML = activitiesHtml;
+        function loadOrders() {
+            // Orders module is already populated with static data
+            showToast('Заказы загружены', 'success');
+        }
+
+        function loadWarehouse() {
+            // Warehouse module is already populated with static data
+            showToast('Склад загружен', 'success');
+        }
+
+        function loadProduction() {
+            // Production module is already populated with static data
+            showToast('Производство загружено', 'success');
+        }
+
+        function loadAnalytics() {
+            // Analytics module is already populated with static data
+            showToast('Аналитика загружена', 'success');
+        }
+
+        // Simplified action functions
+        function createPlan() {
+            showToast('Функция создания плана - в разработке', 'info');
+        }
+
+        function createOrder() {
+            showToast('Функция создания заказа - в разработке', 'info');
+        }
+
+        function receiveDelivery() {
+            showToast('Функция приемки поставки - в разработке', 'info');
+        }
+
+        function refreshProduction() {
+            loadProduction();
+            showToast('Данные производства обновлены', 'success');
+        }
+
+        function filterOrders(status) {
+            showToast(`Фильтр заказов: ${status}`, 'info');
         }
 
         // =============================================
