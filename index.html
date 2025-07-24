@@ -2542,8 +2542,13 @@
                                 <input type="text" name="customer" class="form-input" required placeholder="ООО Пищепром">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Продукт</label>
-                                <input type="text" name="product" class="form-input" required placeholder="Пленка ПЭТ 12мкм">
+                                <label class="form-label">Продукт <small style="color: #64748b;">(выберите из списка рецептов)</small></label>
+                                <input type="text" name="product" class="form-input" required placeholder="Пленка ПЭТ 12мкм" list="productList">
+                                <datalist id="productList">
+                                    <option value="Пленка ПЭТ 12мкм">Экструзия: GR-PET-001 + DYE-CLEAR</option>
+                                    <option value="Пакеты с логотипом">Печать: GR-PVD-001 + DYE-BLUE</option>
+                                    <option value="Стрейч-пленка 500мм">Экструзия: GR-LLDPE-001</option>
+                                </datalist>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Количество</label>
@@ -3403,7 +3408,22 @@
                 if (!data.production_recipes) {
                     data.production_recipes = this.getDefaultProductionRecipes();
                     data.production_lines = this.getDefaultProductionLines();
-                    data.production_queue = [];
+                    data.production_queue = [
+                        {
+                            id: 1,
+                            order_id: 1,
+                            order_number: 'ORD-240001',
+                            line_id: 'line-2',
+                            product: 'Пакеты с логотипом',
+                            quantity: 5000,
+                            estimated_start: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
+                            estimated_completion: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
+                            setup_time: 45,
+                            production_time: 100,
+                            status: 'queued',
+                            priority: 'high'
+                        }
+                    ];
                     this.setData(data);
                 }
             }
@@ -3593,13 +3613,71 @@
                     inventory: [
                         {
                             id: 1,
-                            material_id: 1,
+                            material_id: 1, // GR-PVD-001
                             warehouse: 'MAG-1',
                             batch_number: '240115-001',
                             quantity: 2500.0,
-                            reserved_quantity: 0.0,
-                            available_quantity: 2500.0,
+                            reserved_quantity: 250.0,
+                            available_quantity: 2250.0,
                             location_code: 'A1-05-02',
+                            reservations: [
+                                {
+                                    order_id: 1,
+                                    quantity: 250.0,
+                                    reserved_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+                                }
+                            ],
+                            last_movement_date: new Date().toISOString()
+                        },
+                        {
+                            id: 2,
+                            material_id: 2, // GR-PET-001
+                            warehouse: 'MAG-1',
+                            batch_number: '240118-002',
+                            quantity: 3000.0,
+                            reserved_quantity: 0.0,
+                            available_quantity: 3000.0,
+                            location_code: 'A2-04-01',
+                            last_movement_date: new Date().toISOString()
+                        },
+                        {
+                            id: 3,
+                            material_id: 3, // DYE-CLEAR
+                            warehouse: 'MAG-1',
+                            batch_number: '240120-003',
+                            quantity: 200.0,
+                            reserved_quantity: 0.0,
+                            available_quantity: 200.0,
+                            location_code: 'C1-01-01',
+                            last_movement_date: new Date().toISOString()
+                        },
+                        {
+                            id: 4,
+                            material_id: 4, // DYE-BLUE
+                            warehouse: 'MAG-1',
+                            batch_number: '240120-004',
+                            quantity: 150.0,
+                            reserved_quantity: 5.0,
+                            available_quantity: 145.0,
+                            location_code: 'C1-01-02',
+                            reservations: [
+                                {
+                                    order_id: 1,
+                                    quantity: 5.0,
+                                    reserved_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+                                }
+                            ],
+                            last_movement_date: new Date().toISOString()
+                        },
+                        {
+                            id: 5,
+                            material_id: 5, // GR-LLDPE-001
+                            warehouse: 'MAG-1',
+                            batch_number: '240119-005',
+                            quantity: 1800.0,
+                            reserved_quantity: 0.0,
+                            available_quantity: 1800.0,
+                            location_code: 'A3-02-01',
                             last_movement_date: new Date().toISOString()
                         }
                     ],
@@ -3607,7 +3685,7 @@
                         {
                             id: 1,
                             batch_number: '240115-001',
-                            material_id: 1,
+                            material_id: 1, // GR-PVD-001
                             supplier_id: 1,
                             received_quantity: 2500.0,
                             available_quantity: 2500.0,
@@ -3618,11 +3696,101 @@
                             has_tds: true,
                             has_sds: true,
                             has_doc: true,
+                            expiry_date: '2025-01-10',
+                            created_at: new Date().toISOString()
+                        },
+                        {
+                            id: 2,
+                            batch_number: '240118-002',
+                            material_id: 2, // GR-PET-001
+                            supplier_id: 1,
+                            received_quantity: 3000.0,
+                            available_quantity: 3000.0,
+                            production_date: '2024-01-12',
+                            received_date: '2024-01-18',
+                            quality_status: 'approved',
+                            has_coa: true,
+                            has_tds: true,
+                            has_sds: true,
+                            has_doc: true,
+                            expiry_date: '2025-01-12',
+                            created_at: new Date().toISOString()
+                        },
+                        {
+                            id: 3,
+                            batch_number: '240120-003',
+                            material_id: 3, // DYE-CLEAR
+                            supplier_id: 2,
+                            received_quantity: 200.0,
+                            available_quantity: 200.0,
+                            production_date: '2024-01-15',
+                            received_date: '2024-01-20',
+                            quality_status: 'approved',
+                            has_coa: true,
+                            has_tds: true,
+                            has_sds: true,
+                            has_doc: true,
+                            expiry_date: '2025-01-15',
+                            created_at: new Date().toISOString()
+                        },
+                        {
+                            id: 4,
+                            batch_number: '240120-004',
+                            material_id: 4, // DYE-BLUE
+                            supplier_id: 2,
+                            received_quantity: 150.0,
+                            available_quantity: 150.0,
+                            production_date: '2024-01-15',
+                            received_date: '2024-01-20',
+                            quality_status: 'approved',
+                            has_coa: true,
+                            has_tds: true,
+                            has_sds: true,
+                            has_doc: true,
+                            expiry_date: '2025-01-15',
+                            created_at: new Date().toISOString()
+                        },
+                        {
+                            id: 5,
+                            batch_number: '240119-005',
+                            material_id: 5, // GR-LLDPE-001
+                            supplier_id: 1,
+                            received_quantity: 1800.0,
+                            available_quantity: 1800.0,
+                            production_date: '2024-01-14',
+                            received_date: '2024-01-19',
+                            quality_status: 'approved',
+                            has_coa: true,
+                            has_tds: true,
+                            has_sds: true,
+                            has_doc: true,
                             has_cmr: true,
                             created_at: new Date().toISOString()
                         }
                     ],
-                    orders: [],
+                    orders: [
+                        {
+                            id: 1,
+                            order_number: 'ORD-240001',
+                            customer: 'ООО "Альфа Пакет"',
+                            product: 'Пакеты с логотипом',
+                            quantity: 5000,
+                            unit: 'шт',
+                            priority: 'high',
+                            status: 'scheduled',
+                            delivery_date: '2024-02-15',
+                            materials_reserved: true,
+                            production_scheduled: true,
+                            scheduled_line: 'line-2',
+                            estimated_start: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
+                            estimated_completion: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
+                            material_requirements: [
+                                { material_code: 'GR-PVD-001', required_quantity: 250, unit: 'кг' },
+                                { material_code: 'DYE-BLUE', required_quantity: 5, unit: 'кг' }
+                            ],
+                            created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+                        }
+                    ],
                     activities: [
                         {
                             id: 1,
@@ -4968,16 +5136,27 @@
             
             const inventoryHtml = inventory.map(item => {
                 const material = materials.find(m => m.id === item.material_id);
+                const reservedQty = item.reserved_quantity || 0;
+                const availableQty = item.quantity - reservedQty;
+                
                 return `
-                    <tr>
-                        <td>${material ? material.name : 'Unknown'}</td>
+                    <tr onclick="showInventoryDetails(${item.id})" style="cursor: pointer;" title="Нажмите для просмотра деталей">
+                        <td>
+                            <div>${material ? material.name : 'Unknown'}</div>
+                            <small style="color: #64748b;">${material ? material.code : '-'}</small>
+                        </td>
                         <td>${item.warehouse}</td>
                         <td>${item.batch_number || '-'}</td>
-                        <td>${item.quantity}</td>
-                        <td>${item.reserved_quantity}</td>
-                        <td>${item.available_quantity}</td>
+                        <td><strong>${item.quantity.toFixed(1)}</strong> кг</td>
+                        <td style="color: ${reservedQty > 0 ? '#f59e0b' : '#94a3b8'};">
+                            <strong>${reservedQty.toFixed(1)}</strong> кг
+                            ${reservedQty > 0 ? ' 🔒' : ''}
+                        </td>
+                        <td style="color: ${availableQty > 0 ? '#10b981' : '#ef4444'};">
+                            <strong>${availableQty.toFixed(1)}</strong> кг
+                        </td>
                         <td>${item.location_code || '-'}</td>
-                        <td class="action-buttons">
+                        <td class="action-buttons" onclick="event.stopPropagation();">
                             <button class="btn btn-sm btn-warning" onclick="editInventory(${item.id})">✏️</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteInventory(${item.id})">🗑️</button>
                         </td>
@@ -5792,6 +5971,36 @@
                 loadInventory();
                 loadDashboard();
             }
+        }
+
+        function showInventoryDetails(inventoryId) {
+            const inventory = storage.getTable('inventory');
+            const materials = storage.getTable('materials');
+            const orders = storage.getTable('orders');
+            
+            const item = inventory.find(inv => inv.id === inventoryId);
+            if (!item) return;
+            
+            const material = materials.find(m => m.id === item.material_id);
+            const reservedQty = item.reserved_quantity || 0;
+            
+            let details = `📦 Детали остатков:\n\n`;
+            details += `Материал: ${material ? material.name : 'Неизвестно'}\n`;
+            details += `Код: ${material ? material.code : '-'}\n`;
+            details += `Партия: ${item.batch_number}\n`;
+            details += `Всего: ${item.quantity} кг\n`;
+            details += `Зарезервировано: ${reservedQty} кг\n`;
+            details += `Доступно: ${(item.quantity - reservedQty)} кг\n\n`;
+            
+            if (item.reservations && item.reservations.length > 0) {
+                details += `🔒 Резервирования:\n`;
+                item.reservations.forEach(res => {
+                    const order = orders.find(o => o.id === res.order_id);
+                    details += `• ${res.quantity} кг для заказа ${order ? order.order_number : res.order_id}\n`;
+                });
+            }
+            
+            alert(details);
         }
 
         function deleteBatch(id) {
