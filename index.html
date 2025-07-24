@@ -436,6 +436,280 @@
         .status-completed { background: #f0fdf4; color: #166534; }
         .status-cancelled { background: #fee2e2; color: #991b1b; }
 
+        /* ===== MPSYSTEM SPECIFIC STYLES ===== */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-indicator.online {
+            color: #059669;
+            background: #d1fae5;
+        }
+
+        .time {
+            color: #374151;
+            font-weight: 500;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+
+        /* Production Overview */
+        .production-overview {
+            margin-top: 30px;
+        }
+
+        .production-overview h2 {
+            margin-bottom: 25px;
+            color: #1f2937;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .line-group {
+            margin-bottom: 35px;
+        }
+
+        .line-group h3 {
+            margin-bottom: 20px;
+            color: #374151;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        /* Line Cards */
+        .line-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .line-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .line-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .line-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        .line-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .line-status.running {
+            color: #059669;
+            background: #d1fae5;
+        }
+
+        .line-status.idle {
+            color: #d97706;
+            background: #fef3c7;
+        }
+
+        .line-status.maintenance {
+            color: #dc2626;
+            background: #fee2e2;
+        }
+
+        .line-details {
+            margin-bottom: 15px;
+        }
+
+        .current-order {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .progress-info {
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            background: #f3f4f6;
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .progress-fill {
+            background: #3b82f6;
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-fill.orange {
+            background: #f59e0b;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .line-metrics {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .line-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 5px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .line-card:hover .line-actions {
+            opacity: 1;
+        }
+
+        .btn-action {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-action:hover {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        /* Alerts Panel */
+        .alerts-panel {
+            margin-top: 35px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .alerts-panel h3 {
+            margin-bottom: 20px;
+            color: #1f2937;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alerts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .alert-item.critical {
+            background: #fef2f2;
+            border-left-color: #dc2626;
+        }
+
+        .alert-item.warning {
+            background: #fffbeb;
+            border-left-color: #f59e0b;
+        }
+
+        .alert-item.info {
+            background: #eff6ff;
+            border-left-color: #3b82f6;
+        }
+
+        .alert-icon {
+            font-size: 16px;
+        }
+
+        .alert-text {
+            flex: 1;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .alert-time {
+            color: #6b7280;
+            font-size: 12px;
+            min-width: 80px;
+        }
+
+        .alert-action {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .alert-action:hover {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .container { padding: 0 15px; }
@@ -443,6 +717,11 @@
             .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
             .dashboard-widgets { grid-template-columns: 1fr; }
             .modal-content { margin: 20px; width: calc(100% - 40px); }
+            .lines-grid { grid-template-columns: 1fr; }
+            .line-actions { position: static; opacity: 1; margin-top: 15px; }
+            .alert-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .alert-time { min-width: auto; }
+            .user-info { flex-direction: column; gap: 5px; align-items: flex-end; }
         }
     </style>
 </head>
@@ -497,33 +776,61 @@
         <div class="main-container">
             <!-- Dashboard Tab -->
             <div id="dashboard" class="tab-content active">
+                <!-- Ключевые метрики (4 карточки) -->
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="totalOrders">12</div>
-                        <div class="stat-label">Заказы в работе</div>
+                    <div class="card stat-card">
+                        <h3>Orders</h3>
+                        <div class="stat-value" id="totalOrders">847</div>
+                        <div class="stat-label">Active</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="productionEfficiency">92%</div>
-                        <div class="stat-label">Эффективность</div>
+                    <div class="card stat-card">
+                        <h3>Production</h3>
+                        <div class="stat-value" id="productionCapacity">94.2%</div>
+                        <div class="stat-label">Capacity</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="warehouseLoad">85%</div>
-                        <div class="stat-label">Загрузка склада</div>
+                    <div class="card stat-card">
+                        <h3>Efficiency</h3>
+                        <div class="stat-value" id="oeeMetric">87.3%</div>
+                        <div class="stat-label">OEE</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="todayProduction">2.5т</div>
-                        <div class="stat-label">Произведено сегодня</div>
+                    <div class="card stat-card">
+                        <h3>Quality</h3>
+                        <div class="stat-value" id="qualityRate">99.1%</div>
+                        <div class="stat-label">Pass Rate</div>
                     </div>
                 </div>
 
-                <div class="dashboard-widgets">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Активные заказы</h3>
-                            <button class="btn btn-primary" onclick="showModal('orderModal')">
-                                + Новый заказ
-                            </button>
-                        </div>
+                <!-- Производственные линии -->
+                <div class="production-overview">
+                    <h2>Производственные линии</h2>
+                    
+                    <!-- Группа: Экструзия -->
+                    <div class="line-group">
+                        <h3>🔄 Экструзия</h3>
+                        <div class="lines-grid">
+                            <div class="line-card" id="extrusion-1" onclick="showLineDetails('extrusion-1')">
+                                <div class="line-header">
+                                    <span class="line-name">Экструзия-1 (рукава)</span>
+                                    <span class="line-status running">Работает</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Заказ: ORD-250001</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 65%"></div>
+                                        </div>
+                                        <span class="progress-text">65% (2ч 30мин осталось)</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 89%</span>
+                                        <span>Очередь: 3 заказа</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="pauseLine('extrusion-1')">⏸️</button>
+                                    <button class="btn-action" onclick="adjustPriority('extrusion-1')">🔼</button>
+                                </div>
+                            </div>
                         <div class="table-container">
                             <table>
                                 <thead>
