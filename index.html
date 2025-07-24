@@ -1749,6 +1749,235 @@
              color: var(--danger-color);
          }
 
+         /* Order Management styles */
+         .orders-header {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             margin-bottom: 2rem;
+             padding: 1.5rem;
+             background: var(--surface);
+             border-radius: var(--radius-lg);
+             box-shadow: var(--shadow-sm);
+         }
+
+         .orders-actions {
+             display: flex;
+             gap: 1rem;
+             flex-wrap: wrap;
+         }
+
+         .pipeline-stats {
+             display: flex;
+             gap: 2rem;
+             flex-wrap: wrap;
+         }
+
+         .stat-item {
+             text-align: center;
+         }
+
+         .stat-number {
+             display: block;
+             font-size: 2rem;
+             font-weight: 700;
+             color: var(--primary-color);
+             line-height: 1;
+         }
+
+         .stat-label {
+             display: block;
+             font-size: 0.875rem;
+             color: var(--text-secondary);
+             margin-top: 0.25rem;
+         }
+
+         .pipeline-container {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+             gap: 1.5rem;
+             margin-top: 1.5rem;
+         }
+
+         .pipeline-stage {
+             background: var(--bg-tertiary);
+             border-radius: var(--radius-lg);
+             padding: 1rem;
+         }
+
+         .stage-header {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             margin-bottom: 1rem;
+             padding-bottom: 0.5rem;
+             border-bottom: 2px solid var(--border-light);
+         }
+
+         .stage-header h4 {
+             margin: 0;
+             font-size: 0.9rem;
+             color: var(--text-primary);
+         }
+
+         .stage-count {
+             background: var(--primary-color);
+             color: var(--text-inverse);
+             padding: 0.25rem 0.5rem;
+             border-radius: var(--radius-sm);
+             font-size: 0.75rem;
+             font-weight: 600;
+         }
+
+         .stage-orders {
+             display: flex;
+             flex-direction: column;
+             gap: 0.75rem;
+             min-height: 120px;
+         }
+
+         .pipeline-order {
+             background: var(--surface);
+             border-radius: var(--radius-md);
+             padding: 1rem;
+             cursor: pointer;
+             transition: var(--transition);
+             border: 1px solid var(--border-light);
+         }
+
+         .pipeline-order:hover {
+             transform: translateY(-2px);
+             box-shadow: var(--shadow-md);
+         }
+
+         .order-title {
+             font-weight: 600;
+             color: var(--text-primary);
+             margin-bottom: 0.25rem;
+         }
+
+         .order-customer {
+             font-size: 0.875rem;
+             color: var(--text-secondary);
+             margin-bottom: 0.5rem;
+         }
+
+         .order-value {
+             font-weight: 600;
+             color: var(--success-color);
+             font-size: 0.9rem;
+         }
+
+         .order-progress {
+             margin-top: 0.75rem;
+         }
+
+         .progress-bar {
+             width: 100%;
+             height: 6px;
+             background: var(--bg-tertiary);
+             border-radius: 3px;
+             overflow: hidden;
+             margin-bottom: 0.25rem;
+         }
+
+         .progress-fill {
+             height: 100%;
+             background: linear-gradient(90deg, var(--success-color), var(--primary-color));
+             transition: var(--transition);
+         }
+
+         .progress-text {
+             font-size: 0.75rem;
+             color: var(--text-secondary);
+         }
+
+         .quick-access-grid {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+             gap: 1.5rem;
+             margin-top: 2rem;
+         }
+
+         .customer-list, .product-list {
+             display: flex;
+             flex-direction: column;
+             gap: 0.75rem;
+         }
+
+         .customer-item, .product-item {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 1rem;
+             background: var(--bg-tertiary);
+             border-radius: var(--radius-md);
+             cursor: pointer;
+             transition: var(--transition);
+             border: 1px solid var(--border-light);
+         }
+
+         .customer-item:hover, .product-item:hover {
+             background: var(--surface-hover);
+             transform: translateX(4px);
+         }
+
+         .customer-info, .product-info {
+             flex: 1;
+         }
+
+         .customer-name, .product-name {
+             display: block;
+             font-weight: 600;
+             color: var(--text-primary);
+             margin-bottom: 0.25rem;
+         }
+
+         .customer-details, .product-details {
+             font-size: 0.875rem;
+             color: var(--text-secondary);
+         }
+
+         .customer-metrics, .product-metrics {
+             text-align: right;
+         }
+
+         .customer-value, .product-revenue {
+             display: block;
+             font-weight: 600;
+             color: var(--text-primary);
+             margin-bottom: 0.25rem;
+         }
+
+         .customer-growth {
+             font-size: 0.75rem;
+             font-weight: 600;
+             padding: 0.2rem 0.4rem;
+             border-radius: var(--radius-sm);
+         }
+
+         .customer-growth.positive {
+             background: rgba(16, 185, 129, 0.1);
+             color: var(--success-color);
+         }
+
+         .customer-growth.neutral {
+             background: rgba(107, 114, 128, 0.1);
+             color: var(--text-secondary);
+         }
+
+         .product-orders {
+             font-size: 0.875rem;
+             color: var(--text-secondary);
+         }
+
+         .order-filters {
+             display: flex;
+             gap: 1rem;
+             align-items: center;
+             flex-wrap: wrap;
+         }
+
          @media (max-width: 768px) {
              .detail-grid {
                  grid-template-columns: 1fr;
@@ -2072,95 +2301,232 @@
 
         <!-- Orders Tab -->
         <div id="orders" class="tab-content">
+            <div class="orders-header">
+                <h2>📑 Order Management System</h2>
+                <div class="orders-actions">
+                    <button class="btn btn-primary" onclick="showOrderCreationWizard()">➕ Create New Order</button>
+                    <button class="btn btn-secondary" onclick="showQuoteCalculator()">💰 Quote Calculator</button>
+                    <button class="btn btn-secondary" onclick="generateOrderReport()">📊 Generate Report</button>
+                </div>
+            </div>
+
+            <!-- Order Pipeline Status -->
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Заказы</h2>
-                    <button class="btn btn-primary" onclick="showModal('orderModal')">
-                        ➕ Новый заказ
-                    </button>
-                </div>
-
-                <div class="orders-filter">
-                    <select class="form-select" onchange="filterOrders(this.value)">
-                        <option value="all">Все заказы</option>
-                        <option value="new">Новые</option>
-                        <option value="in_progress">В работе</option>
-                        <option value="completed">Завершенные</option>
-                    </select>
-                </div>
-
-                <div class="orders-grid">
-                    <div class="order-card" onclick="showOrderDetail('ORD-240001')">
-                        <div class="order-header">
-                            <span class="order-number">#ORD-240001</span>
-                            <span class="badge badge-warning">В работе</span>
+                    <h3>📈 Order Pipeline Overview</h3>
+                    <div class="pipeline-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">Active Orders</span>
                         </div>
-                        <div class="order-info">
-                            <div class="order-customer">ООО "Пищепром"</div>
-                            <div class="order-product">Пленка ПЭТ 12мкм, 1500мм</div>
-                            <div class="order-quantity">5000 п.м.</div>
+                        <div class="stat-item">
+                            <span class="stat-number">€125K</span>
+                            <span class="stat-label">Pipeline Value</span>
                         </div>
-                        <div class="order-dates">
-                            <small>Заказ: 20.01.2024 | Поставка: 25.01.2024</small>
-                        </div>
-                    </div>
-
-                    <div class="order-card" onclick="showOrderDetail('ORD-240002')">
-                        <div class="order-header">
-                            <span class="order-number">#ORD-240002</span>
-                            <span class="badge badge-danger">Критичный</span>
-                        </div>
-                        <div class="order-info">
-                            <div class="order-customer">ИП Смирнов</div>
-                            <div class="order-product">Пакеты с логотипом</div>
-                            <div class="order-quantity">10000 шт.</div>
-                        </div>
-                        <div class="order-dates">
-                            <small>Заказ: 22.01.2024 | Поставка: 24.01.2024</small>
-                        </div>
-                    </div>
-
-                    <div class="order-card" onclick="showOrderDetail('ORD-240003')">
-                        <div class="order-header">
-                            <span class="order-number">#ORD-240003</span>
-                            <span class="badge badge-info">Запланирован</span>
-                        </div>
-                        <div class="order-info">
-                            <div class="order-customer">ТД "Мегастрой"</div>
-                            <div class="order-product">Стрейч-пленка 500мм</div>
-                            <div class="order-quantity">2000 кг</div>
-                        </div>
-                        <div class="order-dates">
-                            <small>Заказ: 23.01.2024 | Поставка: 30.01.2024</small>
+                        <div class="stat-item">
+                            <span class="stat-number">94%</span>
+                            <span class="stat-label">On-Time Delivery</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Orders Table Management -->
-                <div class="card" style="margin-top: 2rem;">
-                    <div class="card-header">
-                        <h3>📑 Управление заказами</h3>
+                <div class="pipeline-container">
+                    <div class="pipeline-stage">
+                        <div class="stage-header">
+                            <h4>🆕 New Orders</h4>
+                            <span class="stage-count">3</span>
+                        </div>
+                        <div class="stage-orders" id="newOrders">
+                            <div class="pipeline-order" onclick="showOrderDetail('ORD-240004')">
+                                <div class="order-title">Barrier Film Multi-layer</div>
+                                <div class="order-customer">TechPack Solutions</div>
+                                <div class="order-value">€15,200</div>
+                            </div>
+                            <div class="pipeline-order" onclick="showOrderDetail('ORD-240005')">
+                                <div class="order-title">Food Grade PE Film</div>
+                                <div class="order-customer">FreshFood Ltd</div>
+                                <div class="order-value">€8,400</div>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <div class="pipeline-stage">
+                        <div class="stage-header">
+                            <h4>📋 In Planning</h4>
+                            <span class="stage-count">2</span>
+                        </div>
+                        <div class="stage-orders" id="planningOrders">
+                            <div class="pipeline-order" onclick="showOrderDetail('ORD-240002')">
+                                <div class="order-title">Stretch Film 500mm</div>
+                                <div class="order-customer">Logistics Corp</div>
+                                <div class="order-value">€12,600</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pipeline-stage">
+                        <div class="stage-header">
+                            <h4>🏭 In Production</h4>
+                            <span class="stage-count">4</span>
+                        </div>
+                        <div class="stage-orders" id="productionOrders">
+                            <div class="pipeline-order" onclick="showOrderDetail('ORD-240001')">
+                                <div class="order-title">Printed Bags with Logo</div>
+                                <div class="order-customer">Brand Corp</div>
+                                <div class="order-value">€22,800</div>
+                                <div class="order-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 65%"></div>
+                                    </div>
+                                    <span class="progress-text">65%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pipeline-stage">
+                        <div class="stage-header">
+                            <h4>✅ Ready to Ship</h4>
+                            <span class="stage-count">1</span>
+                        </div>
+                        <div class="stage-orders" id="completedOrders">
+                            <div class="pipeline-order" onclick="showOrderDetail('ORD-240003')">
+                                <div class="order-title">PE Film Transparent</div>
+                                <div class="order-customer">PackCorp</div>
+                                <div class="order-value">€9,200</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Номер заказа</th>
-                                    <th>Клиент</th>
-                                    <th>Продукт</th>
-                                    <th>Количество</th>
-                                    <th>Дата заказа</th>
-                                    <th>Статус</th>
-                                    <th>Приоритет</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ordersTable">
-                                <!-- Orders will be populated here -->
-                            </tbody>
-                        </table>
+            <!-- Customer & Product Quick Access -->
+            <div class="quick-access-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>👥 Top Customers</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="showCustomerManager()">Manage</button>
                     </div>
+                    <div class="customer-list">
+                        <div class="customer-item" onclick="createOrderForCustomer('TechPack Solutions')">
+                            <div class="customer-info">
+                                <span class="customer-name">TechPack Solutions</span>
+                                <span class="customer-details">5 active orders • Premium client</span>
+                            </div>
+                            <div class="customer-metrics">
+                                <span class="customer-value">€45,200</span>
+                                <span class="customer-growth positive">+12%</span>
+                            </div>
+                        </div>
+                        <div class="customer-item" onclick="createOrderForCustomer('FreshFood Ltd')">
+                            <div class="customer-info">
+                                <span class="customer-name">FreshFood Ltd</span>
+                                <span class="customer-details">2 active orders • Food grade specialist</span>
+                            </div>
+                            <div class="customer-metrics">
+                                <span class="customer-value">€28,400</span>
+                                <span class="customer-growth positive">+8%</span>
+                            </div>
+                        </div>
+                        <div class="customer-item" onclick="createOrderForCustomer('Logistics Corp')">
+                            <div class="customer-info">
+                                <span class="customer-name">Logistics Corp</span>
+                                <span class="customer-details">1 active order • Industrial packaging</span>
+                            </div>
+                            <div class="customer-metrics">
+                                <span class="customer-value">€15,600</span>
+                                <span class="customer-growth neutral">±0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🏆 Best Selling Products</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="showProductCatalog()">Catalog</button>
+                    </div>
+                    <div class="product-list">
+                        <div class="product-item" onclick="createOrderForProduct('Barrier Film Multi-layer')">
+                            <div class="product-info">
+                                <span class="product-name">Barrier Film Multi-layer</span>
+                                <span class="product-details">9-layer coex • Food grade • High barrier</span>
+                            </div>
+                            <div class="product-metrics">
+                                <span class="product-orders">15 orders</span>
+                                <span class="product-revenue">€89K</span>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="createOrderForProduct('Printed PE Film')">
+                            <div class="product-info">
+                                <span class="product-name">Printed PE Film</span>
+                                <span class="product-details">Flexographic • Up to 8 colors • Custom design</span>
+                            </div>
+                            <div class="product-metrics">
+                                <span class="product-orders">12 orders</span>
+                                <span class="product-revenue">€67K</span>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="createOrderForProduct('Stretch Film LLDPE')">
+                            <div class="product-info">
+                                <span class="product-name">Stretch Film LLDPE</span>
+                                <span class="product-details">500mm width • Machine grade • High puncture</span>
+                            </div>
+                            <div class="product-metrics">
+                                <span class="product-orders">8 orders</span>
+                                <span class="product-revenue">€34K</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Orders Table -->
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">
+                    <h3>📋 All Orders</h3>
+                    <div class="order-filters">
+                        <input type="text" placeholder="Search orders..." class="search-input" oninput="searchOrders(this.value)">
+                        <select class="form-input" onchange="filterOrdersByStatus(this.value)">
+                            <option value="">All Statuses</option>
+                            <option value="new">New</option>
+                            <option value="approved">Approved</option>
+                            <option value="in_planning">In Planning</option>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="in_production">In Production</option>
+                            <option value="produced">Produced</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                        <select class="form-input" onchange="filterOrdersByPriority(this.value)">
+                            <option value="">All Priorities</option>
+                            <option value="high">High Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="low">Low Priority</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Value</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Progress</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable">
+                            <!-- Orders will be populated here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
