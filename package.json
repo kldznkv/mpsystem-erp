@@ -1,0 +1,42 @@
+{
+  "name": "mpsystem-erp",
+  "version": "1.0.0",
+  "description": "MP System ERP - Enterprise Resource Planning system for small and medium business",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "install-backend": "cd backend && npm install",
+    "install-all": "npm run install-backend",
+    "setup": "npm run install-backend && cd backend && cp .env.example .env",
+    "test": "cd backend && npm test",
+    "lint": "cd backend && npm run lint",
+    "lint:fix": "cd backend && npm run lint:fix",
+    "serve-frontend": "cd frontend && python -m http.server 8000",
+    "serve-frontend-node": "npx http-server frontend -p 8000 -c-1",
+    "db:init": "echo 'Run: psql -U username -d mpsystem_erp -f database/init.sql'",
+    "clean": "cd backend && rm -rf node_modules && npm cache clean --force"
+  },
+  "keywords": [
+    "erp",
+    "inventory-management",
+    "sales-management",
+    "business-management",
+    "nodejs",
+    "express",
+    "spa",
+    "api"
+  ],
+  "author": "MP System",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "workspaces": [
+    "backend"
+  ]
+}

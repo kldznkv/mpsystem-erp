@@ -30,7 +30,7 @@
 ## Структура проекта
 
 ```
-mpsystem-erp/
+/
 ├── frontend/                  # Фронтенд приложение
 │   ├── index.html            # Главная страница
 │   ├── css/
@@ -49,31 +49,32 @@ mpsystem-erp/
 │       └── routes/           # Маршруты API
 ├── database/                 # Скрипты БД
 ├── docs/                     # Документация
-└── tests/                    # Тесты
+├── tests/                    # Тесты
+└── README.md                 # Этот файл
 ```
 
-## Установка и запуск
+## Быстрый старт
 
 ### Требования
 - Node.js 16+ 
 - npm или yarn
 - База данных (MongoDB/PostgreSQL/MySQL)
 
-### Установка зависимостей
+### 1. Установка зависимостей
 
 ```bash
-cd mpsystem-erp/backend
+cd backend
 npm install
 ```
 
-### Настройка окружения
+### 2. Настройка окружения
 
-1. Скопируйте файл `.env.example` в `.env`:
 ```bash
+cd backend
 cp .env.example .env
 ```
 
-2. Отредактируйте `.env` файл с вашими настройками:
+Отредактируйте `.env` файл с вашими настройками:
 ```env
 NODE_ENV=development
 PORT=3000
@@ -81,19 +82,19 @@ DB_URL=mongodb://localhost:27017/mpsystem_erp
 JWT_SECRET=your-secret-key
 ```
 
-### Запуск сервера
+### 3. Запуск сервера
 
-#### Режим разработки
 ```bash
+cd backend
+
+# Режим разработки
 npm run dev
-```
 
-#### Продакшн режим
-```bash
+# Продакшн режим  
 npm start
 ```
 
-### Запуск фронтенда
+### 4. Запуск фронтенда
 
 Откройте `frontend/index.html` в браузере или используйте локальный веб-сервер:
 
@@ -104,121 +105,78 @@ python -m http.server 8000
 
 # Используя Node.js (http-server)
 npx http-server frontend -p 8000
+
+# Используя PHP
+cd frontend
+php -S localhost:8000
+```
+
+### 5. Инициализация базы данных
+
+```bash
+# Для PostgreSQL/MySQL
+psql -U username -d mpsystem_erp -f database/init.sql
+
+# Или используйте ваш любимый клиент БД
 ```
 
 ## API Документация
 
-### Аутентификация
+### Базовый URL
+`http://localhost:3000/api`
 
-#### POST /api/auth/login
-Вход в систему
+### Основные эндпоинты
 
-**Тело запроса:**
-```json
-{
-  "username": "admin",
-  "password": "admin123"
-}
-```
+#### Аутентификация
+- `POST /api/auth/login` - Вход в систему
+- `POST /api/auth/logout` - Выход из системы
+- `GET /api/auth/profile` - Профиль пользователя
 
-**Ответ:**
-```json
-{
-  "success": true,
-  "token": "jwt_token_here",
-  "user": {
-    "id": 1,
-    "username": "admin",
-    "role": "administrator"
-  }
-}
-```
+#### Склад
+- `GET /api/inventory` - Список товаров
+- `POST /api/inventory` - Создать товар
+- `PUT /api/inventory/:id` - Обновить товар
+- `DELETE /api/inventory/:id` - Удалить товар
 
-### Управление складом
+#### Продажи
+- `GET /api/sales` - Список продаж
+- `POST /api/sales` - Создать продажу
+- `PUT /api/sales/:id` - Обновить продажу
 
-#### GET /api/inventory
-Получить список товаров
+#### Отчеты
+- `GET /api/reports/inventory` - Отчет по складу
+- `GET /api/reports/sales` - Отчет по продажам
+- `GET /api/reports/financial` - Финансовый отчет
 
-**Параметры:**
-- `page` - номер страницы
-- `limit` - количество элементов на странице
-- `category` - фильтр по категории
-- `search` - поиск по названию/артикулу
-
-#### POST /api/inventory
-Создать новый товар
-
-**Тело запроса:**
-```json
-{
-  "name": "Новый товар",
-  "sku": "SKU004",
-  "quantity": 100,
-  "price": 1500,
-  "category": "Категория А"
-}
-```
-
-### Управление продажами
-
-#### GET /api/sales
-Получить список продаж
-
-#### POST /api/sales
-Создать новую продажу
-
-**Тело запроса:**
-```json
-{
-  "customerName": "Иван Иванов",
-  "items": [
-    {
-      "id": 1,
-      "name": "Товар 1",
-      "quantity": 2,
-      "price": 1500
-    }
-  ],
-  "paymentMethod": "cash"
-}
-```
-
-### Отчеты
-
-#### GET /api/reports/inventory
-Отчет по складу
-
-#### GET /api/reports/sales
-Отчет по продажам
-
-#### GET /api/reports/financial
-Финансовый отчет
+**Полная документация**: [docs/API.md](docs/API.md)
 
 ## Разработка
 
 ### Структура кода
 
+- **Frontend** (`/frontend/`): Клиентская часть SPA
+- **Backend** (`/backend/`): API сервер на Express.js
 - **Модели** (`/backend/src/models/`): Определения структур данных
-- **Контроллеры** (`/backend/src/controllers/`): Бизнес-логика
 - **Маршруты** (`/backend/src/routes/`): API endpoints
-- **Frontend** (`/frontend/`): Клиентская часть
+- **База данных** (`/database/`): SQL скрипты
 
 ### Добавление новых функций
 
-1. Создайте модель в `/backend/src/models/`
-2. Добавьте маршруты в `/backend/src/routes/`
-3. Реализуйте контроллер в `/backend/src/controllers/`
-4. Обновите фронтенд в `/frontend/js/`
+1. **Модель**: Создайте модель в `/backend/src/models/`
+2. **API**: Добавьте маршруты в `/backend/src/routes/`
+3. **Frontend**: Обновите логику в `/frontend/js/`
 
 ### Тестирование
 
 ```bash
+cd backend
 npm test
 ```
 
 ### Линтинг
 
 ```bash
+cd backend
 npm run lint
 ```
 
@@ -226,17 +184,15 @@ npm run lint
 
 ### Переменные окружения
 
-Основные настройки в файле `.env`:
+Основные настройки в файле `backend/.env`:
 
 - `NODE_ENV` - режим работы (development/production)
-- `PORT` - порт сервера
+- `PORT` - порт сервера (по умолчанию 3000)
 - `DB_URL` - строка подключения к БД
 - `JWT_SECRET` - секретный ключ для JWT
 - `CORS_ORIGIN` - разрешенные домены для CORS
 
-### База данных
-
-Система поддерживает несколько типов БД:
+### Поддерживаемые базы данных
 
 #### MongoDB
 ```env
@@ -265,25 +221,32 @@ docker build -t mpsystem-erp .
 docker run -p 3000:3000 -e NODE_ENV=production mpsystem-erp
 ```
 
-### Docker Compose
-
-```bash
-docker-compose up -d
-```
-
 ### Обычный деплой
 
-1. Установите зависимости: `npm install --production`
+1. Установите зависимости: `cd backend && npm install --production`
 2. Настройте переменные окружения
-3. Запустите сервер: `npm start`
+3. Инициализируйте базу данных
+4. Запустите сервер: `cd backend && npm start`
+5. Настройте веб-сервер для фронтенда (nginx, apache)
+
+## Демо данные
+
+Система включает демо данные для быстрого тестирования:
+
+- **Пользователь**: admin / admin123
+- **Товары**: 3 образца товаров
+- **Продажи**: История из 3 транзакций
 
 ## Безопасность
 
-- Все пароли должны быть захешированы
-- Используйте HTTPS в продакшне
-- Настройте CORS правильно
+⚠️ **Важно для продакшна:**
+
+- Измените JWT_SECRET на надежный ключ
+- Используйте хеширование паролей (bcrypt)
+- Настройте HTTPS
+- Ограничьте CORS домены
 - Регулярно обновляйте зависимости
-- Используйте сильные JWT секреты
+- Настройте мониторинг и логирование
 
 ## Лицензия
 
@@ -300,3 +263,5 @@ MIT License - подробности в файле [LICENSE](LICENSE)
 - Управление складом и продажами
 - Система отчетов
 - Аутентификация пользователей
+- API документация
+- Демо данные
