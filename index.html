@@ -772,86 +772,147 @@
     <script>
         // ===== UNIFIED JAVASCRIPT SYSTEM =====
         
-        // Storage System
+        // Enhanced ERP Storage System
         class ERPStorage {
             constructor() {
-                this.orders = [];
-                this.inventory = [];
-                this.production = [];
+                this.data = {
+                    materials: [],
+                    suppliers: [],
+                    inventory: [],
+                    batches: [],
+                    orders: [],
+                    production_queue: [],
+                    production_lines: [],
+                    requirements: [],
+                    purchase_orders: [],
+                    contracts: [],
+                    price_history: [],
+                    delivery_schedule: [],
+                    activities: []
+                };
                 this.init();
             }
 
             init() {
                 this.loadFromStorage();
-                if (this.orders.length === 0) {
-                    this.initializeWithSampleData();
-                }
+                this.initializeWithSampleData();
+                this.initializeProductionRules();
+                this.initializeProcurementData();
             }
 
             loadFromStorage() {
                 try {
-                    this.orders = JSON.parse(localStorage.getItem('erp_orders') || '[]');
-                    this.inventory = JSON.parse(localStorage.getItem('erp_inventory') || '[]');
-                    this.production = JSON.parse(localStorage.getItem('erp_production') || '[]');
+                    const storedData = localStorage.getItem('erp_data');
+                    if (storedData) {
+                        this.data = { ...this.data, ...JSON.parse(storedData) };
+                    }
                 } catch (error) {
                     console.error('Error loading from storage:', error);
-                    this.initializeWithSampleData();
                 }
             }
 
             saveToStorage() {
-                localStorage.setItem('erp_orders', JSON.stringify(this.orders));
-                localStorage.setItem('erp_inventory', JSON.stringify(this.inventory));
-                localStorage.setItem('erp_production', JSON.stringify(this.production));
+                localStorage.setItem('erp_data', JSON.stringify(this.data));
+            }
+
+            getTable(tableName) {
+                return this.data[tableName] || [];
+            }
+
+            getData() {
+                return this.data;
+            }
+
+            addRecord(tableName, record) {
+                if (!this.data[tableName]) this.data[tableName] = [];
+                
+                const id = this.data[tableName].length > 0 
+                    ? Math.max(...this.data[tableName].map(r => r.id || 0)) + 1 
+                    : 1;
+                
+                record.id = id;
+                record.created_at = new Date().toISOString();
+                this.data[tableName].push(record);
+                this.saveToStorage();
+                return record;
+            }
+
+            updateRecord(tableName, id, updates) {
+                const index = this.data[tableName].findIndex(r => r.id === id);
+                if (index !== -1) {
+                    this.data[tableName][index] = { ...this.data[tableName][index], ...updates };
+                    this.saveToStorage();
+                    return this.data[tableName][index];
+                }
+                return null;
+            }
+
+            deleteRecord(tableName, id) {
+                this.data[tableName] = this.data[tableName].filter(r => r.id !== id);
+                this.saveToStorage();
+            }
+
+            addActivity(type, description) {
+                this.addRecord('activities', {
+                    type,
+                    description,
+                    timestamp: new Date().toISOString()
+                });
             }
 
             initializeWithSampleData() {
-                this.orders = [
-                    {
-                        id: 'ORD-240001',
-                        customer: 'ООО "Упаковка+"',
-                        product: 'Пленка PE 20мкм',
-                        quantity: 1000,
-                        status: 'В производстве',
-                        date: '2024-01-15'
-                    },
-                    {
-                        id: 'ORD-240002',
-                        customer: 'ТД "Полимер"',
-                        product: 'Пленка PVC 50мкм',
-                        quantity: 1500,
-                        status: 'Утвержден',
-                        date: '2024-01-16'
-                    }
+                if (this.data.materials.length > 0) return; // Already initialized
+
+                // Materials
+                this.data.materials = [
+                    { id: 1, code: 'GR-PET-001', name: 'PET Гранулы прозрачные', type: 'granulate_pet', unit: 'кг', standard_cost: 85.5, min_stock_level: 1000, supplier_id: 1 },
+                    { id: 2, code: 'DYE-CLEAR', name: 'Краситель прозрачный', type: 'ink_printing', unit: 'кг', standard_cost: 450.0, min_stock_level: 50, supplier_id: 2 },
+                    { id: 3, code: 'DYE-BLUE', name: 'Краситель синий', type: 'ink_printing', unit: 'кг', standard_cost: 520.0, min_stock_level: 30, supplier_id: 2 },
+                    { id: 4, code: 'GR-LLDPE-001', name: 'LLDPE Гранулы', type: 'granulate_ldpe', unit: 'кг', standard_cost: 75.0, min_stock_level: 800, supplier_id: 1 }
                 ];
 
-                this.inventory = [
-                    {
-                        code: 'PE-001',
-                        name: 'Гранулы PE',
-                        quantity: 5000,
-                        unit: 'кг',
-                        lastUpdate: '2024-01-15'
-                    },
-                    {
-                        code: 'PVC-001',
-                        name: 'Гранулы PVC',
-                        quantity: 3000,
-                        unit: 'кг',
-                        lastUpdate: '2024-01-14'
-                    }
+                // Suppliers
+                this.data.suppliers = [
+                    { id: 1, code: 'SUP-001', name: 'ОАО "Нефтехим"', contact_person: 'Иванов И.И.', email: 'ivanov@neftehim.ru', phone: '+7-495-123-4567', is_active: true, overall_rating: 85.5 },
+                    { id: 2, code: 'SUP-002', name: 'ТД "Химические красители"', contact_person: 'Петрова М.А.', email: 'petrova@himkras.ru', phone: '+7-812-987-6543', is_active: true, overall_rating: 78.2 }
                 ];
 
-                this.production = [
-                    {
-                        line: 'Линия PE-1',
-                        order: 'ORD-240001',
-                        status: 'Работает',
-                        progress: 65,
-                        estimatedCompletion: '18:30'
-                    }
+                // Inventory
+                this.data.inventory = [
+                    { id: 1, material_id: 1, quantity: 2500, reserved_quantity: 500, available_quantity: 2000, last_received: '2024-01-15', reservations: [{ order_id: 'ORD-240001', quantity: 500 }] },
+                    { id: 2, material_id: 2, quantity: 120, reserved_quantity: 0, available_quantity: 120, last_received: '2024-01-10', reservations: [] },
+                    { id: 3, material_id: 3, quantity: 80, reserved_quantity: 25, available_quantity: 55, last_received: '2024-01-12', reservations: [{ order_id: 'ORD-240001', quantity: 25 }] },
+                    { id: 4, material_id: 4, quantity: 1200, reserved_quantity: 0, available_quantity: 1200, last_received: '2024-01-14', reservations: [] }
                 ];
 
+                // Orders
+                this.data.orders = [
+                    { id: 1, order_number: 'ORD-240001', customer_name: 'ООО "Упаковка+"', product_name: 'Пленка PET прозрачная 30мкм', quantity: 1000, order_date: '2024-01-15', delivery_date: '2024-01-25', status: 'scheduled', priority: 'high', material_requirements: [{ material_id: 1, required_quantity: 500 }, { material_id: 3, required_quantity: 25 }] },
+                    { id: 2, order_number: 'ORD-240002', customer_name: 'ТД "Полимер"', product_name: 'Пленка LDPE 50мкм', quantity: 1500, order_date: '2024-01-16', delivery_date: '2024-01-28', status: 'new', priority: 'medium', material_requirements: [] }
+                ];
+
+                // Production Queue
+                this.data.production_queue = [
+                    { id: 1, order_id: 1, order_number: 'ORD-240001', product_name: 'Пленка PET прозрачная 30мкм', quantity: 1000, line_id: 1, status: 'scheduled', scheduled_start: '2024-01-20T08:00:00', estimated_completion: '2024-01-20T16:00:00', priority: 'high' }
+                ];
+
+                this.saveToStorage();
+            }
+
+            initializeProductionRules() {
+                if (!this.data.production_recipes) {
+                    this.data.production_recipes = this.getDefaultProductionRecipes();
+                }
+                if (!this.data.production_lines) {
+                    this.data.production_lines = this.getDefaultProductionLines();
+                }
+                this.saveToStorage();
+            }
+
+            initializeProcurementData() {
+                if (!this.data.contracts) {
+                    this.data.contracts = this.getDefaultContracts();
+                }
                 this.saveToStorage();
             }
 
