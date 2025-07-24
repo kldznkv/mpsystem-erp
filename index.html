@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестовый интерфейс</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Тестовый веб-интерфейс</h1>
+            <p>Добро пожаловать в демонстрационное приложение</p>
+        </header>
+
+        <main class="main">
+            <div class="card">
+                <h2>Функции приложения</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <h3>Дашборд</h3>
+                        <p>Просмотр основной статистики</p>
+                        <button onclick="showDashboard()">Открыть</button>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⚙️</div>
+                        <h3>Настройки</h3>
+                        <p>Конфигурация приложения</p>
+                        <button onclick="showSettings()">Настроить</button>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📝</div>
+                        <h3>Заметки</h3>
+                        <p>Создание и редактирование</p>
+                        <button onclick="showNotes()">Создать</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Интерактивная форма</h2>
+                <form id="testForm" class="form">
+                    <div class="form-group">
+                        <label for="username">Имя пользователя:</label>
+                        <input type="text" id="username" name="username" placeholder="Введите ваше имя">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="example@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Сообщение:</label>
+                        <textarea id="message" name="message" placeholder="Введите ваше сообщение"></textarea>
+                    </div>
+                    <button type="submit">Отправить</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Данные в реальном времени</h2>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Время:</span>
+                        <span id="currentTime" class="stat-value">--:--:--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Посетители:</span>
+                        <span id="visitorCount" class="stat-value">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Статус:</span>
+                        <span id="status" class="stat-value online">Онлайн</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Тестовый интерфейс. Создано для демонстрации.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
