@@ -3,82 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тестовый интерфейс</title>
+    <title>MPSYSTEM - Production ERP XL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>Тестовый веб-интерфейс</h1>
-            <p>Добро пожаловать в демонстрационное приложение</p>
-        </header>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo">MPSYSTEM</div>
+                <div class="company-name">Production ERP XL</div>
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-page="dashboard">
+                            <span class="nav-icon">📊</span>
+                            Панель управления
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="planning">
+                            <span class="nav-icon">📋</span>
+                            Планирование
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="warehouse">
+                            <span class="nav-icon">📦</span>
+                            Склад
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="orders">
+                            <span class="nav-icon">📄</span>
+                            Заказы
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="bom">
+                            <span class="nav-icon">🔧</span>
+                            Технологии
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="metrics">
+                            <span class="nav-icon">📈</span>
+                            Метрики
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="equipment">
+                            <span class="nav-icon">⚙️</span>
+                            Оборудование
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="traceability">
+                            <span class="nav-icon">🔍</span>
+                            Прослеживаемость
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
 
-        <main class="main">
-            <div class="card">
-                <h2>Функции приложения</h2>
-                <div class="feature-grid">
-                    <div class="feature-item">
-                        <div class="feature-icon">📊</div>
-                        <h3>Дашборд</h3>
-                        <p>Просмотр основной статистики</p>
-                        <button onclick="showDashboard()">Открыть</button>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <div class="page-header">
+                    <h1 class="page-title">Панель управления</h1>
+                    <p class="page-subtitle">Обзор ключевых показателей производства</p>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🏭</div>
+                        <div class="kpi-info">
+                            <div class="kpi-value" id="production-volume">2,450</div>
+                            <div class="kpi-label">Произведено сегодня</div>
+                            <div class="kpi-change positive">+12.5%</div>
+                        </div>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">⚙️</div>
-                        <h3>Настройки</h3>
-                        <p>Конфигурация приложения</p>
-                        <button onclick="showSettings()">Настроить</button>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">⚡</div>
+                        <div class="kpi-info">
+                            <div class="kpi-value" id="efficiency">87.2%</div>
+                            <div class="kpi-label">Эффективность OEE</div>
+                            <div class="kpi-change positive">+3.1%</div>
+                        </div>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">📝</div>
-                        <h3>Заметки</h3>
-                        <p>Создание и редактирование</p>
-                        <button onclick="showNotes()">Создать</button>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📦</div>
+                        <div class="kpi-info">
+                            <div class="kpi-value" id="orders-count">156</div>
+                            <div class="kpi-label">Активных заказов</div>
+                            <div class="kpi-change negative">-2</div>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">⚠️</div>
+                        <div class="kpi-info">
+                            <div class="kpi-value" id="quality-score">98.7%</div>
+                            <div class="kpi-label">Показатель качества</div>
+                            <div class="kpi-change positive">+0.3%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Производительность за неделю</h3>
+                            <select class="chart-filter">
+                                <option>Последние 7 дней</option>
+                                <option>Последний месяц</option>
+                                <option>Последний квартал</option>
+                            </select>
+                        </div>
+                        <canvas id="production-chart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Статус оборудования</h3>
+                        </div>
+                        <div class="equipment-status">
+                            <div class="equipment-item">
+                                <div class="equipment-name">Линия 1</div>
+                                <div class="equipment-status-indicator online"></div>
+                                <div class="equipment-efficiency">94%</div>
+                            </div>
+                            <div class="equipment-item">
+                                <div class="equipment-name">Линия 2</div>
+                                <div class="equipment-status-indicator online"></div>
+                                <div class="equipment-efficiency">89%</div>
+                            </div>
+                            <div class="equipment-item">
+                                <div class="equipment-name">Линия 3</div>
+                                <div class="equipment-status-indicator maintenance"></div>
+                                <div class="equipment-efficiency">0%</div>
+                            </div>
+                            <div class="equipment-item">
+                                <div class="equipment-name">Упаковка</div>
+                                <div class="equipment-status-indicator online"></div>
+                                <div class="equipment-efficiency">97%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="activities-section">
+                    <h3>Последние действия</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">✅</div>
+                            <div class="activity-details">
+                                <div class="activity-text">Заказ #1247 завершён</div>
+                                <div class="activity-time">2 минуты назад</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">⚠️</div>
+                            <div class="activity-details">
+                                <div class="activity-text">Техническое обслуживание Линии 3</div>
+                                <div class="activity-time">15 минут назад</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">📦</div>
+                            <div class="activity-details">
+                                <div class="activity-text">Поступление материалов на склад</div>
+                                <div class="activity-time">1 час назад</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">🎯</div>
+                            <div class="activity-details">
+                                <div class="activity-text">План выполнен на 103%</div>
+                                <div class="activity-time">2 часа назад</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <h2>Интерактивная форма</h2>
-                <form id="testForm" class="form">
-                    <div class="form-group">
-                        <label for="username">Имя пользователя:</label>
-                        <input type="text" id="username" name="username" placeholder="Введите ваше имя">
+            <!-- Planning Page -->
+            <div id="planning" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Планирование производства</h1>
+                    <button class="btn btn-primary">Создать план</button>
+                </div>
+                
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Производственные планы</h3>
+                        <div class="table-actions">
+                            <input type="search" placeholder="Поиск..." class="search-input">
+                            <button class="btn btn-outline">Фильтры</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" placeholder="example@email.com">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID плана</th>
+                                    <th>Продукт</th>
+                                    <th>Количество</th>
+                                    <th>Дата начала</th>
+                                    <th>Дата окончания</th>
+                                    <th>Статус</th>
+                                    <th>Прогресс</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#PL001</td>
+                                    <td>Продукт А</td>
+                                    <td>1,500 шт</td>
+                                    <td>15.01.2024</td>
+                                    <td>20.01.2024</td>
+                                    <td><span class="status-badge in-progress">Выполняется</span></td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 65%;"></div>
+                                        </div>
+                                        <span class="progress-text">65%</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm">Детали</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#PL002</td>
+                                    <td>Продукт Б</td>
+                                    <td>800 шт</td>
+                                    <td>18.01.2024</td>
+                                    <td>25.01.2024</td>
+                                    <td><span class="status-badge planned">Запланировано</span></td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 0%;"></div>
+                                        </div>
+                                        <span class="progress-text">0%</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm">Детали</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="form-group">
-                        <label for="message">Сообщение:</label>
-                        <textarea id="message" name="message" placeholder="Введите ваше сообщение"></textarea>
-                    </div>
-                    <button type="submit">Отправить</button>
-                </form>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>Данные в реальном времени</h2>
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Время:</span>
-                        <span id="currentTime" class="stat-value">--:--:--</span>
+            <!-- Warehouse Page -->
+            <div id="warehouse" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Управление складом</h1>
+                    <button class="btn btn-primary">Добавить товар</button>
+                </div>
+
+                <div class="warehouse-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-info">
+                            <div class="stat-value">12,450</div>
+                            <div class="stat-label">Всего позиций</div>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Посетители:</span>
-                        <span id="visitorCount" class="stat-value">1</span>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-info">
+                            <div class="stat-value">23</div>
+                            <div class="stat-label">Низкий остаток</div>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Статус:</span>
-                        <span id="status" class="stat-value online">Онлайн</span>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-info">
+                            <div class="stat-value">98.5%</div>
+                            <div class="stat-label">Заполненность</div>
+                        </div>
                     </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Остатки на складе</h3>
+                        <div class="table-actions">
+                            <input type="search" placeholder="Поиск товара..." class="search-input">
+                            <select class="filter-select">
+                                <option>Все категории</option>
+                                <option>Сырье</option>
+                                <option>Готовая продукция</option>
+                                <option>Упаковка</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Артикул</th>
+                                    <th>Наименование</th>
+                                    <th>Категория</th>
+                                    <th>Остаток</th>
+                                    <th>Мин. остаток</th>
+                                    <th>Единица</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ART001</td>
+                                    <td>Материал А-500</td>
+                                    <td>Сырье</td>
+                                    <td>450</td>
+                                    <td>100</td>
+                                    <td>кг</td>
+                                    <td><span class="status-badge in-stock">В наличии</span></td>
+                                    <td>
+                                        <button class="btn btn-sm">Редактировать</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ART002</td>
+                                    <td>Упаковка тип Б</td>
+                                    <td>Упаковка</td>
+                                    <td>25</td>
+                                    <td>50</td>
+                                    <td>шт</td>
+                                    <td><span class="status-badge low-stock">Низкий остаток</span></td>
+                                    <td>
+                                        <button class="btn btn-sm">Пополнить</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other pages (placeholder content) -->
+            <div id="orders" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Управление заказами</h1>
+                </div>
+                <div class="placeholder-content">
+                    <p>Модуль управления заказами находится в разработке</p>
+                </div>
+            </div>
+
+            <div id="bom" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Технологии и спецификации</h1>
+                </div>
+                <div class="placeholder-content">
+                    <p>Модуль технологий находится в разработке</p>
+                </div>
+            </div>
+
+            <div id="metrics" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Метрики и аналитика</h1>
+                </div>
+                <div class="placeholder-content">
+                    <p>Модуль аналитики находится в разработке</p>
+                </div>
+            </div>
+
+            <div id="equipment" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Управление оборудованием</h1>
+                </div>
+                <div class="placeholder-content">
+                    <p>Модуль оборудования находится в разработке</p>
+                </div>
+            </div>
+
+            <div id="traceability" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Прослеживаемость</h1>
+                </div>
+                <div class="placeholder-content">
+                    <p>Модуль прослеживаемости находится в разработке</p>
                 </div>
             </div>
         </main>
-
-        <footer class="footer">
-            <p>&copy; 2024 Тестовый интерфейс. Создано для демонстрации.</p>
-        </footer>
     </div>
 
     <script src="script.js"></script>
