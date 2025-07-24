@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPSYSTEM Production ERP</title>
-    <meta name="description" content="Система управления производством пленочных материалов">
+    <title>MPSYSTEM - Управление производством упаковочных материалов</title>
+    <meta name="description" content="Веб-платформа для управления производством упаковочных материалов: экструзия, ламинация, печать">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏭%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -456,7 +456,9 @@
                     <span>MPSYSTEM</span>
                 </a>
                 <div class="user-info">
-                    Производственная ERP
+                    <span class="subtitle">Упаковочные материалы</span>
+                    <span class="status-indicator online" id="systemStatus">● Online</span>
+                    <span class="time" id="currentTime"></span>
                 </div>
             </div>
         </div>
@@ -465,19 +467,25 @@
     <!-- Navigation -->
     <nav class="nav-tabs container">
         <button class="nav-tab active" onclick="showTab('dashboard')">
-            📊 Дашборд
+            📊 Dashboard
         </button>
-        <button class="nav-tab" onclick="showTab('procurement')">
-            🛒 Закупки
+        <button class="nav-tab" onclick="showTab('planning')">
+            📋 Планирование
+        </button>
+        <button class="nav-tab" onclick="showTab('production')">
+            ⚙️ Производство
+        </button>
+        <button class="nav-tab" onclick="showTab('quality')">
+            🔬 Качество
+        </button>
+        <button class="nav-tab" onclick="showTab('warehouse')">
+            📦 Склад
         </button>
         <button class="nav-tab" onclick="showTab('orders')">
             📑 Заказы
         </button>
-        <button class="nav-tab" onclick="showTab('warehouse')">
-            🏭 Склад
-        </button>
-        <button class="nav-tab" onclick="showTab('production')">
-            ⚙️ Производство
+        <button class="nav-tab" onclick="showTab('maintenance')">
+            🔧 ТО
         </button>
         <button class="nav-tab" onclick="showTab('analytics')">
             📈 Аналитика
