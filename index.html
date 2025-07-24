@@ -1498,9 +1498,150 @@
 
             .plan-progress {
                 flex-direction: column;
-                text-align: center;
-            }
-        }
+                                 text-align: center;
+             }
+         }
+
+         /* Detail Modal Styles */
+         .detail-content {
+             padding: 0;
+         }
+
+         .detail-grid {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+             gap: 2rem;
+             margin-bottom: 2rem;
+         }
+
+         .detail-section {
+             background: var(--bg-tertiary);
+             border-radius: var(--radius-lg);
+             padding: 1.5rem;
+         }
+
+         .detail-section.full-width {
+             grid-column: 1 / -1;
+         }
+
+         .detail-section h4 {
+             font-size: 1rem;
+             font-weight: 600;
+             color: var(--text-primary);
+             margin-bottom: 1rem;
+             display: flex;
+             align-items: center;
+             gap: 0.5rem;
+         }
+
+         .detail-item {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 0.75rem 0;
+             border-bottom: 1px solid var(--border-light);
+         }
+
+         .detail-item:last-child {
+             border-bottom: none;
+         }
+
+         .detail-label {
+             font-weight: 500;
+             color: var(--text-secondary);
+             min-width: 120px;
+         }
+
+         .detail-value {
+             font-weight: 600;
+             color: var(--text-primary);
+             text-align: right;
+             flex: 1;
+         }
+
+         .detail-actions {
+             display: flex;
+             gap: 1rem;
+             justify-content: center;
+             padding-top: 1.5rem;
+             border-top: 1px solid var(--border-light);
+             flex-wrap: wrap;
+         }
+
+         /* Line Schedule Styles */
+         .line-schedule {
+             display: flex;
+             flex-direction: column;
+             gap: 0.75rem;
+         }
+
+         .schedule-item {
+             display: grid;
+             grid-template-columns: 1fr 1fr 1fr;
+             gap: 1rem;
+             padding: 1rem;
+             background: var(--surface);
+             border: 1px solid var(--border-light);
+             border-radius: var(--radius-lg);
+             align-items: center;
+         }
+
+         .schedule-item.completed {
+             border-left: 4px solid var(--success-color);
+         }
+
+         .schedule-item.current {
+             border-left: 4px solid var(--primary-color);
+             background: rgba(99, 102, 241, 0.05);
+         }
+
+         .schedule-item.planned {
+             border-left: 4px solid var(--info-color);
+         }
+
+         .schedule-time {
+             font-weight: 600;
+         }
+
+         .schedule-order {
+             font-weight: 600;
+             color: var(--primary-color);
+         }
+
+         .schedule-status {
+             text-align: right;
+             font-size: 0.875rem;
+             font-weight: 500;
+         }
+
+         /* Clickable Cards */
+         .order-card, 
+         .material-card, 
+         .production-line-card {
+             cursor: pointer;
+         }
+
+         .order-card:hover, 
+         .material-card:hover, 
+         .production-line-card:hover {
+             transform: translateY(-4px);
+             box-shadow: var(--shadow-lg);
+         }
+
+         @media (max-width: 768px) {
+             .detail-grid {
+                 grid-template-columns: 1fr;
+             }
+
+             .detail-actions {
+                 flex-direction: column;
+             }
+
+             .schedule-item {
+                 grid-template-columns: 1fr;
+                 text-align: center;
+             }
+         }
     </style>
 </head>
 <body>
@@ -1683,7 +1824,7 @@
                 </div>
 
                 <div class="orders-grid">
-                    <div class="order-card">
+                    <div class="order-card" onclick="showOrderDetail('ORD-240001')">
                         <div class="order-header">
                             <span class="order-number">#ORD-240001</span>
                             <span class="badge badge-warning">В работе</span>
@@ -1698,7 +1839,7 @@
                         </div>
                     </div>
 
-                    <div class="order-card">
+                    <div class="order-card" onclick="showOrderDetail('ORD-240002')">
                         <div class="order-header">
                             <span class="order-number">#ORD-240002</span>
                             <span class="badge badge-danger">Критичный</span>
@@ -1713,7 +1854,7 @@
                         </div>
                     </div>
 
-                    <div class="order-card">
+                    <div class="order-card" onclick="showOrderDetail('ORD-240003')">
                         <div class="order-header">
                             <span class="order-number">#ORD-240003</span>
                             <span class="badge badge-info">Запланирован</span>
@@ -1762,17 +1903,17 @@
                     <div class="warehouse-section">
                         <h3>📦 Сырье и материалы</h3>
                         <div class="material-grid">
-                            <div class="material-card">
+                            <div class="material-card" onclick="showWarehouseDetail('ldpe-granulate')">
                                 <div class="material-name">Гранулят ПВД</div>
                                 <div class="material-quantity">500 кг</div>
                                 <div class="material-status low">Низкий остаток</div>
                             </div>
-                            <div class="material-card">
+                            <div class="material-card" onclick="showWarehouseDetail('pp-granulate')">
                                 <div class="material-name">Гранулят ПП</div>
                                 <div class="material-quantity">750 кг</div>
                                 <div class="material-status ok">Норма</div>
                             </div>
-                            <div class="material-card">
+                            <div class="material-card" onclick="showWarehouseDetail('blue-dye')">
                                 <div class="material-name">Краситель синий</div>
                                 <div class="material-quantity">25 кг</div>
                                 <div class="material-status ok">Норма</div>
@@ -1808,7 +1949,7 @@
                 </div>
 
                 <div class="production-lines">
-                    <div class="production-line-card">
+                    <div class="production-line-card" onclick="showLineDetail('line-1')">
                         <div class="line-header">
                             <h3>Линия 1 - Экструзия</h3>
                             <span class="line-status running">Работает</span>
@@ -1826,7 +1967,7 @@
                         </div>
                     </div>
 
-                    <div class="production-line-card">
+                    <div class="production-line-card" onclick="showLineDetail('line-2')">
                         <div class="line-header">
                             <h3>Линия 2 - Печать</h3>
                             <span class="line-status running">Работает</span>
@@ -1844,7 +1985,7 @@
                         </div>
                     </div>
 
-                    <div class="production-line-card">
+                    <div class="production-line-card" onclick="showLineDetail('line-3')">
                         <div class="line-header">
                             <h3>Линия 3 - Ламинация</h3>
                             <span class="line-status maintenance">Обслуживание</span>
@@ -2409,6 +2550,314 @@
                 </div>
             </div>
 
+            <!-- Detail Modals -->
+            
+            <!-- Order Detail Modal -->
+            <div id="orderDetailModal" class="modal">
+                <div class="modal-content" style="max-width: 800px;">
+                    <div class="modal-header">
+                        <h3 id="orderDetailTitle">Детали заказа</h3>
+                        <button class="modal-close" onclick="hideModal('orderDetailModal')">&times;</button>
+                    </div>
+                    
+                    <div class="detail-content">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>📋 Основная информация</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Номер заказа:</span>
+                                    <span class="detail-value" id="orderNumber">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Клиент:</span>
+                                    <span class="detail-value" id="orderCustomer">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Статус:</span>
+                                    <span class="detail-value" id="orderStatus">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Приоритет:</span>
+                                    <span class="detail-value" id="orderPriority">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>📦 Продукция</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Продукт:</span>
+                                    <span class="detail-value" id="orderProduct">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Количество:</span>
+                                    <span class="detail-value" id="orderQuantity">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Единица измерения:</span>
+                                    <span class="detail-value" id="orderUnit">п.м.</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>📅 Сроки</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Дата заказа:</span>
+                                    <span class="detail-value" id="orderDate">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Планируемая поставка:</span>
+                                    <span class="detail-value" id="orderDeliveryDate">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Дней до поставки:</span>
+                                    <span class="detail-value" id="orderDaysLeft">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>⚙️ Производство</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Линия:</span>
+                                    <span class="detail-value" id="orderLine">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Прогресс:</span>
+                                    <span class="detail-value" id="orderProgress">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Осталось времени:</span>
+                                    <span class="detail-value" id="orderTimeLeft">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-actions">
+                            <button class="btn btn-primary" onclick="editOrder()">✏️ Редактировать</button>
+                            <button class="btn btn-success" onclick="startProduction()">▶️ Начать производство</button>
+                            <button class="btn btn-secondary" onclick="printOrder()">🖨️ Печать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Material Detail Modal -->
+            <div id="materialDetailModal" class="modal">
+                <div class="modal-content" style="max-width: 700px;">
+                    <div class="modal-header">
+                        <h3 id="materialDetailTitle">Детали материала</h3>
+                        <button class="modal-close" onclick="hideModal('materialDetailModal')">&times;</button>
+                    </div>
+                    
+                    <div class="detail-content">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>📦 Основные данные</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Код материала:</span>
+                                    <span class="detail-value" id="materialCode">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Наименование:</span>
+                                    <span class="detail-value" id="materialName">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Тип:</span>
+                                    <span class="detail-value" id="materialType">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>📊 Остатки и планирование</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Текущий остаток:</span>
+                                    <span class="detail-value" id="materialCurrentStock">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Минимальный остаток:</span>
+                                    <span class="detail-value" id="materialMinStock">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Точка перезаказа:</span>
+                                    <span class="detail-value" id="materialReorderPoint">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>💰 Стоимость</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Стандартная стоимость:</span>
+                                    <span class="detail-value" id="materialCost">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Последняя закупка:</span>
+                                    <span class="detail-value" id="materialLastPurchase">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-actions">
+                            <button class="btn btn-primary" onclick="editMaterial()">✏️ Редактировать</button>
+                            <button class="btn btn-warning" onclick="orderMaterial()">📦 Заказать</button>
+                            <button class="btn btn-secondary" onclick="viewMaterialHistory()">📈 История</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Production Line Detail Modal -->
+            <div id="lineDetailModal" class="modal">
+                <div class="modal-content" style="max-width: 900px;">
+                    <div class="modal-header">
+                        <h3 id="lineDetailTitle">Детали производственной линии</h3>
+                        <button class="modal-close" onclick="hideModal('lineDetailModal')">&times;</button>
+                    </div>
+                    
+                    <div class="detail-content">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>⚙️ Статус линии</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Линия:</span>
+                                    <span class="detail-value" id="lineName">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Статус:</span>
+                                    <span class="detail-value" id="lineStatus">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Текущий заказ:</span>
+                                    <span class="detail-value" id="lineCurrentOrder">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>📊 Производительность</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Прогресс:</span>
+                                    <span class="detail-value" id="lineProgress">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Скорость:</span>
+                                    <span class="detail-value" id="lineSpeed">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Осталось времени:</span>
+                                    <span class="detail-value" id="lineTimeLeft">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>👨‍🔧 Операторы</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Смена:</span>
+                                    <span class="detail-value" id="lineShift">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Оператор 1:</span>
+                                    <span class="detail-value" id="lineOperator1">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Оператор 2:</span>
+                                    <span class="detail-value" id="lineOperator2">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section full-width">
+                                <h4>📈 График сегодня</h4>
+                                <div class="line-schedule">
+                                    <div class="schedule-item completed">
+                                        <span class="schedule-time">08:00-12:00</span>
+                                        <span class="schedule-order">ORD-240001</span>
+                                        <span class="schedule-status">Завершено</span>
+                                    </div>
+                                    <div class="schedule-item current">
+                                        <span class="schedule-time">12:00-18:00</span>
+                                        <span class="schedule-order">ORD-240002</span>
+                                        <span class="schedule-status">В работе</span>
+                                    </div>
+                                    <div class="schedule-item planned">
+                                        <span class="schedule-time">18:00-22:00</span>
+                                        <span class="schedule-order">ORD-240003</span>
+                                        <span class="schedule-status">Запланировано</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-actions">
+                            <button class="btn btn-success" onclick="startLineProduction()">▶️ Запустить</button>
+                            <button class="btn btn-warning" onclick="pauseLineProduction()">⏸️ Пауза</button>
+                            <button class="btn btn-danger" onclick="stopLineProduction()">⏹️ Остановить</button>
+                            <button class="btn btn-secondary" onclick="lineSettings()">⚙️ Настройки</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warehouse Item Detail Modal -->
+            <div id="warehouseDetailModal" class="modal">
+                <div class="modal-content" style="max-width: 700px;">
+                    <div class="modal-header">
+                        <h3 id="warehouseDetailTitle">Детали материала на складе</h3>
+                        <button class="modal-close" onclick="hideModal('warehouseDetailModal')">&times;</button>
+                    </div>
+                    
+                    <div class="detail-content">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>📦 Материал</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Наименование:</span>
+                                    <span class="detail-value" id="warehouseMaterialName">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Количество:</span>
+                                    <span class="detail-value" id="warehouseMaterialQuantity">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Статус:</span>
+                                    <span class="detail-value" id="warehouseMaterialStatus">-</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>📍 Размещение</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Зона склада:</span>
+                                    <span class="detail-value" id="warehouseZone">A1</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Стеллаж:</span>
+                                    <span class="detail-value" id="warehouseRack">05</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Ячейка:</span>
+                                    <span class="detail-value" id="warehouseCell">02</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>📅 История</h4>
+                                <div class="detail-item">
+                                    <span class="detail-label">Последнее поступление:</span>
+                                    <span class="detail-value" id="warehouseLastReceived">15.01.2024</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Последний расход:</span>
+                                    <span class="detail-value" id="warehouseLastUsed">20.01.2024</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-actions">
+                            <button class="btn btn-primary" onclick="moveWarehouseItem()">📦 Переместить</button>
+                            <button class="btn btn-warning" onclick="adjustStock()">⚖️ Корректировка</button>
+                            <button class="btn btn-secondary" onclick="printWarehouseLabel()">🏷️ Этикетка</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- File input for old import (backup) -->
             <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="handleFileImport(event)">
 
@@ -2851,6 +3300,268 @@
 
         function filterOrders(status) {
             showToast(`Фильтр заказов: ${status}`, 'info');
+        }
+
+        // =============================================
+        // DETAIL MODAL FUNCTIONS
+        // =============================================
+
+        function showOrderDetail(orderId) {
+            const orderData = getOrderData(orderId);
+            
+            // Populate order detail modal
+            document.getElementById('orderNumber').textContent = orderData.number;
+            document.getElementById('orderCustomer').textContent = orderData.customer;
+            document.getElementById('orderStatus').innerHTML = `<span class="badge ${orderData.statusClass}">${orderData.status}</span>`;
+            document.getElementById('orderPriority').innerHTML = `<span class="badge ${orderData.priorityClass}">${orderData.priority}</span>`;
+            document.getElementById('orderProduct').textContent = orderData.product;
+            document.getElementById('orderQuantity').textContent = orderData.quantity;
+            document.getElementById('orderDate').textContent = orderData.orderDate;
+            document.getElementById('orderDeliveryDate').textContent = orderData.deliveryDate;
+            document.getElementById('orderDaysLeft').textContent = orderData.daysLeft;
+            document.getElementById('orderLine').textContent = orderData.line;
+            document.getElementById('orderProgress').textContent = orderData.progress;
+            document.getElementById('orderTimeLeft').textContent = orderData.timeLeft;
+            
+            showModal('orderDetailModal');
+        }
+
+        function showWarehouseDetail(materialId) {
+            const materialData = getWarehouseMaterialData(materialId);
+            
+            // Populate warehouse detail modal
+            document.getElementById('warehouseMaterialName').textContent = materialData.name;
+            document.getElementById('warehouseMaterialQuantity').textContent = materialData.quantity;
+            document.getElementById('warehouseMaterialStatus').innerHTML = `<span class="material-status ${materialData.statusClass}">${materialData.status}</span>`;
+            
+            showModal('warehouseDetailModal');
+        }
+
+        function showLineDetail(lineId) {
+            const lineData = getLineData(lineId);
+            
+            // Populate line detail modal
+            document.getElementById('lineName').textContent = lineData.name;
+            document.getElementById('lineStatus').innerHTML = `<span class="line-status ${lineData.statusClass}">${lineData.status}</span>`;
+            document.getElementById('lineCurrentOrder').textContent = lineData.currentOrder;
+            document.getElementById('lineProgress').textContent = lineData.progress;
+            document.getElementById('lineSpeed').textContent = lineData.speed;
+            document.getElementById('lineTimeLeft').textContent = lineData.timeLeft;
+            document.getElementById('lineShift').textContent = lineData.shift;
+            document.getElementById('lineOperator1').textContent = lineData.operator1;
+            document.getElementById('lineOperator2').textContent = lineData.operator2;
+            
+            showModal('lineDetailModal');
+        }
+
+        function showMaterialDetail(materialId) {
+            const materialData = getMaterialData(materialId);
+            
+            // Populate material detail modal
+            document.getElementById('materialCode').textContent = materialData.code;
+            document.getElementById('materialName').textContent = materialData.name;
+            document.getElementById('materialType').textContent = materialData.type;
+            document.getElementById('materialCurrentStock').textContent = materialData.currentStock;
+            document.getElementById('materialMinStock').textContent = materialData.minStock;
+            document.getElementById('materialReorderPoint').textContent = materialData.reorderPoint;
+            document.getElementById('materialCost').textContent = materialData.cost;
+            document.getElementById('materialLastPurchase').textContent = materialData.lastPurchase;
+            
+            showModal('materialDetailModal');
+        }
+
+        // =============================================
+        // DATA FUNCTIONS
+        // =============================================
+
+        function getOrderData(orderId) {
+            const orders = {
+                'ORD-240001': {
+                    number: '#ORD-240001',
+                    customer: 'ООО "Пищепром"',
+                    status: 'В работе',
+                    statusClass: 'badge-warning',
+                    priority: 'Средний',
+                    priorityClass: 'badge-info',
+                    product: 'Пленка ПЭТ 12мкм, 1500мм',
+                    quantity: '5000 п.м.',
+                    orderDate: '20.01.2024',
+                    deliveryDate: '25.01.2024',
+                    daysLeft: '2 дня',
+                    line: 'Линия 1 (Экструзия)',
+                    progress: '65%',
+                    timeLeft: '2ч 15мин'
+                },
+                'ORD-240002': {
+                    number: '#ORD-240002',
+                    customer: 'ИП Смирнов',
+                    status: 'Критичный',
+                    statusClass: 'badge-danger',
+                    priority: 'Высокий',
+                    priorityClass: 'badge-danger',
+                    product: 'Пакеты с логотипом',
+                    quantity: '10000 шт.',
+                    orderDate: '22.01.2024',
+                    deliveryDate: '24.01.2024',
+                    daysLeft: '1 день',
+                    line: 'Линия 2 (Печать)',
+                    progress: '30%',
+                    timeLeft: '4ч 20мин'
+                },
+                'ORD-240003': {
+                    number: '#ORD-240003',
+                    customer: 'ТД "Мегастрой"',
+                    status: 'Запланирован',
+                    statusClass: 'badge-info',
+                    priority: 'Средний',
+                    priorityClass: 'badge-info',
+                    product: 'Стрейч-пленка 500мм',
+                    quantity: '2000 кг',
+                    orderDate: '23.01.2024',
+                    deliveryDate: '30.01.2024',
+                    daysLeft: '7 дней',
+                    line: 'Не назначена',
+                    progress: '0%',
+                    timeLeft: 'Не начато'
+                }
+            };
+            return orders[orderId] || {};
+        }
+
+        function getWarehouseMaterialData(materialId) {
+            const materials = {
+                'ldpe-granulate': {
+                    name: 'Гранулят ПВД',
+                    quantity: '500 кг',
+                    status: 'Низкий остаток',
+                    statusClass: 'low'
+                },
+                'pp-granulate': {
+                    name: 'Гранулят ПП',
+                    quantity: '750 кг',
+                    status: 'Норма',
+                    statusClass: 'ok'
+                },
+                'blue-dye': {
+                    name: 'Краситель синий',
+                    quantity: '25 кг',
+                    status: 'Норма',
+                    statusClass: 'ok'
+                }
+            };
+            return materials[materialId] || {};
+        }
+
+        function getLineData(lineId) {
+            const lines = {
+                'line-1': {
+                    name: 'Линия 1 - Экструзия',
+                    status: 'Работает',
+                    statusClass: 'running',
+                    currentOrder: '#ORD-240001',
+                    progress: '65%',
+                    speed: '120 м/мин',
+                    timeLeft: '2ч 15мин',
+                    shift: 'Дневная (08:00-20:00)',
+                    operator1: 'Иванов И.И.',
+                    operator2: 'Петров П.П.'
+                },
+                'line-2': {
+                    name: 'Линия 2 - Печать',
+                    status: 'Работает',
+                    statusClass: 'running',
+                    currentOrder: '#ORD-240002',
+                    progress: '30%',
+                    speed: '85 м/мин',
+                    timeLeft: '4ч 20мин',
+                    shift: 'Дневная (08:00-20:00)',
+                    operator1: 'Сидоров С.С.',
+                    operator2: 'Федоров Ф.Ф.'
+                },
+                'line-3': {
+                    name: 'Линия 3 - Ламинация',
+                    status: 'Обслуживание',
+                    statusClass: 'maintenance',
+                    currentOrder: 'Плановое ТО',
+                    progress: '0%',
+                    speed: '0 м/мин',
+                    timeLeft: '2ч 30мин',
+                    shift: 'Дневная (08:00-20:00)',
+                    operator1: 'Петров А.И.',
+                    operator2: 'Слесарь'
+                }
+            };
+            return lines[lineId] || {};
+        }
+
+        function getMaterialData(materialId) {
+            // Placeholder for material data
+            return {
+                code: 'GR-PVD-001',
+                name: 'Гранулят ПВД прозрачный',
+                type: 'Полиэтилен низкого давления',
+                currentStock: '500 кг',
+                minStock: '1000 кг',
+                reorderPoint: '2000 кг',
+                cost: '245.50 ₽/кг',
+                lastPurchase: '15.01.2024'
+            };
+        }
+
+        // =============================================
+        // ACTION FUNCTIONS FOR DETAIL MODALS
+        // =============================================
+
+        function editOrder() {
+            showToast('Редактирование заказа - в разработке', 'info');
+        }
+
+        function startProduction() {
+            showToast('Запуск производства заказа', 'success');
+        }
+
+        function printOrder() {
+            showToast('Печать заказа - в разработке', 'info');
+        }
+
+        function editMaterial() {
+            showToast('Редактирование материала - в разработке', 'info');
+        }
+
+        function orderMaterial() {
+            showToast('Заказ материала - в разработке', 'info');
+        }
+
+        function viewMaterialHistory() {
+            showToast('История материала - в разработке', 'info');
+        }
+
+        function startLineProduction() {
+            showToast('Запуск линии', 'success');
+        }
+
+        function pauseLineProduction() {
+            showToast('Пауза линии', 'warning');
+        }
+
+        function stopLineProduction() {
+            showToast('Остановка линии', 'danger');
+        }
+
+        function lineSettings() {
+            showToast('Настройки линии - в разработке', 'info');
+        }
+
+        function moveWarehouseItem() {
+            showToast('Перемещение материала - в разработке', 'info');
+        }
+
+        function adjustStock() {
+            showToast('Корректировка остатков - в разработке', 'info');
+        }
+
+        function printWarehouseLabel() {
+            showToast('Печать этикетки - в разработке', 'info');
         }
 
         // =============================================
