@@ -1643,15 +1643,31 @@
             return types[type] || type;
         }
 
-        function updateDashboardStats() {
+        async function updateDashboardStats() {
+            try {
+                // Try to fetch from GitHub Pages static API
+                const response = await fetch('./api/v1/dashboard/metrics.json');
+                if (response.ok) {
+                    const metrics = await response.json();
+                    document.getElementById('totalOrders').textContent = metrics.orders_active;
+                    document.getElementById('productionCapacity').textContent = metrics.production_capacity + '%';
+                    document.getElementById('oeeMetric').textContent = metrics.oee_efficiency + '%';
+                    document.getElementById('qualityRate').textContent = metrics.quality_pass_rate + '%';
+                    return;
+                }
+            } catch (error) {
+                console.log('📡 GitHub Pages API not available, using local data');
+            }
+            
+            // Fallback to local storage data
             const orders = storage.getTable('orders');
             const productionQueue = storage.getTable('production_queue');
             
-            // Update stats
+            // Update stats from local data
             document.getElementById('totalOrders').textContent = orders.filter(o => ['new', 'approved', 'scheduled', 'in_production'].includes(o.status)).length;
-            document.getElementById('productionEfficiency').textContent = '92%';
-            document.getElementById('warehouseLoad').textContent = '85%';
-            document.getElementById('todayProduction').textContent = '2.5т';
+            document.getElementById('productionCapacity').textContent = '92%';
+            document.getElementById('oeeMetric').textContent = '87.3%';
+            document.getElementById('qualityRate').textContent = '99.1%';
         }
 
         // CRUD Operations
@@ -1703,6 +1719,103 @@
                 timeElement.textContent = now.toLocaleTimeString('ru-RU');
             }
         }
+
+        // =============================================
+        // GITHUB PAGES API INTEGRATION
+        // =============================================
+
+        async function loadProductionLinesFromAPI() {
+            try {
+                const response = await fetch('./api/v1/dashboard/production-lines.json');
+                if (response.ok) {
+                    const lines = await response.json();
+                    updateProductionLinesDisplay(lines);
+                    return true;
+                }
+            } catch (error) {
+                console.log('📡 Production lines API not available');
+            }
+            return false;
+        }
+
+        async function loadCriticalAlertsFromAPI() {
+            try {
+                const response = await fetch('./api/v1/dashboard/alerts.json');
+                if (response.ok) {
+                    const alerts = await response.json();
+                    updateCriticalAlertsDisplay(alerts);
+                    return true;
+                }
+            } catch (error) {
+                console.log('📡 Critical alerts API not available');
+            }
+            return false;
+        }
+
+        function updateProductionLinesDisplay(lines) {
+            lines.forEach(line => {
+                const lineCard = document.getElementById(line.line_id);
+                if (lineCard) {
+                    // Update line status
+                    const statusElement = lineCard.querySelector('.line-status');
+                    if (statusElement) {
+                        const statusText = {
+                            'running': 'Работает',
+                            'idle': 'Простой', 
+                            'maintenance': 'ТО',
+                            'stopped': 'Остановлена'
+                        };
+                        statusElement.textContent = statusText[line.status] || line.status;
+                        statusElement.className = `line-status ${line.status}`;
+                    }
+
+                    // Update current order
+                    const orderElement = lineCard.querySelector('.current-order');
+                    if (orderElement) {
+                        orderElement.textContent = line.current_order ? `Заказ: ${line.current_order}` : 'Нет заказа';
+                    }
+
+                    // Update progress
+                    const progressFill = lineCard.querySelector('.progress-fill');
+                    const progressText = lineCard.querySelector('.progress-text');
+                    if (progressFill && progressText) {
+                        progressFill.style.width = `${line.progress_percent}%`;
+                        progressText.textContent = line.time_remaining || `${line.progress_percent}%`;
+                    }
+
+                    // Update metrics
+                    const metricsElement = lineCard.querySelector('.line-metrics');
+                    if (metricsElement) {
+                        metricsElement.innerHTML = `
+                            <span>OEE: ${line.oee_percent}%</span>
+                            <span>Очередь: ${line.queue_count} заказа</span>
+                        `;
+                    }
+                }
+            });
+        }
+
+        function updateCriticalAlertsDisplay(alerts) {
+            const alertsList = document.getElementById('criticalAlerts');
+            if (!alertsList) return;
+
+            alertsList.innerHTML = alerts.map(alert => `
+                <div class="alert-item ${alert.alert_type}">
+                    <span class="alert-icon">${alert.icon}</span>
+                    <span class="alert-text">${alert.message}</span>
+                    <span class="alert-time">${alert.time_ago}</span>
+                    ${alert.action_available ? `<button class="alert-action" onclick="handleAlertAction(${alert.alert_id})">${alert.action_label}</button>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function handleAlertAction(alertId) {
+            showToast(`Действие по уведомлению ${alertId} выполнено`, 'success');
+        }
+
+        // =============================================
+        // MPSYSTEM LINE ACTIONS
+        // =============================================
 
         function showLineDetails(lineId) {
             showToast(`Детали линии ${lineId} будут доступны в модальном окне`, 'info');
@@ -1784,21 +1897,27 @@
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             // Initialize MPSYSTEM
-            updateDashboardStats();
+            await updateDashboardStats();
             updateCurrentTime();
             loadOrders();
             loadInventory();
             loadProduction();
             
+            // Load GitHub Pages API data if available
+            await loadProductionLinesFromAPI();
+            await loadCriticalAlertsFromAPI();
+            
             // Auto-update time every second
             setInterval(updateCurrentTime, 1000);
             
             // Auto-update dashboard every 30 seconds (as per ТЗ)
-            setInterval(function() {
+            setInterval(async function() {
                 if (document.querySelector('#dashboard.active')) {
-                    updateDashboardStats();
+                    await updateDashboardStats();
+                    await loadProductionLinesFromAPI();
+                    await loadCriticalAlertsFromAPI();
                 }
             }, 30000);
         });

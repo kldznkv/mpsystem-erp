@@ -1,0 +1,54 @@
+[
+  {
+    "alert_id": 1,
+    "alert_type": "critical",
+    "icon": "⚠️",
+    "title": "Низкий остаток материала",
+    "message": "Гранулы PE (осталось 50кг)",
+    "time_ago": "5 мин назад",
+    "action_available": true,
+    "action_label": "Заказать",
+    "action_endpoint": "/api/v1/procurement/emergency-order",
+    "module": "warehouse",
+    "created_at": "2024-01-20T10:30:00Z"
+  },
+  {
+    "alert_id": 2,
+    "alert_type": "warning",
+    "icon": "⏰",
+    "title": "Просрочен заказ",
+    "message": "ORD-249987 (опоздание: 2 дня)",
+    "time_ago": "1 час назад",
+    "action_available": true,
+    "action_label": "Эскалация",
+    "action_endpoint": "/api/v1/orders/escalate",
+    "module": "orders",
+    "created_at": "2024-01-20T09:30:00Z"
+  },
+  {
+    "alert_id": 3,
+    "alert_type": "info",
+    "icon": "🔬",
+    "title": "Требуется контроль качества",
+    "message": "Партии №243",
+    "time_ago": "30 мин назад",
+    "action_available": true,
+    "action_label": "Запланировать",
+    "action_endpoint": "/api/v1/quality/schedule",
+    "module": "quality",
+    "created_at": "2024-01-20T10:00:00Z"
+  },
+  {
+    "alert_id": 4,
+    "alert_type": "warning",
+    "icon": "🔧",
+    "title": "Плановое ТО",
+    "message": "Экструзия-2 через 2 часа",
+    "time_ago": "10 мин назад",
+    "action_available": true,
+    "action_label": "Подготовить",
+    "action_endpoint": "/api/v1/maintenance/prepare",
+    "module": "maintenance",
+    "created_at": "2024-01-20T10:20:00Z"
+  }
+]

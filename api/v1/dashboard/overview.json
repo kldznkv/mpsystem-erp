@@ -1,0 +1,198 @@
+{
+  "metrics": {
+    "orders_active": 847,
+    "production_capacity": 94.2,
+    "oee_efficiency": 87.3,
+    "quality_pass_rate": 99.1
+  },
+  "production_lines": [
+    {
+      "line_id": "extrusion-1",
+      "line_name": "Экструзия-1 (рукава)",
+      "line_group": "extrusion",
+      "status": "running",
+      "current_order": "ORD-250001",
+      "progress_percent": 65,
+      "time_remaining": "2ч 30мин осталось",
+      "oee_percent": 89.0,
+      "queue_count": 3,
+      "operator": "Иванов И.И."
+    },
+    {
+      "line_id": "extrusion-2",
+      "line_name": "Экструзия-2 (пакеты)",
+      "line_group": "extrusion",
+      "status": "running",
+      "current_order": "ORD-250003",
+      "progress_percent": 30,
+      "time_remaining": "4ч 15мин осталось",
+      "oee_percent": 92.0,
+      "queue_count": 5,
+      "operator": "Петров П.П."
+    },
+    {
+      "line_id": "extrusion-3",
+      "line_name": "Экструзия-3",
+      "line_group": "extrusion",
+      "status": "running",
+      "current_order": "ORD-250008",
+      "progress_percent": 85,
+      "time_remaining": "45мин осталось",
+      "oee_percent": 94.0,
+      "queue_count": 2,
+      "operator": "Сидоров С.С."
+    },
+    {
+      "line_id": "extrusion-4",
+      "line_name": "Экструзия-4",
+      "line_group": "extrusion",
+      "status": "idle",
+      "current_order": null,
+      "progress_percent": 0,
+      "time_remaining": null,
+      "oee_percent": 0.0,
+      "queue_count": 1,
+      "operator": "Ожидание материала"
+    },
+    {
+      "line_id": "cutting-1",
+      "line_name": "Резка-1",
+      "line_group": "extrusion",
+      "status": "running",
+      "current_order": "Резка ORD-250001",
+      "progress_percent": 40,
+      "time_remaining": "1ч 20мин осталось",
+      "oee_percent": 88.0,
+      "queue_count": 4,
+      "operator": "Резчик А.А."
+    },
+    {
+      "line_id": "cutting-2",
+      "line_name": "Резка-2",
+      "line_group": "extrusion",
+      "status": "maintenance",
+      "current_order": "Смена ножей",
+      "progress_percent": 70,
+      "time_remaining": "20мин осталось",
+      "oee_percent": 0.0,
+      "queue_count": 2,
+      "operator": "Техник Б.Б."
+    },
+    {
+      "line_id": "laboratory",
+      "line_name": "Лаборатория",
+      "line_group": "extrusion",
+      "status": "running",
+      "current_order": "Тест партии №245",
+      "progress_percent": 60,
+      "time_remaining": "30мин осталось",
+      "oee_percent": 95.0,
+      "queue_count": 3,
+      "operator": "Лаборант В.В."
+    },
+    {
+      "line_id": "lamination-1",
+      "line_name": "Ламинация-1",
+      "line_group": "lamination",
+      "status": "running",
+      "current_order": "ORD-250009",
+      "progress_percent": 55,
+      "time_remaining": "3ч 45мин осталось",
+      "oee_percent": 82.0,
+      "queue_count": 7,
+      "operator": "Ламинатор Г.Г."
+    },
+    {
+      "line_id": "lamination-cutting",
+      "line_name": "Резка ламинации",
+      "line_group": "lamination",
+      "status": "idle",
+      "current_order": null,
+      "progress_percent": 0,
+      "time_remaining": null,
+      "oee_percent": 0.0,
+      "queue_count": 5,
+      "operator": "Ожидание ламинации"
+    },
+    {
+      "line_id": "printing-1",
+      "line_name": "Флексопечать-1",
+      "line_group": "printing",
+      "status": "running",
+      "current_order": "ORD-250012",
+      "progress_percent": 45,
+      "time_remaining": "3ч 10мин осталось",
+      "oee_percent": 85.0,
+      "queue_count": 4,
+      "operator": "Печатник Д.Д."
+    },
+    {
+      "line_id": "printing-2",
+      "line_name": "Цифровая печать",
+      "line_group": "printing",
+      "status": "running",
+      "current_order": "ORD-250015",
+      "progress_percent": 20,
+      "time_remaining": "1ч 45мин осталось",
+      "oee_percent": 78.0,
+      "queue_count": 2,
+      "operator": "Оператор Е.Е."
+    }
+  ],
+  "critical_alerts": [
+    {
+      "alert_id": 1,
+      "alert_type": "critical",
+      "icon": "⚠️",
+      "title": "Низкий остаток материала",
+      "message": "Гранулы PE (осталось 50кг)",
+      "time_ago": "5 мин назад",
+      "action_available": true,
+      "action_label": "Заказать",
+      "action_endpoint": "/api/v1/procurement/emergency-order",
+      "module": "warehouse",
+      "created_at": "2024-01-20T10:30:00Z"
+    },
+    {
+      "alert_id": 2,
+      "alert_type": "warning",
+      "icon": "⏰",
+      "title": "Просрочен заказ",
+      "message": "ORD-249987 (опоздание: 2 дня)",
+      "time_ago": "1 час назад",
+      "action_available": true,
+      "action_label": "Эскалация",
+      "action_endpoint": "/api/v1/orders/escalate",
+      "module": "orders",
+      "created_at": "2024-01-20T09:30:00Z"
+    },
+    {
+      "alert_id": 3,
+      "alert_type": "info",
+      "icon": "🔬",
+      "title": "Требуется контроль качества",
+      "message": "Партии №243",
+      "time_ago": "30 мин назад",
+      "action_available": true,
+      "action_label": "Запланировать",
+      "action_endpoint": "/api/v1/quality/schedule",
+      "module": "quality",
+      "created_at": "2024-01-20T10:00:00Z"
+    },
+    {
+      "alert_id": 4,
+      "alert_type": "warning",
+      "icon": "🔧",
+      "title": "Плановое ТО",
+      "message": "Экструзия-2 через 2 часа",
+      "time_ago": "10 мин назад",
+      "action_available": true,
+      "action_label": "Подготовить",
+      "action_endpoint": "/api/v1/maintenance/prepare",
+      "module": "maintenance",
+      "created_at": "2024-01-20T10:20:00Z"
+    }
+  ],
+  "last_updated": "2025-07-25T07:42:52Z",
+  "auto_refresh_seconds": 30
+}

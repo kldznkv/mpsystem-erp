@@ -1,0 +1,12 @@
+# MPSYSTEM CORS Headers for API access
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# Set JSON files MIME type
+<Files "*.json">
+    ForceType application/json
+    Header set Content-Type "application/json; charset=utf-8"
+</Files>

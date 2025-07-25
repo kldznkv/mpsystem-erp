@@ -10,7 +10,9 @@
 
 🔗 **Frontend**: https://kldznkv.github.io/mpsystem-erp/
 
-📚 **API Documentation**: http://localhost:8000/docs (при запуске backend)
+🔗 **Static API**: https://kldznkv.github.io/mpsystem-erp/api/v1/dashboard/
+
+📚 **API Documentation**: http://localhost:8000/docs (при запуске локального backend)
 
 ## 🎯 Основные возможности
 
@@ -34,10 +36,15 @@
 
 ## 🚀 Быстрый старт
 
-### Frontend (GitHub Pages)
+### ⚡ GitHub Pages (рекомендуется)
 Просто перейдите по ссылке: https://kldznkv.github.io/mpsystem-erp/
 
-### Backend (Локальный запуск)
+**Backend уже работает на GitHub Pages!** 
+- 📊 **Метрики**: https://kldznkv.github.io/mpsystem-erp/api/v1/dashboard/metrics.json
+- ⚙️ **Линии**: https://kldznkv.github.io/mpsystem-erp/api/v1/dashboard/production-lines.json
+- 🚨 **Уведомления**: https://kldznkv.github.io/mpsystem-erp/api/v1/dashboard/alerts.json
+
+### 🔧 Локальный Backend (опционально)
 
 ```bash
 # 1. Установка зависимостей
@@ -47,16 +54,32 @@ pip install -r requirements.txt
 python start_backend.py
 ```
 
-Backend будет доступен на:
+Локальный backend будет доступен на:
 - 🌐 **API**: http://localhost:8000
 - 📚 **Документация**: http://localhost:8000/docs
 - 🔍 **Статус**: http://localhost:8000/api/v1/dashboard/system/status
 
-## 🔧 Интеграция Frontend ↔ Backend
+## 🔧 Backend на GitHub Pages
 
-### Подключение к API
+### 🎯 Как это работает
 
-Для подключения frontend к backend, обновите файл `index.html`:
+MPSYSTEM использует **статические JSON файлы** для имитации backend API на GitHub Pages:
+
+1. **GitHub Actions** автоматически генерируют JSON файлы при каждом push
+2. **Frontend** получает данные из статических файлов
+3. **Fallback** на локальные данные если API недоступно
+
+### 📊 Статические API файлы
+
+| Файл | URL | Описание |
+|------|-----|----------|
+| `metrics.json` | [🔗](https://kldznkv.github.io/mpsystem-erp/api/v1/dashboard/metrics.json) | Ключевые метрики |
+| `production-lines.json` | [🔗](https://kldznkv.github.io/mpsystem-erp/api/v1/dashboard/production-lines.json) | Статус линий |
+| `alerts.json` | [🔗](https://kldznkv.github.io/mpsystem-erp/api/v1/dashboard/alerts.json) | Критические уведомления |
+
+### 🔄 Интеграция в коде
+
+Frontend автоматически загружает данные из GitHub Pages API:
 
 ```javascript
 // В функции updateDashboardStats() замените на:
