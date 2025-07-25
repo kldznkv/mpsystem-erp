@@ -1,6 +1,116 @@
 // ===== UNIFIED JAVASCRIPT SYSTEM =====
 console.log('🚀 MPSYSTEM JavaScript загружен');
 
+// ===== MODE DETECTION =====
+class ModeDetector {
+    constructor() {
+        this.isApiAvailable = null;
+        this.lastCheckTime = null;
+    }
+
+    // Check API availability
+    async detectApiMode() {
+        console.log('🔍 Проверка доступности API...');
+        
+        // Force demo mode if configured
+        if (CONFIG.FORCE_DEMO_MODE) {
+            console.log('🎭 Принудительный DEMO MODE включен');
+            CONFIG.DEMO_MODE = true;
+            this.isApiAvailable = false;
+            return false;
+        }
+
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_CHECK_TIMEOUT);
+
+            const response = await fetch(`${CONFIG.API_BASE_URL}/health`, {
+                method: 'GET',
+                signal: controller.signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            clearTimeout(timeoutId);
+
+            if (response.ok) {
+                console.log('✅ API доступен - режим API');
+                CONFIG.DEMO_MODE = false;
+                this.isApiAvailable = true;
+                this.updateModeIndicator('api');
+                return true;
+            } else {
+                console.log('⚠️ API недоступен (HTTP', response.status, ') - режим DEMO');
+                CONFIG.DEMO_MODE = true;
+                this.isApiAvailable = false;
+                this.updateModeIndicator('demo');
+                return false;
+            }
+
+        } catch (error) {
+            console.log('⚠️ API недоступен (' + error.name + ') - режим DEMO');
+            CONFIG.DEMO_MODE = true;
+            this.isApiAvailable = false;
+            this.updateModeIndicator('demo');
+            return false;
+        } finally {
+            this.lastCheckTime = new Date();
+        }
+    }
+
+    // Update mode indicator in UI
+    updateModeIndicator(mode) {
+        if (!CONFIG.SETTINGS.SHOW_MODE_INDICATOR) return;
+
+        const statusElement = document.getElementById('systemStatus');
+        if (statusElement) {
+            if (mode === 'api') {
+                statusElement.innerHTML = '🟢 Connected to API';
+                statusElement.className = 'status-indicator api';
+                statusElement.style.color = '#10b981';
+            } else {
+                statusElement.innerHTML = '🔶 Demo Mode';
+                statusElement.className = 'status-indicator demo';
+                statusElement.style.color = '#f59e0b';
+            }
+        }
+    }
+
+    // Get current mode
+    isDemo() {
+        return CONFIG.DEMO_MODE === true;
+    }
+
+    // Get demo data with API-like response format
+    getDemoApiResponse(dataType, filters = {}) {
+        if (!window.DEMO_DATA) {
+            console.error('❌ Demo data не загружен');
+            return { items: [], total: 0, page: 1, limit: 20, totalPages: 0 };
+        }
+
+        const page = filters.page || 1;
+        const limit = filters.limit || CONFIG.PAGINATION.DEFAULT_SIZE;
+
+        switch (dataType) {
+            case 'orders':
+                return window.DEMO_DATA.generateApiResponse(window.DEMO_DATA.orders, page, limit);
+            case 'materials':
+                return window.DEMO_DATA.generateApiResponse(window.DEMO_DATA.materials, page, limit);
+            case 'suppliers':
+                return window.DEMO_DATA.generateApiResponse(window.DEMO_DATA.suppliers, page, limit);
+            case 'inventory':
+                return window.DEMO_DATA.generateApiResponse(window.DEMO_DATA.inventory, page, limit);
+            default:
+                return { items: [], total: 0, page: 1, limit: 20, totalPages: 0 };
+        }
+    }
+}
+
+// Global mode detector instance
+const modeDetector = new ModeDetector();
+
 // ===== API SERVICE =====
 class ApiService {
     constructor() {
@@ -12,6 +122,12 @@ class ApiService {
 
     // Generic API request method with error handling and retries
     async request(endpoint, options = {}) {
+        // Check if in demo mode first
+        if (modeDetector.isDemo()) {
+            console.log('🎭 Demo mode - возврат mock данных для:', endpoint);
+            return this.getMockResponse(endpoint, options);
+        }
+
         const url = this.baseUrl + endpoint;
         const requestOptions = {
             ...options,
@@ -51,7 +167,52 @@ class ApiService {
             }
         }
 
-        throw lastError;
+        // If API failed, switch to demo mode
+        console.log('⚠️ API недоступен, переключение в demo mode');
+        CONFIG.DEMO_MODE = true;
+        modeDetector.updateModeIndicator('demo');
+        return this.getMockResponse(endpoint, options);
+    }
+
+    // Get mock response for demo mode
+    getMockResponse(endpoint, options = {}) {
+        // Simulate API delay
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const mockData = this.generateMockData(endpoint, options);
+                resolve(mockData);
+            }, 200 + Math.random() * 300); // 200-500ms delay
+        });
+    }
+
+    // Generate mock data based on endpoint
+    generateMockData(endpoint, options = {}) {
+        const params = new URLSearchParams(options.params || {});
+        const page = parseInt(params.get('page')) || 1;
+        const limit = parseInt(params.get('limit')) || 20;
+
+        if (endpoint.includes('/orders')) {
+            if (endpoint.includes('/orders/') && !endpoint.includes('progress')) {
+                // Single order
+                const orderId = endpoint.split('/orders/')[1];
+                const order = window.DEMO_DATA?.orders.find(o => o.id == orderId);
+                return order || { error: 'Order not found' };
+            } else {
+                // Orders list
+                return modeDetector.getDemoApiResponse('orders', { page, limit });
+            }
+        }
+
+        if (endpoint.includes('/dashboard/metrics')) {
+            return window.DEMO_DATA?.dashboardMetrics || {};
+        }
+
+        if (endpoint.includes('/health')) {
+            return { status: 'healthy', mode: 'demo' };
+        }
+
+        // Default empty response
+        return { items: [], total: 0, page: 1, limit: 20, totalPages: 0 };
     }
 
     // Helper method for delay
@@ -1320,11 +1481,23 @@ async function loadOrdersPage() {
     try {
         loadingManager.setLoading('orders', true);
         
-        // Fetch orders from API
-        const ordersResponse = await ordersApi.fetchOrders({
-            page: window.currentOrdersPage || 1,
-            limit: 20
-        });
+        let ordersResponse;
+        
+        if (modeDetector.isDemo()) {
+            console.log('🎭 Загрузка заказов в demo режиме');
+            // Use demo data
+            ordersResponse = modeDetector.getDemoApiResponse('orders', {
+                page: window.currentOrdersPage || 1,
+                limit: 20
+            });
+        } else {
+            console.log('🔗 Загрузка заказов через API');
+            // Fetch orders from API
+            ordersResponse = await ordersApi.fetchOrders({
+                page: window.currentOrdersPage || 1,
+                limit: 20
+            });
+        }
         
         // Update global orders data
         window.ordersData = ordersResponse.items || [];
@@ -1334,15 +1507,25 @@ async function loadOrdersPage() {
         renderOrdersTable();
         updateOrdersPagination(ordersResponse);
         
-        notificationManager.success(`Загружено ${ordersResponse.items?.length || 0} заказов`);
+        const mode = modeDetector.isDemo() ? 'demo' : 'API';
+        notificationManager.success(`Загружено ${ordersResponse.items?.length || 0} заказов (${mode})`);
         
     } catch (error) {
         console.error('Error loading orders:', error);
         notificationManager.error('Ошибка загрузки заказов: ' + error.message);
         
-        // Fallback to local data
+        // Fallback to demo data
+        console.log('📊 Fallback к demo данным');
+        const fallbackResponse = modeDetector.getDemoApiResponse('orders', {
+            page: window.currentOrdersPage || 1,
+            limit: 20
+        });
+        
+        window.ordersData = fallbackResponse.items || [];
         updateOrdersSummary();
         renderOrdersTable();
+        updateOrdersPagination(fallbackResponse);
+        
     } finally {
         loadingManager.setLoading('orders', false);
     }
@@ -3955,6 +4138,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     console.log('🔧 Инициализация навигации...');
     console.log('📍 MPSYSTEM App initialized');
     
+    // Detect API mode first
+    console.log('🔍 Определение режима работы...');
+    await modeDetector.detectApiMode();
+    
     // Проверяем что все страницы существуют
     const expectedPages = ['dashboard', 'planning', 'production', 'quality', 'warehouse', 'purchasing', 'orders', 'maintenance', 'analytics'];
     const missingPages = [];
@@ -4006,12 +4193,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     console.log('🎯 Event listeners установлены для', navItems.length, 'навигационных элементов');
     
-    // Initialize MPSYSTEM
-    await updateDashboardStats();
+    // Initialize MPSYSTEM - don't auto-load if configured
     updateCurrentTime();
-    loadOrders();
-    loadInventory();
-    loadProduction();
+    
+    if (CONFIG.SETTINGS.AUTO_LOAD_DATA) {
+        console.log('📊 Автозагрузка данных включена');
+        await updateDashboardStats();
+        loadOrders();
+        loadInventory();
+        loadProduction();
+    } else {
+        console.log('⏸️ Автозагрузка данных отключена - данные будут загружены при необходимости');
+        // Load dashboard data anyway for initial view
+        await updateDashboardStats();
+    }
     
     // UC-D001: Load initial dashboard data
     await updateDashboardMetrics();

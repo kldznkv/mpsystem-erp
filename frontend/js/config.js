@@ -4,10 +4,15 @@ const CONFIG = {
     VERSION: '1.0.0',
     DESCRIPTION: 'Веб-платформа для управления производством упаковочных материалов',
     
+    // Working Mode Configuration
+    DEMO_MODE: null, // Will be auto-detected
+    FORCE_DEMO_MODE: false, // Set to true to force demo mode
+    API_CHECK_TIMEOUT: 3000, // 3 seconds for API availability check
+    
     // API Configuration
     API_BASE_URL: window.location.hostname === 'localhost' ? 
         'http://localhost:8000' : 
-        'https://kldznkv.github.io/mpsystem-erp',
+        'https://api.mpsystem.pl',
     
     // API Endpoints
     API_ENDPOINTS: {
@@ -127,7 +132,9 @@ const CONFIG = {
         ENABLE_NOTIFICATIONS: true,
         ENABLE_SOUND: false,
         REQUEST_TIMEOUT: 10000, // 10 seconds
-        RETRY_ATTEMPTS: 3
+        RETRY_ATTEMPTS: 3,
+        AUTO_LOAD_DATA: false, // Don't auto-load data on startup
+        SHOW_MODE_INDICATOR: true // Show demo/api mode indicator
     },
     
     // Production Lines Configuration

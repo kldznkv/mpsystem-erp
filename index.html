@@ -567,10 +567,11 @@
                         <div class="card table-card">
                             <div class="card-header">
                                 <h3>📑 Список заказов</h3>
-                                <div class="header-actions">
-                                    <span id="orders-count" class="text-muted">Всего: 0</span>
-                                    <button class="btn btn-primary" onclick="refreshOrdersData()">🔄 Обновить</button>
-                                </div>
+                                                                 <div class="header-actions">
+                                     <span id="orders-count" class="text-muted">Всего: 0</span>
+                                     <button class="btn btn-secondary" onclick="modeDetector.detectApiMode()">🔍 Проверить API</button>
+                                     <button class="btn btn-primary" onclick="refreshOrdersData()">🔄 Обновить</button>
+                                 </div>
                             </div>
 
                             <div class="table-container">
@@ -820,6 +821,7 @@
 
     <!-- JavaScript -->
     <script src="frontend/js/config.js"></script>
+    <script src="frontend/js/demo-data.js"></script>
     <script src="frontend/js/app.js"></script>
 </body>
 </html>
