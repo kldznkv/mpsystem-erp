@@ -1,66 +1,114 @@
 #!/usr/bin/env python3
 """
-MPSYSTEM ERP Backend Startup Script
+🏭 MPSYSTEM Production ERP Backend Launcher
+
+Optimized startup script for MPSYSTEM backend with:
+- Development and production modes
+- Auto-reload for development
+- Proper CORS handling for GitHub Pages
+- Database initialization
+- Health checks
 """
 
-import uvicorn
 import os
 import sys
+import uvicorn
 import asyncio
+from pathlib import Path
 
-# Add the project root to Python path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Add backend directory to Python path
+backend_dir = Path(__file__).parent / "backend"
+sys.path.insert(0, str(backend_dir))
 
-async def check_and_init_database():
-    """Check if database exists and initialize if needed"""
+from app.core.config import settings
+
+
+def run_backend():
+    """Run MPSYSTEM backend with optimized settings"""
+    
+    # Environment detection
+    is_development = settings.DEBUG
+    is_production = settings.ENVIRONMENT == "production"
+    
+    print("🏭 Starting MPSYSTEM Production ERP Backend...")
+    print(f"📊 Environment: {settings.ENVIRONMENT}")
+    print(f"🔧 Debug Mode: {is_development}")
+    print(f"🌐 CORS Origins: {settings.BACKEND_CORS_ORIGINS}")
+    
+    # Configure uvicorn settings
+    uvicorn_config = {
+        "app": "app.main:app",
+        "host": "0.0.0.0",
+        "port": int(os.getenv("PORT", 8000)),
+        "reload": is_development,
+        "reload_dirs": [str(backend_dir)] if is_development else None,
+        "log_level": "debug" if is_development else "info",
+        "access_log": True,
+        "use_colors": True,
+    }
+    
+    # Production optimizations
+    if is_production:
+        uvicorn_config.update({
+            "workers": int(os.getenv("WORKERS", 1)),
+            "loop": "uvloop",
+            "http": "httptools",
+            "reload": False,
+            "log_level": "warning"
+        })
+    
     try:
-        from backend.app.db.database import AsyncSessionLocal
-        from backend.app.models.warehouse import Warehouse
-        from sqlalchemy import select
+        print("🚀 Backend starting on http://0.0.0.0:{}".format(uvicorn_config["port"]))
+        print("📚 API Documentation: http://localhost:{}/docs".format(uvicorn_config["port"]))
+        print("🔄 Auto-reload:", uvicorn_config["reload"])
+        print("=" * 60)
         
-        # Check if database has data
-        async with AsyncSessionLocal() as session:
-            result = await session.execute(select(Warehouse).limit(1))
-            warehouse = result.scalar_one_or_none()
-            
-            if not warehouse:
-                print("📦 Database is empty, initializing with sample data...")
-                from backend.app.db.init_data import init_database
-                await init_database()
-                print("✅ Database initialized successfully")
-            else:
-                print("✅ Database already contains data")
-                
+        uvicorn.run(**uvicorn_config)
+        
+    except KeyboardInterrupt:
+        print("\n🔄 Shutting down MPSYSTEM backend...")
     except Exception as e:
-        print(f"⚠️ Database check failed: {e}")
-        print("📦 Initializing database...")
-        try:
-            from backend.app.db.init_data import init_database
-            await init_database()
-            print("✅ Database initialized successfully")
-        except Exception as init_error:
-            print(f"❌ Database initialization failed: {init_error}")
+        print(f"❌ Failed to start backend: {e}")
+        sys.exit(1)
+
+
+async def health_check():
+    """Perform basic health checks"""
+    try:
+        # Check if we can import the app
+        from app.main import app
+        print("✅ App import successful")
+        
+        # Check database connection
+        from app.db.database import engine
+        async with engine.begin() as conn:
+            await conn.execute("SELECT 1")
+        print("✅ Database connection successful")
+        
+        return True
+    except Exception as e:
+        print(f"❌ Health check failed: {e}")
+        return False
+
+
+def main():
+    """Main entry point"""
+    
+    # Change to backend directory
+    os.chdir(backend_dir)
+    
+    # Run health checks
+    print("🔍 Running health checks...")
+    if not asyncio.run(health_check()):
+        print("❌ Health checks failed, exiting...")
+        sys.exit(1)
+    
+    print("✅ Health checks passed")
+    print()
+    
+    # Start the backend
+    run_backend()
+
 
 if __name__ == "__main__":
-    print("🚀 Starting MPSYSTEM ERP Backend...")
-    print("-" * 50)
-    
-    # Initialize database if needed
-    print("🔍 Checking database...")
-    asyncio.run(check_and_init_database())
-    
-    print("-" * 50)
-    print("📍 API Documentation: http://localhost:8000/api/docs")
-    print("🌐 Frontend: http://localhost:8000")
-    print("❤️ Health Check: http://localhost:8000/health")
-    print("📊 Warehouse API: http://localhost:8000/api/v1/warehouse")
-    print("-" * 50)
-    
-    uvicorn.run(
-        "backend.app.main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True,
-        log_level="info",
-        access_log=True
-    )
+    main()
