@@ -683,6 +683,298 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
+        /* ===== ORDERS PAGE STYLES ===== */
+        .orders-summary {
+            margin-bottom: 2rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .summary-card.new::before { background: #3b82f6; }
+        .summary-card.queued::before { background: #f59e0b; }
+        .summary-card.in-progress::before { background: #10b981; }
+        .summary-card.critical::before { background: #ef4444; }
+
+        .summary-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-icon {
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            background: #f3f4f6;
+            border-radius: 8px;
+        }
+
+        .summary-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0.5rem 0;
+            line-height: 1;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Filters */
+        .orders-filters {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .filters-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .filter-select, .filter-input, .filter-date {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .filter-select:focus, .filter-input:focus, .filter-date:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .priority-checkboxes {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        /* Orders Main Layout */
+        .orders-main {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .orders-table-section {
+            min-width: 0;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .orders-table th {
+            background: #f8fafc;
+            padding: 1rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .orders-table td {
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+
+        .orders-table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Priority badges */
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .priority-urgent { background: #fef2f2; color: #dc2626; }
+        .priority-high { background: #fef3c7; color: #d97706; }
+        .priority-normal { background: #f0f9ff; color: #2563eb; }
+        .priority-low { background: #f0fdf4; color: #16a34a; }
+
+        /* Status badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-new { background: #f3f4f6; color: #374151; }
+        .status-confirmed { background: #dbeafe; color: #1d4ed8; }
+        .status-planned { background: #fef3c7; color: #d97706; }
+        .status-in_production { background: #dcfce7; color: #16a34a; }
+        .status-completed { background: #f0f9ff; color: #2563eb; }
+        .status-shipped { background: #ecfdf5; color: #059669; }
+
+        /* Progress bar */
+        .progress-bar-order {
+            width: 80px;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill-order {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8rem;
+            border-radius: 6px;
+        }
+
+        /* Timeline Panel */
+        .production-timeline-panel {
+            min-width: 0;
+        }
+
+        .timeline-legend {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+        }
+
+        .legend-item {
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            background: #f3f4f6;
+            color: var(--text-secondary);
+        }
+
+        .timeline-content {
+            padding: 1rem 0;
+            min-height: 300px;
+        }
+
+        .timeline-placeholder {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 2px dashed #d1d5db;
+        }
+
+        .timeline-stage {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #e5e7eb;
+        }
+
+        .timeline-stage.completed {
+            background: #f0fdf4;
+            border-left-color: #16a34a;
+        }
+
+        .timeline-stage.current {
+            background: #fef3c7;
+            border-left-color: #d97706;
+        }
+
+        .timeline-stage.pending {
+            background: #f8fafc;
+            border-left-color: #e5e7eb;
+        }
+
+        /* Order Number Link */
+        .order-number-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .order-number-link:hover {
+            text-decoration: underline;
+        }
+
         /* ===== UTILITIES ===== */
         .text-center { text-align: center; }
         .text-right { text-align: right; }
@@ -1533,30 +1825,150 @@
                 </div>
             </div>
 
-            <!-- Orders Tab -->
+            <!-- СТРАНИЦА: ORDERS (Управление заказами) -->
             <div id="orders" class="tab-content">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Управление заказами</h3>
-                        <button class="btn btn-primary" onclick="showModal('orderModal')">+ Новый заказ</button>
+                <!-- Верхний блок: Сводка по заказам (4 карточки) -->
+                <div class="orders-summary">
+                    <div class="summary-grid">
+                        <div class="summary-card new">
+                            <div class="summary-header">
+                                <span class="summary-icon">📝</span>
+                                <span class="summary-title">New</span>
+                            </div>
+                            <div class="summary-value" id="ordersNew">23</div>
+                            <div class="summary-label">Новые заказы</div>
+                        </div>
+                        <div class="summary-card queued">
+                            <div class="summary-header">
+                                <span class="summary-icon">⏳</span>
+                                <span class="summary-title">Queued</span>
+                            </div>
+                            <div class="summary-value" id="ordersQueued">45</div>
+                            <div class="summary-label">В очереди</div>
+                        </div>
+                        <div class="summary-card in-progress">
+                            <div class="summary-header">
+                                <span class="summary-icon">⚙️</span>
+                                <span class="summary-title">In Progress</span>
+                            </div>
+                            <div class="summary-value" id="ordersInProgress">18</div>
+                            <div class="summary-label">В производстве</div>
+                        </div>
+                        <div class="summary-card critical">
+                            <div class="summary-header">
+                                <span class="summary-icon">🚨</span>
+                                <span class="summary-title">Critical</span>
+                            </div>
+                            <div class="summary-value" id="ordersCritical">7</div>
+                            <div class="summary-label">Критичные</div>
+                        </div>
                     </div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>№ Заказа</th>
-                                    <th>Клиент</th>
-                                    <th>Продукт</th>
-                                    <th>Количество</th>
-                                    <th>Статус</th>
-                                    <th>Дата создания</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ordersTable">
-                                <!-- Orders will be populated here -->
-                            </tbody>
-                        </table>
+                </div>
+
+                <!-- Фильтры и поиск -->
+                <div class="orders-filters">
+                    <div class="filters-row">
+                        <div class="filter-group">
+                            <label>Статус заказа:</label>
+                            <select id="filterStatus" class="filter-select">
+                                <option value="">Все статусы</option>
+                                <option value="new">Новый</option>
+                                <option value="confirmed">Подтвержден</option>
+                                <option value="planned">Запланирован</option>
+                                <option value="in_production">В производстве</option>
+                                <option value="completed">Завершен</option>
+                                <option value="shipped">Отгружен</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Клиент:</label>
+                            <input type="text" id="filterClient" class="filter-input" placeholder="Поиск клиента..." list="clientsList">
+                            <datalist id="clientsList">
+                                <option value="ООО Пакет-Сервис">
+                                <option value="АО Упаковочные решения">
+                                <option value="ИП Васильев">
+                                <option value="ТК Логистик">
+                                <option value="МегаТрейд">
+                            </datalist>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Период:</label>
+                            <input type="date" id="filterDateFrom" class="filter-date">
+                            <span>—</span>
+                            <input type="date" id="filterDateTo" class="filter-date">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Приоритет:</label>
+                            <div class="priority-checkboxes">
+                                <label><input type="checkbox" value="urgent" checked> Срочный</label>
+                                <label><input type="checkbox" value="high" checked> Высокий</label>
+                                <label><input type="checkbox" value="normal" checked> Обычный</label>
+                                <label><input type="checkbox" value="low" checked> Низкий</label>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Поиск:</label>
+                            <input type="text" id="searchOrder" class="filter-input" placeholder="Номер заказа...">
+                            <button class="btn btn-primary" onclick="applyOrderFilters()">🔍 Поиск</button>
+                            <button class="btn btn-secondary" onclick="resetOrderFilters()">🔄 Сбросить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="orders-main">
+                    <!-- Основная таблица заказов -->
+                    <div class="orders-table-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>📑 Список заказов</h3>
+                                <button class="btn btn-primary" onclick="showCreateOrderModal()">+ Новый заказ</button>
+                            </div>
+
+                            <div class="table-container">
+                                <table class="orders-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Номер заказа</th>
+                                            <th>Клиент</th>
+                                            <th>Продукт</th>
+                                            <th>Количество</th>
+                                            <th>Срок поставки</th>
+                                            <th>Приоритет</th>
+                                            <th>Статус</th>
+                                            <th>Прогресс</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ordersTableBody">
+                                        <!-- Orders будут загружены динамически -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Боковая панель: Timeline производства -->
+                    <div class="production-timeline-panel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>🏭 Timeline производства</h3>
+                                <div class="timeline-legend">
+                                    <span class="legend-item completed">✅ Завершено</span>
+                                    <span class="legend-item current">⏳ Текущий</span>
+                                    <span class="legend-item pending">⏸️ Ожидание</span>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-content" id="productionTimeline">
+                                <div class="timeline-placeholder">
+                                    Выберите заказ для просмотра timeline производства
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2061,7 +2473,7 @@
                     loadSuppliers();
                     break;
                 case 'orders':
-                    loadOrders();
+                    loadOrdersPage();
                     break;
                 case 'warehouse':
                     loadInventory();
@@ -2629,6 +3041,276 @@
             if (!currentLineData) return;
             
             showToast(`📊 История линии "${currentLineData.line_name}" будет доступна в следующей версии`, 'info');
+        }
+
+        // =============================================
+        // ORDERS PAGE FUNCTIONS
+        // =============================================
+
+        // Sample orders data (согласно ТЗ структуре)
+        let ordersData = [
+            {
+                id: 'ord-001',
+                number: 'ZP-2024/0318',
+                clientId: 'client-001',
+                client: 'ООО Пакет-Сервис',
+                productId: 'prod-001',
+                product: 'Пленка ПВД прозрачная 30мкм',
+                quantity: 2500,
+                unit: 'кг',
+                dueDate: '2024-02-15',
+                priority: 'high',
+                status: 'in_production',
+                value: 125000,
+                margin: 15,
+                progress: 65,
+                createdBy: 'manager-001',
+                createdAt: '2024-01-18',
+                updatedAt: '2024-01-20',
+                specialRequirements: 'Особые требования к упаковке',
+                attachments: ['spec.pdf', 'drawing.dwg']
+            },
+            {
+                id: 'ord-002', 
+                number: 'ZP-2024/0319',
+                clientId: 'client-002',
+                client: 'АО Упаковочные решения',
+                productId: 'prod-002',
+                product: 'Пакет с печатью 4+0',
+                quantity: 10000,
+                unit: 'шт',
+                dueDate: '2024-02-20',
+                priority: 'urgent',
+                status: 'planned',
+                value: 85000,
+                margin: 12,
+                progress: 15,
+                createdBy: 'manager-002',
+                createdAt: '2024-01-19',
+                updatedAt: '2024-01-20',
+                specialRequirements: '',
+                attachments: []
+            },
+            {
+                id: 'ord-003',
+                number: 'ZP-2024/0320',
+                clientId: 'client-003', 
+                client: 'ИП Васильев',
+                productId: 'prod-003',
+                product: 'Пленка ламинированная',
+                quantity: 1200,
+                unit: 'м2',
+                dueDate: '2024-02-25',
+                priority: 'normal',
+                status: 'new',
+                value: 96000,
+                margin: 18,
+                progress: 0,
+                createdBy: 'manager-001',
+                createdAt: '2024-01-20',
+                updatedAt: '2024-01-20',
+                specialRequirements: 'Срочная доставка',
+                attachments: ['tech_spec.pdf']
+            }
+        ];
+
+        let filteredOrders = [...ordersData];
+
+        function loadOrdersPage() {
+            updateOrdersSummary();
+            renderOrdersTable();
+        }
+
+        function updateOrdersSummary() {
+            const summary = {
+                new: ordersData.filter(o => o.status === 'new').length,
+                queued: ordersData.filter(o => ['confirmed', 'planned'].includes(o.status)).length,
+                inProgress: ordersData.filter(o => o.status === 'in_production').length,
+                critical: ordersData.filter(o => o.priority === 'urgent' || isOverdue(o)).length
+            };
+
+            document.getElementById('ordersNew').textContent = summary.new;
+            document.getElementById('ordersQueued').textContent = summary.queued;
+            document.getElementById('ordersInProgress').textContent = summary.inProgress;
+            document.getElementById('ordersCritical').textContent = summary.critical;
+        }
+
+        function isOverdue(order) {
+            const dueDate = new Date(order.dueDate);
+            const today = new Date();
+            return dueDate < today && !['completed', 'shipped'].includes(order.status);
+        }
+
+        function renderOrdersTable() {
+            const tbody = document.getElementById('ordersTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = filteredOrders.map(order => `
+                <tr onclick="showOrderTimeline('${order.id}')">
+                    <td>
+                        <a href="#" class="order-number-link" onclick="showOrderDetails('${order.id}')">${order.number}</a>
+                    </td>
+                    <td>${order.client}</td>
+                    <td>${order.product}</td>
+                    <td>${order.quantity} ${order.unit}</td>
+                    <td>${formatDate(order.dueDate)}</td>
+                    <td>
+                        <span class="priority-badge priority-${order.priority}">${getPriorityLabel(order.priority)}</span>
+                    </td>
+                    <td>
+                        <span class="status-badge status-${order.status}">${getStatusLabel(order.status)}</span>
+                    </td>
+                    <td>
+                        <div class="progress-bar-order">
+                            <div class="progress-fill-order" style="width: ${order.progress}%"></div>
+                        </div>
+                        <small>${order.progress}%</small>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-primary" onclick="editOrder('${order.id}')">✏️</button>
+                            <button class="btn btn-sm btn-secondary" onclick="duplicateOrder('${order.id}')">📋</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteOrder('${order.id}')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getPriorityLabel(priority) {
+            const labels = {
+                'low': 'Низкий',
+                'normal': 'Обычный', 
+                'high': 'Высокий',
+                'urgent': 'Срочный'
+            };
+            return labels[priority] || priority;
+        }
+
+        function getStatusLabel(status) {
+            const labels = {
+                'new': 'Новый',
+                'confirmed': 'Подтвержден',
+                'planned': 'Запланирован',
+                'in_production': 'В производстве',
+                'completed': 'Завершен',
+                'shipped': 'Отгружен'
+            };
+            return labels[status] || status;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ru-RU');
+        }
+
+        function applyOrderFilters() {
+            const status = document.getElementById('filterStatus').value;
+            const client = document.getElementById('filterClient').value.toLowerCase();
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+            const search = document.getElementById('searchOrder').value.toLowerCase();
+            
+            const selectedPriorities = Array.from(document.querySelectorAll('.priority-checkboxes input:checked'))
+                .map(cb => cb.value);
+
+            filteredOrders = ordersData.filter(order => {
+                if (status && order.status !== status) return false;
+                if (client && !order.client.toLowerCase().includes(client)) return false;
+                if (search && !order.number.toLowerCase().includes(search)) return false;
+                if (!selectedPriorities.includes(order.priority)) return false;
+                
+                if (dateFrom) {
+                    const orderDate = new Date(order.createdAt);
+                    const filterDate = new Date(dateFrom);
+                    if (orderDate < filterDate) return false;
+                }
+                
+                if (dateTo) {
+                    const orderDate = new Date(order.createdAt);
+                    const filterDate = new Date(dateTo);
+                    if (orderDate > filterDate) return false;
+                }
+                
+                return true;
+            });
+
+            renderOrdersTable();
+            updateOrdersSummary();
+        }
+
+        function resetOrderFilters() {
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterClient').value = '';
+            document.getElementById('filterDateFrom').value = '';
+            document.getElementById('filterDateTo').value = '';
+            document.getElementById('searchOrder').value = '';
+            
+            document.querySelectorAll('.priority-checkboxes input').forEach(cb => cb.checked = true);
+            
+            filteredOrders = [...ordersData];
+            renderOrdersTable();
+            updateOrdersSummary();
+        }
+
+        function showOrderTimeline(orderId) {
+            const order = ordersData.find(o => o.id === orderId);
+            if (!order) return;
+
+            const timeline = document.getElementById('productionTimeline');
+            const stages = [
+                { name: 'MAG-1: Сырье', status: 'completed', date: '2024-01-18' },
+                { name: 'MAG-2: Экструзия', status: 'completed', date: '2024-01-19' },
+                { name: 'MAG-3: УФ обработка', status: 'current', date: '2024-01-20' },
+                { name: 'MAG-4: Печать', status: 'pending', date: '' },
+                { name: 'MAG-5: Готовая продукция', status: 'pending', date: '' }
+            ];
+
+            timeline.innerHTML = `
+                <div class="timeline-header">
+                    <h4>Заказ: ${order.number}</h4>
+                    <p>Клиент: ${order.client}</p>
+                    <p>Продукт: ${order.product}</p>
+                </div>
+                ${stages.map(stage => `
+                    <div class="timeline-stage ${stage.status}">
+                        <div class="stage-info">
+                            <strong>${stage.name}</strong>
+                            <br>
+                            <small>${stage.date || 'Ожидание'}</small>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function showCreateOrderModal() {
+            showModal('orderModal');
+        }
+
+        function showOrderDetails(orderId) {
+            const order = ordersData.find(o => o.id === orderId);
+            if (order) {
+                showToast(`Детали заказа ${order.number} будут доступны в модальном окне`, 'info');
+            }
+        }
+
+        function editOrder(orderId) {
+            showToast(`Редактирование заказа ${orderId}`, 'info');
+        }
+
+        function duplicateOrder(orderId) {
+            showToast(`Дублирование заказа ${orderId}`, 'info');
+        }
+
+        function deleteOrder(orderId) {
+            if (confirm('Удалить заказ?')) {
+                ordersData = ordersData.filter(o => o.id !== orderId);
+                filteredOrders = filteredOrders.filter(o => o.id !== orderId);
+                renderOrdersTable();
+                updateOrdersSummary();
+                showToast('Заказ удален', 'success');
+            }
         }
 
         // =============================================
