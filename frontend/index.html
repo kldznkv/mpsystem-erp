@@ -725,70 +725,51 @@
                     </div>
                 </div>
 
-                <!-- Компактные фильтры -->
-                <div class="orders-filters-compact">
-                    <div class="filters-row-horizontal">
-                        <!-- Группа основных фильтров -->
-                        <div class="filters-main-group">
-                            <select id="statusFilter" class="filter-compact" onchange="applyOrdersFilters()">
-                                <option value="">📋 Все статусы</option>
-                                <option value="new">🆕 Новый</option>
-                                <option value="confirmed">✅ Подтвержден</option>
-                                <option value="planned">📅 Запланирован</option>
-                                <option value="in_production">⚙️ В производстве</option>
-                                <option value="completed">✔️ Завершен</option>
-                                <option value="shipped">📦 Отгружен</option>
-                            </select>
-                            
-                            <input type="text" id="clientFilter" class="filter-compact" placeholder="👥 Клиент..." list="clientsList" onchange="applyOrdersFilters()">
-                            <datalist id="clientsList">
-                                <option value="MLEKOVITA">
-                                <option value="AGRONA">
-                                <option value="LACPOL">
-                                <option value="DANONE">
-                                <option value="MONDELEZ">
-                            </datalist>
-                            
-                            <select id="priorityFilter" class="filter-compact" onchange="applyOrdersFilters()">
-                                <option value="">🔥 Все приоритеты</option>
-                                <option value="low">🟢 Низкий</option>
-                                <option value="normal">🔵 Обычный</option>
-                                <option value="high">🟡 Высокий</option>
-                                <option value="urgent">🔴 Срочный</option>
+                <!-- ПРОСТЫЕ РАБОЧИЕ ФИЛЬТРЫ -->
+                <div class="simple-filters">
+                    <div class="filters-row">
+                        <div class="filter-item">
+                            <label>Статус:</label>
+                            <select id="statusFilter" onchange="applyOrdersFilters()">
+                                <option value="">Все статусы</option>
+                                <option value="new">Новый</option>
+                                <option value="confirmed">Подтвержден</option>
+                                <option value="planned">Запланирован</option>
+                                <option value="in_production">В производстве</option>
+                                <option value="completed">Завершен</option>
+                                <option value="shipped">Отгружен</option>
                             </select>
                         </div>
                         
-                        <!-- Разделитель -->
-                        <div class="filters-separator"></div>
+                        <div class="filter-item">
+                            <label>Клиент:</label>
+                            <input type="text" id="clientFilter" placeholder="Поиск клиента..." onkeyup="applyOrdersFilters()">
+                        </div>
                         
-                        <!-- Группа поиска и действий -->
-                        <div class="filters-action-group">
-                            <div class="search-box">
-                                <input type="text" id="searchFilter" class="search-input" placeholder="🔍 Поиск по номеру, продукту..." onkeyup="handleSearchKeyup(event)">
-                            </div>
-                            
-                            <div class="action-buttons">
-                                <button class="btn-icon btn-secondary" onclick="applyOrdersFilters()" data-loading="orders" title="Поиск">
-                                    🔍
-                                </button>
-                                <button class="btn-icon btn-secondary" onclick="resetOrdersFilters()" title="Сбросить фильтры">
-                                    🔄
-                                </button>
-                                <button class="btn-icon btn-secondary" onclick="modeDetector.detectApiMode()" title="Проверить API">
-                                    📡
-                                </button>
-                                <button class="btn-compact btn-primary" onclick="showCreateOrderModal()">
-                                    ➕ Новый заказ
-                                </button>
-                            </div>
+                        <div class="filter-item">
+                            <label>Приоритет:</label>
+                            <select id="priorityFilter" onchange="applyOrdersFilters()">
+                                <option value="">Все приоритеты</option>
+                                <option value="low">Низкий</option>
+                                <option value="normal">Обычный</option>
+                                <option value="high">Высокий</option>
+                                <option value="urgent">Срочный</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-item">
+                            <label>Поиск:</label>
+                            <input type="text" id="searchFilter" placeholder="Номер заказа, продукт..." onkeyup="applyOrdersFilters()">
+                        </div>
+                        
+                        <div class="filter-item">
+                            <button onclick="resetOrdersFilters()">Сбросить</button>
+                            <button onclick="showCreateOrderModal()">Новый заказ</button>
                         </div>
                     </div>
                     
-                    <!-- Компактный loading indicator -->
-                    <div id="loading-orders" style="display: none;" class="loading-compact">
-                        <div class="loading-spinner-small"></div>
-                        <span>Загрузка...</span>
-                    </div>
+                    <!-- Счетчик результатов -->
+                    <div id="filterResults" style="margin-top: 10px; color: #666; font-size: 14px;"></div>
                 </div>
 
                 <div class="orders-main">
@@ -847,96 +828,17 @@
                         </div>
                     </div>
 
-                    <!-- Боковая панель: Горизонтальный Timeline -->
-                    <div class="production-timeline-panel">
+                    <!-- ПРОСТОЙ TIMELINE -->
+                    <div class="simple-timeline-panel">
                         <div class="card">
                             <div class="card-header">
-                                <h3>🏭 Timeline производства</h3>
-                                <div class="timeline-legend-compact">
-                                    <span class="legend-dot pending"></span>
-                                    <span class="legend-dot current"></span>
-                                    <span class="legend-dot completed"></span>
-                                </div>
+                                <h3>Timeline производства</h3>
                             </div>
                             
-                            <div class="timeline-content-horizontal" id="productionTimeline">
-                                <div class="timeline-placeholder">
-                                    <div class="placeholder-icon">📋</div>
-                                    <p>Выберите заказ для просмотра timeline</p>
-                                </div>
-                                
-                                <!-- Template для timeline когда заказ выбран -->
-                                <div class="horizontal-timeline" id="orderTimeline" style="display: none;">
-                                    <div class="timeline-stages">
-                                        <div class="stage completed" data-stage="storage1">
-                                            <div class="stage-dot"></div>
-                                            <div class="stage-label">
-                                                <div class="stage-name">MAG1</div>
-                                                <div class="stage-time">✓</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="stage-connector completed"></div>
-                                        
-                                        <div class="stage current" data-stage="extrusion">
-                                            <div class="stage-dot"></div>
-                                            <div class="stage-label">
-                                                <div class="stage-name">Экструзия</div>
-                                                <div class="stage-time">2ч 15м</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="stage-connector current"></div>
-                                        
-                                        <div class="stage pending" data-stage="storage2">
-                                            <div class="stage-dot"></div>
-                                            <div class="stage-label">
-                                                <div class="stage-name">MAG3</div>
-                                                <div class="stage-time">—</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="stage-connector pending"></div>
-                                        
-                                        <div class="stage pending" data-stage="uv">
-                                            <div class="stage-dot"></div>
-                                            <div class="stage-label">
-                                                <div class="stage-name">UV</div>
-                                                <div class="stage-time">—</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="stage-connector pending"></div>
-                                        
-                                        <div class="stage pending" data-stage="storage3">
-                                            <div class="stage-dot"></div>
-                                            <div class="stage-label">
-                                                <div class="stage-name">MAG4</div>
-                                                <div class="stage-time">—</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="stage-connector pending"></div>
-                                        
-                                        <div class="stage pending" data-stage="ready">
-                                            <div class="stage-dot"></div>
-                                            <div class="stage-label">
-                                                <div class="stage-name">Готово</div>
-                                                <div class="stage-time">—</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="timeline-progress-info">
-                                        <div class="progress-summary">
-                                            <span class="order-number">ZP-2024/0142</span>
-                                            <span class="progress-percent">73%</span>
-                                        </div>
-                                        <div class="estimated-completion">
-                                            Готовность: сегодня 18:30
-                                        </div>
-                                    </div>
-                                </div>
+                            <div id="simpleTimeline">
+                                <p style="color: #666; padding: 20px; text-align: center;">
+                                    Кликните на заказ в таблице для просмотра timeline
+                                </p>
                             </div>
                         </div>
                     </div>

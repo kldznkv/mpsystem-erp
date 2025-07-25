@@ -4167,6 +4167,101 @@ input:focus, select:focus, textarea:focus {
     color: #64748b;
 }
 
+/* ===== ПРОСТЫЕ РАБОЧИЕ СТИЛИ ===== */
+.simple-filters {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.simple-filters .filters-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: end;
+}
+
+.simple-filters .filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.simple-filters label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+}
+
+.simple-filters select,
+.simple-filters input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 150px;
+}
+
+.simple-filters button {
+    padding: 8px 16px;
+    border: 1px solid #007bff;
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.simple-filters button:hover {
+    background: #0056b3;
+}
+
+/* Простой timeline */
+.simple-timeline-panel {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.simple-timeline {
+    padding: 15px;
+}
+
+.timeline-step {
+    padding: 8px 0;
+    border-left: 3px solid #ddd;
+    padding-left: 15px;
+    margin-bottom: 10px;
+}
+
+.timeline-step.completed {
+    border-left-color: #28a745;
+}
+
+.timeline-step.current {
+    border-left-color: #007bff;
+    background: #f8f9fa;
+}
+
+.timeline-step-title {
+    font-weight: 500;
+    color: #333;
+}
+
+.timeline-step-time {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Результаты фильтрации */
+.filter-results {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
 /* ===== УЛУЧШЕННАЯ ТАБЛИЦА ORDERS ===== */
 .orders-table-section .table-container {
     border-radius: 8px;

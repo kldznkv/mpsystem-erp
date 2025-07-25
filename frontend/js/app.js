@@ -1501,6 +1501,8 @@ async function loadOrdersPage() {
         
         // Update global orders data
         window.ordersData = ordersResponse.items || [];
+        ordersData = window.ordersData; // Обновляем локальную переменную
+        filteredOrders = [...ordersData]; // Инициализируем фильтрованные данные
         
         // Update UI
         updateOrdersSummary();
@@ -4249,6 +4251,116 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+// ПРОСТЫЕ РАБОЧИЕ ФУНКЦИИ ФИЛЬТРАЦИИ
+function applyOrdersFilters() {
+    const statusFilter = document.getElementById('statusFilter').value;
+    const clientFilter = document.getElementById('clientFilter').value.toLowerCase();
+    const priorityFilter = document.getElementById('priorityFilter').value;
+    const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+
+    console.log('Применяем фильтры:', { statusFilter, clientFilter, priorityFilter, searchFilter });
+
+    filteredOrders = ordersData.filter(order => {
+        // Фильтр по статусу
+        if (statusFilter && order.status !== statusFilter) {
+            return false;
+        }
+
+        // Фильтр по клиенту
+        if (clientFilter && !order.client.toLowerCase().includes(clientFilter)) {
+            return false;
+        }
+
+        // Фильтр по приоритету
+        if (priorityFilter && order.priority !== priorityFilter) {
+            return false;
+        }
+
+        // Поиск по номеру заказа или продукту
+        if (searchFilter) {
+            const searchText = `${order.number} ${order.product}`.toLowerCase();
+            if (!searchText.includes(searchFilter)) {
+                return false;
+            }
+        }
+
+        return true;
+    });
+
+    console.log(`Найдено заказов: ${filteredOrders.length} из ${ordersData.length}`);
+    
+    // Обновляем таблицу
+    renderOrdersTable();
+    
+    // Показываем результат фильтрации
+    document.getElementById('filterResults').textContent = 
+        `Показано: ${filteredOrders.length} из ${ordersData.length} заказов`;
+}
+
+function resetOrdersFilters() {
+    document.getElementById('statusFilter').value = '';
+    document.getElementById('clientFilter').value = '';
+    document.getElementById('priorityFilter').value = '';
+    document.getElementById('searchFilter').value = '';
+    
+    filteredOrders = [...ordersData];
+    renderOrdersTable();
+    
+    document.getElementById('filterResults').textContent = 
+        `Показано: ${ordersData.length} заказов`;
+}
+
+// Простой timeline для заказа
+function showOrderTimeline(orderId) {
+    console.log('Показываем timeline для заказа:', orderId);
+    
+    const order = ordersData.find(o => o.id == orderId);
+    if (!order) {
+        console.error('Заказ не найден:', orderId);
+        return;
+    }
+
+    const timelineHtml = `
+        <div class="simple-timeline">
+            <h4>Заказ: ${order.number}</h4>
+            <div class="order-info" style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                <strong>${order.client}</strong> - ${order.product}<br>
+                Количество: ${order.quantity} ${order.unit}<br>
+                Прогресс: ${order.progress}%
+            </div>
+            
+            <div class="timeline-steps">
+                <div class="timeline-step completed">
+                    <div class="timeline-step-title">1. Получение заказа</div>
+                    <div class="timeline-step-time">Завершено</div>
+                </div>
+                
+                <div class="timeline-step ${order.progress >= 20 ? 'completed' : (order.progress >= 10 ? 'current' : '')}">
+                    <div class="timeline-step-title">2. Планирование производства</div>
+                    <div class="timeline-step-time">${order.progress >= 20 ? 'Завершено' : (order.progress >= 10 ? 'В процессе' : 'Ожидание')}</div>
+                </div>
+                
+                <div class="timeline-step ${order.progress >= 50 ? 'completed' : (order.progress >= 20 ? 'current' : '')}">
+                    <div class="timeline-step-title">3. Экструзия</div>
+                    <div class="timeline-step-time">${order.progress >= 50 ? 'Завершено' : (order.progress >= 20 ? 'В процессе' : 'Ожидание')}</div>
+                </div>
+                
+                <div class="timeline-step ${order.progress >= 80 ? 'completed' : (order.progress >= 50 ? 'current' : '')}">
+                    <div class="timeline-step-title">4. Контроль качества</div>
+                    <div class="timeline-step-time">${order.progress >= 80 ? 'Завершено' : (order.progress >= 50 ? 'В процессе' : 'Ожидание')}</div>
+                </div>
+                
+                <div class="timeline-step ${order.progress >= 100 ? 'completed' : (order.progress >= 80 ? 'current' : '')}">
+                    <div class="timeline-step-title">5. Упаковка и отгрузка</div>
+                    <div class="timeline-step-time">${order.progress >= 100 ? 'Завершено' : (order.progress >= 80 ? 'В процессе' : 'Ожидание')}</div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('simpleTimeline').innerHTML = timelineHtml;
+}
 
 // MPSYSTEM App initialization complete
 console.log('✅ MPSYSTEM App initialized successfully!');
