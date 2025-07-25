@@ -1,5 +1,5 @@
-    <script>
 // ===== UNIFIED JAVASCRIPT SYSTEM =====
+console.log('🚀 MPSYSTEM JavaScript загружен');
 
 // ===== API SERVICE =====
 class ApiService {
@@ -506,45 +506,103 @@ class ERPStorage {
 // Initialize storage
 const storage = new ERPStorage();
 
-// Navigation System
+// ===== ENHANCED NAVIGATION SYSTEM =====
 function showTab(tabName) {
-    console.log('🔄 Switching to tab:', tabName);
+    console.log('🔄 Переключение на вкладку:', tabName);
     
     try {
+        // Валидация
+        if (!tabName) {
+            console.error('❌ Не указано имя вкладки');
+            return false;
+        }
+
+        // Проверяем существование страницы
+        const selectedTab = document.getElementById(tabName);
+        if (!selectedTab) {
+            console.error('❌ Страница не найдена:', tabName);
+            showToast(`Страница "${tabName}" не найдена`, 'error');
+            return false;
+        }
+
         // Hide all tabs
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
+            tab.style.display = 'none';
         });
 
-        // Show selected tab
-        const selectedTab = document.getElementById(tabName);
-        if (selectedTab) {
-            selectedTab.classList.add('active');
-            console.log('✅ Tab activated:', tabName);
-        } else {
-            console.error('❌ Tab not found:', tabName);
-            return;
-        }
+        // Show selected tab with animation
+        selectedTab.classList.add('active');
+        selectedTab.style.display = 'block';
+        console.log('✅ Страница активирована:', tabName);
 
-        // Update navigation
+        // Update navigation state
         document.querySelectorAll('.nav-item').forEach(btn => {
             btn.classList.remove('active');
         });
         
+        // Find and activate corresponding nav button
         const navButton = document.querySelector(`[onclick="showTab('${tabName}')"]`);
         if (navButton) {
             navButton.classList.add('active');
-            console.log('✅ Navigation updated for:', tabName);
+            console.log('✅ Навигация обновлена для:', tabName);
         } else {
-            console.warn('⚠️ Navigation button not found for:', tabName);
+            console.warn('⚠️ Кнопка навигации не найдена для:', tabName);
         }
+
+        // Update page title
+        updatePageTitle(tabName);
 
         // Load tab content
         loadTabContent(tabName);
         
+        return true;
+        
     } catch (error) {
-        console.error('❌ Error in showTab:', error);
+        console.error('❌ Ошибка в showTab:', error);
+        showToast('Ошибка при переключении страницы', 'error');
+        return false;
     }
+}
+
+// Alternative navigation function
+function navigateToPage(pageId) {
+    return showTab(pageId);
+}
+
+// Show specific page (alias for showTab)
+function showPage(pageId) {
+    return showTab(pageId);
+}
+
+// Hide specific page
+function hidePage(pageId) {
+    const page = document.getElementById(pageId);
+    if (page) {
+        page.classList.remove('active');
+        page.style.display = 'none';
+        console.log('📴 Страница скрыта:', pageId);
+        return true;
+    }
+    return false;
+}
+
+// Update page title based on current tab
+function updatePageTitle(tabName) {
+    const titles = {
+        'dashboard': 'Dashboard - Главная панель',
+        'planning': 'Планирование производства',
+        'production': 'Управление производством',
+        'quality': 'Контроль качества',
+        'warehouse': 'Управление складом',
+        'purchasing': 'Закупки',
+        'orders': 'Управление заказами',
+        'maintenance': 'Техническое обслуживание',
+        'analytics': 'Аналитика и отчеты'
+    };
+    
+    const title = titles[tabName] || tabName;
+    document.title = `MPSYSTEM - ${title}`;
 }
 
 function loadTabContent(tabName) {
@@ -3892,6 +3950,47 @@ function showToast(message, type = 'success') {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 MPSYSTEM ERP loaded - DOM готов!');
+    console.log('🔧 Инициализация навигации...');
+    
+    // Проверяем что все страницы существуют
+    const expectedPages = ['dashboard', 'planning', 'production', 'quality', 'warehouse', 'purchasing', 'orders', 'maintenance', 'analytics'];
+    const missingPages = [];
+    
+    expectedPages.forEach(pageId => {
+        const page = document.getElementById(pageId);
+        if (!page) {
+            missingPages.push(pageId);
+            console.error('❌ Страница не найдена:', pageId);
+        } else {
+            console.log('✅ Страница найдена:', pageId);
+        }
+    });
+    
+    if (missingPages.length > 0) {
+        console.error('❌ Отсутствуют страницы:', missingPages);
+    } else {
+        console.log('✅ Все страницы найдены!');
+    }
+    
+    // Проверяем навигационные кнопки
+    const navButtons = document.querySelectorAll('.nav-item');
+    console.log('📋 Найдено навигационных кнопок:', navButtons.length);
+    
+    navButtons.forEach((btn, index) => {
+        const text = btn.querySelector('.nav-text')?.textContent || btn.textContent;
+        console.log(`🔘 Кнопка ${index + 1}:`, text.trim());
+    });
+    
+    // Проверяем активную страницу
+    const activePage = document.querySelector('.tab-content.active');
+    if (activePage) {
+        console.log('✅ Активная страница:', activePage.id);
+    } else {
+        console.warn('⚠️ Нет активной страницы, устанавливаю dashboard');
+        showTab('dashboard');
+    }
+    
     // Initialize MPSYSTEM
     await updateDashboardStats();
     updateCurrentTime();

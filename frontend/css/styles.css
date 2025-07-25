@@ -100,11 +100,19 @@ body {
     transition: all 0.2s ease;
     font-size: 0.875rem;
     border-radius: 0;
+    position: relative;
+    overflow: hidden;
 }
 
 .nav-item:hover {
     background: #f8fafc;
     color: #374151;
+    transform: translateX(2px);
+}
+
+.nav-item:active {
+    transform: translateX(1px);
+    background: #e5e7eb;
 }
 
 .nav-item.active {
@@ -112,6 +120,33 @@ body {
     color: #1f2937;
     border-right: 3px solid #3b82f6;
     font-weight: 500;
+    box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.1);
+}
+
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #3b82f6;
+    opacity: 1;
+}
+
+/* Loading state for nav items */
+.nav-item.loading {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.nav-item.loading .nav-icon {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 .nav-icon {
@@ -195,10 +230,31 @@ body {
 .tab-content {
     display: none;
     width: 100%;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
 }
 
 .tab-content.active {
     display: block;
+    opacity: 1;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-content.hidden {
+    display: none !important;
+    opacity: 0;
+}
+
+/* Page transition animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ===== ENHANCED CARDS ===== */
