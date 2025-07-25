@@ -1102,14 +1102,15 @@
                 </div>
             </div>
 
-                <!-- Производственные линии -->
+                <!-- Центральный блок: Производственные линии -->
                 <div class="production-overview">
                     <h2>Производственные линии</h2>
                     
-                    <!-- Группа: Экструзия -->
+                    <!-- 🔄 Группа: Экструзия (4 линии + 2 резки + лаборатория) -->
                     <div class="line-group">
                         <h3>🔄 Экструзия</h3>
                         <div class="lines-grid">
+                            <!-- 4 основные линии экструзии -->
                             <div class="line-card" id="extrusion-1" onclick="showLineDetails('extrusion-1')">
                                 <div class="line-header">
                                     <span class="line-name">Экструзия-1 (рукава)</span>
@@ -1133,11 +1134,269 @@
                                     <button class="btn-action" onclick="adjustPriority('extrusion-1')">🔼</button>
                                 </div>
                             </div>
+                            
+                            <div class="line-card" id="extrusion-2" onclick="showLineDetails('extrusion-2')">
+                                <div class="line-header">
+                                    <span class="line-name">Экструзия-2 (пакеты)</span>
+                                    <span class="line-status running">Работает</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Заказ: ORD-250003</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 30%"></div>
+                                        </div>
+                                        <span class="progress-text">30% (4ч 15мин осталось)</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 92%</span>
+                                        <span>Очередь: 5 заказов</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="pauseLine('extrusion-2')">⏸️</button>
+                                    <button class="btn-action" onclick="adjustPriority('extrusion-2')">🔼</button>
+                                </div>
+                            </div>
+                            
+                            <div class="line-card" id="extrusion-3" onclick="showLineDetails('extrusion-3')">
+                                <div class="line-header">
+                                    <span class="line-name">Экструзия-3</span>
+                                    <span class="line-status running">Работает</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Заказ: ORD-250008</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 85%"></div>
+                                        </div>
+                                        <span class="progress-text">85% (45мин осталось)</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 94%</span>
+                                        <span>Очередь: 2 заказа</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="pauseLine('extrusion-3')">⏸️</button>
+                                    <button class="btn-action" onclick="adjustPriority('extrusion-3')">🔼</button>
+                                </div>
+                            </div>
+                            
+                            <div class="line-card" id="extrusion-4" onclick="showLineDetails('extrusion-4')">
+                                <div class="line-header">
+                                    <span class="line-name">Экструзия-4</span>
+                                    <span class="line-status idle">Простой</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Ожидание материала</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <span class="progress-text">0%</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 0%</span>
+                                        <span>Очередь: 1 заказ</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="checkMaterials('extrusion-4')">📦</button>
+                                    <button class="btn-action" onclick="startLine('extrusion-4')">▶️</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 2 линии резки -->
+                            <div class="line-card" id="cutting-1" onclick="showLineDetails('cutting-1')">
+                                <div class="line-header">
+                                    <span class="line-name">Резка-1</span>
+                                    <span class="line-status running">Работает</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Резка ORD-250001</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 40%"></div>
+                                        </div>
+                                        <span class="progress-text">40% (1ч 20мин осталось)</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 88%</span>
+                                        <span>Очередь: 4 заказа</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="pauseLine('cutting-1')">⏸️</button>
+                                    <button class="btn-action" onclick="adjustPriority('cutting-1')">🔼</button>
+                                </div>
+                            </div>
+                            
+                            <div class="line-card" id="cutting-2" onclick="showLineDetails('cutting-2')">
+                                <div class="line-header">
+                                    <span class="line-name">Резка-2</span>
+                                    <span class="line-status maintenance">ТО</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Смена ножей</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 70%"></div>
+                                        </div>
+                                        <span class="progress-text">70% (20мин осталось)</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 0%</span>
+                                        <span>Очередь: 2 заказа</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="completeMaintenance('cutting-2')">✅</button>
+                                    <button class="btn-action" onclick="scheduleDelay('cutting-2')">⏰</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Лаборатория -->
+                            <div class="line-card" id="laboratory" onclick="showLineDetails('laboratory')">
+                                <div class="line-header">
+                                    <span class="line-name">Лаборатория</span>
+                                    <span class="line-status running">Работает</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Тест партии №245</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 60%"></div>
+                                        </div>
+                                        <span class="progress-text">60% (30мин осталось)</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 95%</span>
+                                        <span>Очередь: 3 образца</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="rushTest('laboratory')">⚡</button>
+                                    <button class="btn-action" onclick="viewResults('laboratory')">📋</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 📄 Группа: Ламинация (1 линия + резка) -->
+                    <div class="line-group">
+                        <h3>📄 Ламинация</h3>
+                        <div class="lines-grid">
+                            <!-- Основная линия ламинации -->
+                            <div class="line-card" id="lamination-1" onclick="showLineDetails('lamination-1')">
+                                <div class="line-header">
+                                    <span class="line-name">Ламинация-1</span>
+                                    <span class="line-status running">Работает</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Заказ: ORD-250009</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 55%"></div>
+                                        </div>
+                                        <span class="progress-text">55% (3ч 45мин осталось)</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 82%</span>
+                                        <span>Очередь: 7 заказов</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="pauseLine('lamination-1')">⏸️</button>
+                                    <button class="btn-action" onclick="adjustPriority('lamination-1')">🔼</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Резка ламинации -->
+                            <div class="line-card" id="lamination-cutting" onclick="showLineDetails('lamination-cutting')">
+                                <div class="line-header">
+                                    <span class="line-name">Резка ламинации</span>
+                                    <span class="line-status idle">Простой</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Ожидание ламинации</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <span class="progress-text">0%</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 0%</span>
+                                        <span>Очередь: 5 заказов</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="prepareForLamination('lamination-cutting')">🔄</button>
+                                    <button class="btn-action" onclick="startLine('lamination-cutting')">▶️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 🎨 Группа: Печать (2 линии) -->
+                    <div class="line-group">
+                        <h3>🎨 Печать</h3>
+                        <div class="lines-grid">
+                            <!-- Флексопечать -->
+                            <div class="line-card" id="printing-1" onclick="showLineDetails('printing-1')">
+                                <div class="line-header">
+                                    <span class="line-name">Флексопечать-1</span>
+                                    <span class="line-status running">Работает</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Заказ: ORD-250012</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 45%"></div>
+                                        </div>
+                                        <span class="progress-text">45% (3ч 10мин осталось)</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 85%</span>
+                                        <span>Очередь: 4 заказа</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="pauseLine('printing-1')">⏸️</button>
+                                    <button class="btn-action" onclick="adjustPriority('printing-1')">🔼</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Цифровая печать -->
+                            <div class="line-card" id="printing-2" onclick="showLineDetails('printing-2')">
+                                <div class="line-header">
+                                    <span class="line-name">Цифровая печать</span>
+                                    <span class="line-status running">Работает</span>
+                                </div>
+                                <div class="line-details">
+                                    <div class="current-order">Заказ: ORD-250015</div>
+                                    <div class="progress-info">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 20%"></div>
+                                        </div>
+                                        <span class="progress-text">20% (1ч 45мин осталось)</span>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <span>OEE: 78%</span>
+                                        <span>Очередь: 2 заказа</span>
+                                    </div>
+                                </div>
+                                <div class="line-actions">
+                                    <button class="btn-action" onclick="pauseLine('printing-2')">⏸️</button>
+                                    <button class="btn-action" onclick="adjustPriority('printing-2')">🔼</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Критические уведомления -->
+                <!-- Правый блок: Критические уведомления -->
                 <div class="alerts-panel">
                     <h3>🚨 Критические уведомления</h3>
                     <div class="alerts-list" id="criticalAlerts">
