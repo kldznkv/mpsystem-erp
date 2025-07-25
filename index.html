@@ -1160,6 +1160,373 @@
             }
         }
 
+        /* ===== INVENTORY PAGE STYLES ===== */
+        .inventory-summary {
+            margin-bottom: 1.5rem;
+        }
+
+        .mag-warehouses {
+            margin-bottom: 1.5rem;
+        }
+
+        .warehouse-legend {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .legend-item {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .warehouses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
+        .warehouse-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .warehouse-card:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .warehouse-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .warehouse-name {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        .warehouse-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+        }
+
+        .warehouse-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .warehouse-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .warehouse-percent {
+            text-align: center;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        /* Inventory tabs */
+        .inventory-tabs {
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .inventory-tab-content {
+            display: none;
+            padding: 1.5rem;
+        }
+
+        .inventory-tab-content.active {
+            display: block;
+        }
+
+        .inventory-filters {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .movements-filters {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8125rem;
+        }
+
+        .inventory-table th {
+            background: #f8fafc;
+            padding: 0.5rem 0.625rem;
+            text-align: left;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .inventory-table td {
+            padding: 0.5rem 0.625rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .inventory-table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Quality status badges */
+        .quality-badge {
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .quality-badge.quarantine {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .quality-badge.released {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .quality-badge.blocked {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        /* Material type badges */
+        .material-type-badge {
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .material-type-badge.raw_material {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .material-type-badge.semi_finished {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .material-type-badge.finished_good {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* Movement type badges */
+        .movement-badge {
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .movement-badge.receipt {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .movement-badge.issue {
+            background: #fed7aa;
+            color: #c2410c;
+        }
+
+        .movement-badge.transfer {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .movement-badge.adjustment {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        /* Criticality indicators */
+        .criticality-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .criticality-level {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .criticality-level.low {
+            background: #10b981;
+        }
+
+        .criticality-level.medium {
+            background: #f59e0b;
+        }
+
+        .criticality-level.high {
+            background: #ef4444;
+        }
+
+        .criticality-level.critical {
+            background: #dc2626;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Expiry date warnings */
+        .expiry-warning {
+            color: #ef4444;
+            font-weight: 500;
+        }
+
+        .expiry-soon {
+            color: #f59e0b;
+            font-weight: 500;
+        }
+
+        /* Stocktaking layout */
+        .stocktaking-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            height: 600px;
+        }
+
+        .stocktaking-plans,
+        .stocktaking-results {
+            overflow-y: auto;
+        }
+
+        .stocktaking-list {
+            padding: 1rem 0;
+        }
+
+        .stocktaking-plan {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .stocktaking-plan:hover {
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stocktaking-plan.active {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .stocktaking-status {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .stocktaking-content {
+            padding: 1rem 0;
+        }
+
+        /* Batch number styling */
+        .batch-number {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            padding: 0.125rem 0.375rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+        }
+
+        /* MAG location badges */
+        .mag-badge {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Responsive for inventory page */
+        @media (max-width: 768px) {
+            .warehouses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filters-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stocktaking-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .inventory-table {
+                font-size: 0.75rem;
+            }
+
+            .inventory-table th,
+            .inventory-table td {
+                padding: 0.375rem 0.5rem;
+            }
+        }
+
         .modal-header {
             padding: 1.25rem 1.5rem;
             border-bottom: 1px solid #f3f4f6;
@@ -3338,28 +3705,371 @@
                 </div>
             </div>
 
-            <!-- Warehouse Tab -->
+            <!-- СТРАНИЦА: INVENTORY (Управление складом) -->
             <div id="warehouse" class="tab-content">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Управление складом</h3>
-                        <button class="btn btn-primary">+ Приход материала</button>
+                <!-- Верхний блок: Складская сводка (4 карточки) -->
+                <div class="inventory-summary">
+                    <div class="summary-grid">
+                        <div class="summary-card total">
+                            <div class="summary-header">
+                                <span class="summary-icon">📦</span>
+                                <span class="summary-title">Total Items</span>
+                            </div>
+                            <div class="summary-value" id="totalItems">1,247</div>
+                            <div class="summary-label">Всего позиций</div>
+                        </div>
+                        <div class="summary-card critical">
+                            <div class="summary-header">
+                                <span class="summary-icon">⚠️</span>
+                                <span class="summary-title">Critical Stock</span>
+                            </div>
+                            <div class="summary-value" id="criticalStock">23</div>
+                            <div class="summary-label">Критические остатки</div>
+                        </div>
+                        <div class="summary-card blocked">
+                            <div class="summary-header">
+                                <span class="summary-icon">🚫</span>
+                                <span class="summary-title">Blocked Items</span>
+                            </div>
+                            <div class="summary-value" id="blockedItems">7</div>
+                            <div class="summary-label">Заблокированные</div>
+                        </div>
+                        <div class="summary-card available">
+                            <div class="summary-header">
+                                <span class="summary-icon">💰</span>
+                                <span class="summary-title">Available Value</span>
+                            </div>
+                            <div class="summary-value" id="availableValue">€327K</div>
+                            <div class="summary-label">Стоимость запасов</div>
+                        </div>
                     </div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Код материала</th>
-                                    <th>Название</th>
-                                    <th>Количество</th>
-                                    <th>Единица</th>
-                                    <th>Последнее обновление</th>
-                                </tr>
-                            </thead>
-                            <tbody id="inventoryTable">
-                                <!-- Inventory will be populated here -->
-                            </tbody>
-                        </table>
+                </div>
+
+                <!-- Визуальная карта складов MAG -->
+                <div class="mag-warehouses">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>🏭 Карта складов MAG</h3>
+                            <div class="warehouse-legend">
+                                <span class="legend-item">▓ Заполнено</span>
+                                <span class="legend-item">░ Свободно</span>
+                            </div>
+                        </div>
+                        <div class="warehouses-grid">
+                            <div class="warehouse-card" data-mag="MAG1" onclick="showMagDetails('MAG1')">
+                                <div class="warehouse-header">
+                                    <span class="warehouse-name">MAG 1</span>
+                                    <span class="warehouse-type">Сырье</span>
+                                </div>
+                                <div class="warehouse-bar">
+                                    <div class="warehouse-fill" style="width: 67%"></div>
+                                </div>
+                                <div class="warehouse-percent">67%</div>
+                            </div>
+                            <div class="warehouse-card" data-mag="MAG1.1" onclick="showMagDetails('MAG1.1')">
+                                <div class="warehouse-header">
+                                    <span class="warehouse-name">MAG 1.1</span>
+                                    <span class="warehouse-type">ADR</span>
+                                </div>
+                                <div class="warehouse-bar">
+                                    <div class="warehouse-fill" style="width: 45%"></div>
+                                </div>
+                                <div class="warehouse-percent">45%</div>
+                            </div>
+                            <div class="warehouse-card" data-mag="MAG2" onclick="showMagDetails('MAG2')">
+                                <div class="warehouse-header">
+                                    <span class="warehouse-name">MAG 2</span>
+                                    <span class="warehouse-type">Экструзия</span>
+                                </div>
+                                <div class="warehouse-bar">
+                                    <div class="warehouse-fill" style="width: 54%"></div>
+                                </div>
+                                <div class="warehouse-percent">54%</div>
+                            </div>
+                            <div class="warehouse-card" data-mag="MAG3" onclick="showMagDetails('MAG3')">
+                                <div class="warehouse-header">
+                                    <span class="warehouse-name">MAG 3</span>
+                                    <span class="warehouse-type">UV</span>
+                                </div>
+                                <div class="warehouse-bar">
+                                    <div class="warehouse-fill" style="width: 23%"></div>
+                                </div>
+                                <div class="warehouse-percent">23%</div>
+                            </div>
+                            <div class="warehouse-card" data-mag="MAG4" onclick="showMagDetails('MAG4')">
+                                <div class="warehouse-header">
+                                    <span class="warehouse-name">MAG 4</span>
+                                    <span class="warehouse-type">Печать</span>
+                                </div>
+                                <div class="warehouse-bar">
+                                    <div class="warehouse-fill" style="width: 34%"></div>
+                                </div>
+                                <div class="warehouse-percent">34%</div>
+                            </div>
+                            <div class="warehouse-card" data-mag="MAG5" onclick="showMagDetails('MAG5')">
+                                <div class="warehouse-header">
+                                    <span class="warehouse-name">MAG 5</span>
+                                    <span class="warehouse-type">Ламинация</span>
+                                </div>
+                                <div class="warehouse-bar">
+                                    <div class="warehouse-fill" style="width: 78%"></div>
+                                </div>
+                                <div class="warehouse-percent">78%</div>
+                            </div>
+                            <div class="warehouse-card" data-mag="MAG7" onclick="showMagDetails('MAG7')">
+                                <div class="warehouse-header">
+                                    <span class="warehouse-name">MAG 7</span>
+                                    <span class="warehouse-type">Резка</span>
+                                </div>
+                                <div class="warehouse-bar">
+                                    <div class="warehouse-fill" style="width: 12%"></div>
+                                </div>
+                                <div class="warehouse-percent">12%</div>
+                            </div>
+                            <div class="warehouse-card" data-mag="MAG9" onclick="showMagDetails('MAG9')">
+                                <div class="warehouse-header">
+                                    <span class="warehouse-name">MAG 9</span>
+                                    <span class="warehouse-type">Готовая</span>
+                                </div>
+                                <div class="warehouse-bar">
+                                    <div class="warehouse-fill" style="width: 89%"></div>
+                                </div>
+                                <div class="warehouse-percent">89%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Табы основного контента -->
+                <div class="inventory-tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="showInventoryTab('materials')">📦 Все материалы</button>
+                        <button class="tab-btn" onclick="showInventoryTab('critical')">⚠️ Критические остатки</button>
+                        <button class="tab-btn" onclick="showInventoryTab('blocked')">🚫 Заблокированные</button>
+                        <button class="tab-btn" onclick="showInventoryTab('movements')">📋 Движения</button>
+                        <button class="tab-btn" onclick="showInventoryTab('stocktaking')">🔍 Инвентаризация</button>
+                    </div>
+
+                    <!-- Таб 1: Все материалы -->
+                    <div id="inventoryMaterials" class="inventory-tab-content active">
+                        <div class="inventory-filters">
+                            <div class="filters-row">
+                                <div class="filter-group">
+                                    <label>MAG склад:</label>
+                                    <select id="magFilter" class="filter-select">
+                                        <option value="">Все склады</option>
+                                        <option value="MAG1">MAG 1 - Сырье</option>
+                                        <option value="MAG1.1">MAG 1.1 - ADR</option>
+                                        <option value="MAG2">MAG 2 - Экструзия</option>
+                                        <option value="MAG3">MAG 3 - UV</option>
+                                        <option value="MAG4">MAG 4 - Печать</option>
+                                        <option value="MAG5">MAG 5 - Ламинация</option>
+                                        <option value="MAG7">MAG 7 - Резка</option>
+                                        <option value="MAG9">MAG 9 - Готовая</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Тип материала:</label>
+                                    <select id="typeFilter" class="filter-select">
+                                        <option value="">Все типы</option>
+                                        <option value="raw_material">Сырье</option>
+                                        <option value="semi_finished">Полуфабрикаты</option>
+                                        <option value="finished_good">Готовая продукция</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Статус качества:</label>
+                                    <select id="qualityFilter" class="filter-select">
+                                        <option value="">Все статусы</option>
+                                        <option value="quarantine">Карантин</option>
+                                        <option value="released">Разрешен</option>
+                                        <option value="blocked">Заблокирован</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Поставщик:</label>
+                                    <select id="supplierFilter" class="filter-select">
+                                        <option value="">Все поставщики</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary" onclick="applyInventoryFilters()">🔍 Применить</button>
+                                <button class="btn btn-secondary" onclick="resetInventoryFilters()">🔄 Сбросить</button>
+                            </div>
+                        </div>
+
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h3>📦 Материалы на складе</h3>
+                                <div class="header-actions">
+                                    <button class="btn btn-secondary" onclick="exportInventory()">📄 Экспорт</button>
+                                    <button class="btn btn-warning" onclick="showStocktakingModal()">🔍 Инвентаризация</button>
+                                    <button class="btn btn-primary" onclick="showReceiptModal()">+ Приход материала</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="inventory-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Материал</th>
+                                            <th>MAG склад</th>
+                                            <th>Партия</th>
+                                            <th>Количество</th>
+                                            <th>Статус качества</th>
+                                            <th>Срок годности</th>
+                                            <th>Поставщик</th>
+                                            <th>Дата поступления</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inventoryMaterialsTable">
+                                        <!-- Материалы будут загружены динамически -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Таб 2: Критические остатки -->
+                    <div id="inventoryCritical" class="inventory-tab-content">
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h3>⚠️ Критические остатки</h3>
+                                <div class="header-actions">
+                                    <button class="btn btn-primary" onclick="generatePurchaseRequests()">🛒 Создать заявки</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="inventory-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Материал</th>
+                                            <th>Текущий остаток</th>
+                                            <th>Точка заказа</th>
+                                            <th>Критичность</th>
+                                            <th>Дней до нуля</th>
+                                            <th>Предл. заказ</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inventoryCriticalTable">
+                                        <!-- Критические остатки будут загружены динамически -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Таб 3: Заблокированные -->
+                    <div id="inventoryBlocked" class="inventory-tab-content">
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h3>🚫 Заблокированные материалы</h3>
+                                <div class="header-actions">
+                                    <button class="btn btn-warning" onclick="massUnblock()">🔓 Массовая разблокировка</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="inventory-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Материал</th>
+                                            <th>Партия</th>
+                                            <th>Количество</th>
+                                            <th>Причина блокировки</th>
+                                            <th>Дата блокировки</th>
+                                            <th>Ответственный QC</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inventoryBlockedTable">
+                                        <!-- Заблокированные материалы будут загружены динамически -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Таб 4: Движения -->
+                    <div id="inventoryMovements" class="inventory-tab-content">
+                        <div class="movements-filters">
+                            <div class="filters-row">
+                                <div class="filter-group">
+                                    <label>Дата от:</label>
+                                    <input type="date" id="movementDateFrom" class="filter-input">
+                                </div>
+                                <div class="filter-group">
+                                    <label>Дата до:</label>
+                                    <input type="date" id="movementDateTo" class="filter-input">
+                                </div>
+                                <div class="filter-group">
+                                    <label>Тип движения:</label>
+                                    <select id="movementTypeFilter" class="filter-select">
+                                        <option value="">Все типы</option>
+                                        <option value="receipt">Приход</option>
+                                        <option value="issue">Расход</option>
+                                        <option value="transfer">Перемещение</option>
+                                        <option value="adjustment">Корректировка</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary" onclick="filterMovements()">🔍 Найти</button>
+                            </div>
+                        </div>
+
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h3>📋 История движений</h3>
+                                <div class="header-actions">
+                                    <button class="btn btn-secondary" onclick="exportMovements()">📄 Экспорт</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="inventory-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Дата/Время</th>
+                                            <th>Материал</th>
+                                            <th>Партия</th>
+                                            <th>Тип движения</th>
+                                            <th>Откуда → Куда</th>
+                                            <th>Количество</th>
+                                            <th>Документ</th>
+                                            <th>Выполнил</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inventoryMovementsTable">
+                                        <!-- Движения будут загружены динамически -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Таб 5: Инвентаризация -->
+                    <div id="inventoryStocktaking" class="inventory-tab-content">
+                        <div class="stocktaking-layout">
+                            <div class="stocktaking-plans">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>📅 Планы инвентаризации</h3>
+                                        <button class="btn btn-primary" onclick="showCreateStocktakingModal()">+ Новый план</button>
+                                    </div>
+                                    <div class="stocktaking-list" id="stocktakingPlansList">
+                                        <!-- Планы инвентаризации -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stocktaking-results">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>📊 Результаты инвентаризации</h3>
+                                        <span class="stocktaking-status" id="stocktakingStatus">В процессе</span>
+                                    </div>
+                                    <div class="stocktaking-content" id="stocktakingResults">
+                                        <!-- Результаты инвентаризации -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4054,7 +4764,7 @@
                     loadOrdersPage();
                     break;
                 case 'warehouse':
-                    loadInventory();
+                    loadInventoryPage();
                     break;
                 case 'purchasing':
                     loadPurchasingPage();
@@ -5841,6 +6551,570 @@
 
         function createPOForSupplier(supplierId) {
             showToast(`Создание заказа для поставщика ${supplierId}`, 'success');
+        }
+
+        // =============================================
+        // INVENTORY PAGE FUNCTIONS
+        // =============================================
+
+        // Sample data for inventory
+        let inventoryData = {
+            materials: [
+                {
+                    id: 'batch-001',
+                    materialId: 'MAT-001',
+                    materialCode: 'MAT-001',
+                    materialName: 'Пленка ПВД прозрачная',
+                    type: 'raw_material',
+                    category: 'granulate',
+                    magLocation: 'MAG1',
+                    batchNumber: 'B240115001',
+                    supplierBatch: 'SP-2024-0089',
+                    quantity: 850,
+                    originalQuantity: 1000,
+                    unit: 'кг',
+                    status: 'released',
+                    expiryDate: '2025-01-15',
+                    receivedDate: '2024-01-15',
+                    supplierId: 'sup-001',
+                    supplierName: 'ООО Пластик-Групп',
+                    certificates: ['cert-001.pdf'],
+                    minStock: 200,
+                    reorderPoint: 300
+                },
+                {
+                    id: 'batch-002',
+                    materialId: 'MAT-002',
+                    materialCode: 'MAT-002',
+                    materialName: 'Краситель черный',
+                    type: 'raw_material',
+                    category: 'masterbatch',
+                    magLocation: 'MAG1',
+                    batchNumber: 'B240116001',
+                    supplierBatch: 'HC-2024-0012',
+                    quantity: 45,
+                    originalQuantity: 50,
+                    unit: 'кг',
+                    status: 'released',
+                    expiryDate: '2026-06-16',
+                    receivedDate: '2024-01-16',
+                    supplierId: 'sup-002',
+                    supplierName: 'ХимПоставка Лтд',
+                    certificates: ['cert-002.pdf'],
+                    minStock: 100,
+                    reorderPoint: 150
+                },
+                {
+                    id: 'batch-003',
+                    materialId: 'MAT-003',
+                    materialCode: 'MAT-003',
+                    materialName: 'Клей полиуретановый',
+                    type: 'raw_material',
+                    category: 'adhesive',
+                    magLocation: 'MAG5',
+                    batchNumber: 'B240117001',
+                    supplierBatch: 'SC-2024-0034',
+                    quantity: 25,
+                    originalQuantity: 100,
+                    unit: 'кг',
+                    status: 'blocked',
+                    expiryDate: '2024-12-17',
+                    receivedDate: '2024-01-17',
+                    supplierId: 'sup-003',
+                    supplierName: 'СпецХим',
+                    certificates: [],
+                    minStock: 50,
+                    reorderPoint: 75,
+                    blockReason: 'Несоответствие по вязкости'
+                },
+                {
+                    id: 'batch-004',
+                    materialId: 'MAT-004',
+                    materialCode: 'MAT-004',
+                    materialName: 'Пленка готовая 30мкм',
+                    type: 'finished_good',
+                    category: 'finished_product',
+                    magLocation: 'MAG9',
+                    batchNumber: 'B240118001',
+                    supplierBatch: null,
+                    quantity: 1200,
+                    originalQuantity: 1200,
+                    unit: 'кг',
+                    status: 'released',
+                    expiryDate: null,
+                    receivedDate: '2024-01-18',
+                    supplierId: null,
+                    supplierName: 'Собственное производство',
+                    certificates: ['qc-001.pdf'],
+                    minStock: 500,
+                    reorderPoint: 800
+                }
+            ],
+            movements: [
+                {
+                    id: 'mov-001',
+                    batchId: 'batch-001',
+                    materialName: 'Пленка ПВД прозрачная',
+                    batchNumber: 'B240115001',
+                    type: 'receipt',
+                    fromMag: '',
+                    toMag: 'MAG1',
+                    quantity: 1000,
+                    reason: 'Поступление от поставщика',
+                    referenceDocument: 'PO-2024/0012',
+                    performedBy: 'warehouse-001',
+                    timestamp: '2024-01-15 09:30:00',
+                    notes: 'Полное поступление согласно заказу'
+                },
+                {
+                    id: 'mov-002',
+                    batchId: 'batch-001',
+                    materialName: 'Пленка ПВД прозрачная',
+                    batchNumber: 'B240115001',
+                    type: 'issue',
+                    fromMag: 'MAG1',
+                    toMag: '',
+                    quantity: 150,
+                    reason: 'Расход на производство',
+                    referenceDocument: 'JOB-2024/0025',
+                    performedBy: 'operator-001',
+                    timestamp: '2024-01-16 14:15:00',
+                    notes: 'Расход на заказ ORD-001'
+                },
+                {
+                    id: 'mov-003',
+                    batchId: 'batch-003',
+                    materialName: 'Клей полиуретановый',
+                    batchNumber: 'B240117001',
+                    type: 'transfer',
+                    fromMag: 'MAG1',
+                    toMag: 'MAG5',
+                    quantity: 100,
+                    reason: 'Перемещение в зону ламинации',
+                    referenceDocument: 'TRF-2024/0008',
+                    performedBy: 'warehouse-002',
+                    timestamp: '2024-01-17 11:45:00',
+                    notes: 'Подготовка к производству'
+                }
+            ],
+            stocktakingPlans: [
+                {
+                    id: 'st-001',
+                    name: 'Инвентаризация MAG1',
+                    planDate: '2024-01-25',
+                    status: 'planned',
+                    magLocations: ['MAG1'],
+                    responsible: 'warehouse-001',
+                    progress: 0
+                },
+                {
+                    id: 'st-002',
+                    name: 'Годовая инвентаризация',
+                    planDate: '2024-02-01',
+                    status: 'in_progress',
+                    magLocations: ['MAG1', 'MAG2', 'MAG3', 'MAG4', 'MAG5', 'MAG7', 'MAG9'],
+                    responsible: 'manager-001',
+                    progress: 35
+                }
+            ]
+        };
+
+        // Filter state
+        let inventoryFilters = {
+            mag: '',
+            type: '',
+            quality: '',
+            supplier: ''
+        };
+
+        // Main inventory page loader
+        function loadInventoryPage() {
+            updateInventorySummary();
+            showInventoryTab('materials');
+        }
+
+        // Update inventory summary metrics
+        function updateInventorySummary() {
+            const totalItems = inventoryData.materials.length;
+            const criticalStock = inventoryData.materials.filter(m => 
+                m.quantity <= m.reorderPoint && m.status === 'released').length;
+            const blockedItems = inventoryData.materials.filter(m => m.status === 'blocked').length;
+            const totalValue = inventoryData.materials.reduce((sum, m) => sum + (m.quantity * 50), 0); // Mock calculation
+
+            document.getElementById('totalItems').textContent = totalItems.toLocaleString();
+            document.getElementById('criticalStock').textContent = criticalStock;
+            document.getElementById('blockedItems').textContent = blockedItems;
+            document.getElementById('availableValue').textContent = '€' + Math.round(totalValue / 1000) + 'K';
+        }
+
+        // Show inventory tab
+        function showInventoryTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.inventory-tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById('inventory' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add('active');
+            event.target.classList.add('active');
+
+            // Load tab content
+            switch(tabName) {
+                case 'materials':
+                    loadInventoryMaterials();
+                    break;
+                case 'critical':
+                    loadCriticalStock();
+                    break;
+                case 'blocked':
+                    loadBlockedMaterials();
+                    break;
+                case 'movements':
+                    loadInventoryMovements();
+                    break;
+                case 'stocktaking':
+                    loadStocktaking();
+                    break;
+            }
+        }
+
+        // Load inventory materials
+        function loadInventoryMaterials() {
+            const tbody = document.getElementById('inventoryMaterialsTable');
+            if (!tbody) return;
+
+            const filteredMaterials = inventoryData.materials.filter(material => {
+                return (!inventoryFilters.mag || material.magLocation === inventoryFilters.mag) &&
+                       (!inventoryFilters.type || material.type === inventoryFilters.type) &&
+                       (!inventoryFilters.quality || material.status === inventoryFilters.quality) &&
+                       (!inventoryFilters.supplier || material.supplierId === inventoryFilters.supplier);
+            });
+
+            tbody.innerHTML = filteredMaterials.map(material => `
+                <tr>
+                    <td>
+                        <div><strong>${material.materialName}</strong></div>
+                        <div style="font-size: 0.75rem; color: #6b7280;">${material.materialCode}</div>
+                        <span class="material-type-badge ${material.type}">${getMaterialTypeLabel(material.type)}</span>
+                    </td>
+                    <td>
+                        <span class="mag-badge">${material.magLocation}</span>
+                    </td>
+                    <td>
+                        <span class="batch-number">${material.batchNumber}</span>
+                        ${material.supplierBatch ? `<div style="font-size: 0.6875rem; color: #6b7280;">Поставщик: ${material.supplierBatch}</div>` : ''}
+                    </td>
+                    <td>${material.quantity} ${material.unit}</td>
+                    <td>
+                        <span class="quality-badge ${material.status}">${getQualityStatusLabel(material.status)}</span>
+                    </td>
+                    <td>
+                        ${material.expiryDate ? 
+                            `<span class="${getExpiryClass(material.expiryDate)}">${formatDate(material.expiryDate)}</span>` : 
+                            '<span style="color: #6b7280;">Без срока</span>'
+                        }
+                    </td>
+                    <td>${material.supplierName}</td>
+                    <td>${formatDate(material.receivedDate)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-primary" onclick="showBatchDetails('${material.id}')">👁️</button>
+                            <button class="btn btn-sm btn-secondary" onclick="moveBatch('${material.id}')">📋</button>
+                            <button class="btn btn-sm btn-warning" onclick="adjustQuantity('${material.id}')">⚖️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Load critical stock
+        function loadCriticalStock() {
+            const tbody = document.getElementById('inventoryCriticalTable');
+            if (!tbody) return;
+
+            const criticalMaterials = inventoryData.materials.filter(m => 
+                m.quantity <= m.reorderPoint && m.status === 'released');
+
+            tbody.innerHTML = criticalMaterials.map(material => {
+                const daysToZero = Math.max(0, Math.floor(material.quantity / 10)); // Mock calculation
+                const suggestedOrder = material.reorderPoint - material.quantity + 100;
+                const criticalityLevel = material.quantity <= material.minStock ? 'critical' : 'high';
+
+                return `
+                    <tr>
+                        <td>
+                            <div><strong>${material.materialName}</strong></div>
+                            <div style="font-size: 0.75rem; color: #6b7280;">${material.materialCode}</div>
+                        </td>
+                        <td>${material.quantity} ${material.unit}</td>
+                        <td>${material.reorderPoint} ${material.unit}</td>
+                        <td>
+                            <div class="criticality-indicator">
+                                <div class="criticality-level ${criticalityLevel}"></div>
+                                <span>${criticalityLevel === 'critical' ? 'Критическая' : 'Высокая'}</span>
+                            </div>
+                        </td>
+                        <td>${daysToZero} дней</td>
+                        <td>${suggestedOrder} ${material.unit}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary" onclick="createPurchaseRequest('${material.materialId}')">🛒</button>
+                                <button class="btn btn-sm btn-warning" onclick="adjustReorderPoint('${material.id}')">⚖️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Load blocked materials
+        function loadBlockedMaterials() {
+            const tbody = document.getElementById('inventoryBlockedTable');
+            if (!tbody) return;
+
+            const blockedMaterials = inventoryData.materials.filter(m => m.status === 'blocked');
+
+            tbody.innerHTML = blockedMaterials.map(material => `
+                <tr>
+                    <td>
+                        <div><strong>${material.materialName}</strong></div>
+                        <div style="font-size: 0.75rem; color: #6b7280;">${material.materialCode}</div>
+                    </td>
+                    <td>
+                        <span class="batch-number">${material.batchNumber}</span>
+                    </td>
+                    <td>${material.quantity} ${material.unit}</td>
+                    <td>${material.blockReason || 'Контроль качества'}</td>
+                    <td>${formatDate(material.receivedDate)}</td>
+                    <td>QC Manager</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-success" onclick="unblockMaterial('${material.id}')">🔓</button>
+                            <button class="btn btn-sm btn-danger" onclick="scrapMaterial('${material.id}')">🗑️</button>
+                            <button class="btn btn-sm btn-primary" onclick="requestRetest('${material.id}')">🔬</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Load inventory movements
+        function loadInventoryMovements() {
+            const tbody = document.getElementById('inventoryMovementsTable');
+            if (!tbody) return;
+
+            tbody.innerHTML = inventoryData.movements.map(movement => `
+                <tr>
+                    <td>${formatDateTime(movement.timestamp)}</td>
+                    <td>
+                        <div><strong>${movement.materialName}</strong></div>
+                    </td>
+                    <td>
+                        <span class="batch-number">${movement.batchNumber}</span>
+                    </td>
+                    <td>
+                        <span class="movement-badge ${movement.type}">${getMovementTypeLabel(movement.type)}</span>
+                    </td>
+                    <td>
+                        ${movement.fromMag ? movement.fromMag : '—'} → ${movement.toMag ? movement.toMag : '—'}
+                    </td>
+                    <td>${movement.quantity} кг</td>
+                    <td>${movement.referenceDocument}</td>
+                    <td>${movement.performedBy}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Load stocktaking
+        function loadStocktaking() {
+            const plansList = document.getElementById('stocktakingPlansList');
+            if (!plansList) return;
+
+            plansList.innerHTML = inventoryData.stocktakingPlans.map(plan => `
+                <div class="stocktaking-plan ${plan.status === 'in_progress' ? 'active' : ''}" onclick="selectStocktakingPlan('${plan.id}')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong>${plan.name}</strong>
+                        <span class="stocktaking-status">${getStocktakingStatusLabel(plan.status)}</span>
+                    </div>
+                    <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">
+                        Дата: ${formatDate(plan.planDate)} | Ответственный: ${plan.responsible}
+                    </div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">
+                        Склады: ${plan.magLocations.join(', ')}
+                    </div>
+                    ${plan.status === 'in_progress' ? 
+                        `<div style="margin-top: 0.5rem;">
+                            <div style="background: #e5e7eb; height: 4px; border-radius: 2px;">
+                                <div style="background: #3b82f6; height: 100%; width: ${plan.progress}%; border-radius: 2px;"></div>
+                            </div>
+                            <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">Прогресс: ${plan.progress}%</div>
+                        </div>` : ''
+                    }
+                </div>
+            `).join('');
+        }
+
+        // MAG warehouse details
+        function showMagDetails(magId) {
+            const magMaterials = inventoryData.materials.filter(m => m.magLocation === magId);
+            const totalQuantity = magMaterials.reduce((sum, m) => sum + m.quantity, 0);
+            
+            showToast(`${magId}: ${magMaterials.length} позиций, ${totalQuantity} кг общий вес`, 'info');
+        }
+
+        // Utility functions
+        function getMaterialTypeLabel(type) {
+            const labels = {
+                'raw_material': 'Сырье',
+                'semi_finished': 'Полуфабрикат',
+                'finished_good': 'Готовая продукция'
+            };
+            return labels[type] || type;
+        }
+
+        function getQualityStatusLabel(status) {
+            const labels = {
+                'quarantine': 'Карантин',
+                'released': 'Разрешен',
+                'blocked': 'Заблокирован'
+            };
+            return labels[status] || status;
+        }
+
+        function getMovementTypeLabel(type) {
+            const labels = {
+                'receipt': 'Приход',
+                'issue': 'Расход',
+                'transfer': 'Перемещение',
+                'adjustment': 'Корректировка'
+            };
+            return labels[type] || type;
+        }
+
+        function getStocktakingStatusLabel(status) {
+            const labels = {
+                'planned': 'Запланирована',
+                'in_progress': 'В процессе',
+                'completed': 'Завершена'
+            };
+            return labels[status] || status;
+        }
+
+        function getExpiryClass(expiryDate) {
+            const today = new Date();
+            const expiry = new Date(expiryDate);
+            const daysToExpiry = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+            
+            if (daysToExpiry < 0) return 'expiry-warning';
+            if (daysToExpiry < 30) return 'expiry-soon';
+            return '';
+        }
+
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Filter functions
+        function applyInventoryFilters() {
+            inventoryFilters.mag = document.getElementById('magFilter').value;
+            inventoryFilters.type = document.getElementById('typeFilter').value;
+            inventoryFilters.quality = document.getElementById('qualityFilter').value;
+            inventoryFilters.supplier = document.getElementById('supplierFilter').value;
+            
+            loadInventoryMaterials();
+            showToast('Фильтры применены', 'success');
+        }
+
+        function resetInventoryFilters() {
+            inventoryFilters = { mag: '', type: '', quality: '', supplier: '' };
+            
+            document.getElementById('magFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('qualityFilter').value = '';
+            document.getElementById('supplierFilter').value = '';
+            
+            loadInventoryMaterials();
+            showToast('Фильтры сброшены', 'info');
+        }
+
+        // Action functions (placeholders)
+        function showReceiptModal() {
+            showToast('Модал прихода материала будет реализован в следующей версии', 'info');
+        }
+
+        function exportInventory() {
+            showToast('Экспорт данных склада выполнен', 'success');
+        }
+
+        function showStocktakingModal() {
+            showToast('Модал инвентаризации будет реализован в следующей версии', 'info');
+        }
+
+        function showBatchDetails(batchId) {
+            showToast(`Детали партии ${batchId} будут показаны в боковой панели`, 'info');
+        }
+
+        function moveBatch(batchId) {
+            showToast(`Перемещение партии ${batchId}`, 'info');
+        }
+
+        function adjustQuantity(batchId) {
+            showToast(`Корректировка количества партии ${batchId}`, 'info');
+        }
+
+        function createPurchaseRequest(materialId) {
+            showToast(`Создана заявка на закупку для материала ${materialId}`, 'success');
+        }
+
+        function adjustReorderPoint(batchId) {
+            showToast(`Корректировка точки заказа для партии ${batchId}`, 'info');
+        }
+
+        function generatePurchaseRequests() {
+            showToast('Сгенерированы заявки на закупку для всех критических остатков', 'success');
+        }
+
+        function unblockMaterial(batchId) {
+            showToast(`Материал партии ${batchId} разблокирован`, 'success');
+        }
+
+        function scrapMaterial(batchId) {
+            showToast(`Материал партии ${batchId} списан как брак`, 'warning');
+        }
+
+        function requestRetest(batchId) {
+            showToast(`Запрошен повторный анализ партии ${batchId}`, 'info');
+        }
+
+        function massUnblock() {
+            showToast('Массовая разблокировка материалов выполнена', 'success');
+        }
+
+        function filterMovements() {
+            showToast('Фильтр движений применен', 'success');
+        }
+
+        function exportMovements() {
+            showToast('Экспорт движений выполнен', 'success');
+        }
+
+        function showCreateStocktakingModal() {
+            showToast('Модал создания плана инвентаризации будет реализован в следующей версии', 'info');
+        }
+
+        function selectStocktakingPlan(planId) {
+            document.querySelectorAll('.stocktaking-plan').forEach(plan => {
+                plan.classList.remove('active');
+            });
+            event.target.closest('.stocktaking-plan').classList.add('active');
+            
+            showToast(`Выбран план инвентаризации ${planId}`, 'info');
         }
 
         // Removed duplicate DOMContentLoaded - merged into main init
