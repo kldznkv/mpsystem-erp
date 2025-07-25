@@ -3457,22 +3457,43 @@
 
         // Navigation System
         function showTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
+            console.log('🔄 Switching to tab:', tabName);
+            
+            try {
+                // Hide all tabs
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
 
-            // Show selected tab
-            document.getElementById(tabName).classList.add('active');
+                // Show selected tab
+                const selectedTab = document.getElementById(tabName);
+                if (selectedTab) {
+                    selectedTab.classList.add('active');
+                    console.log('✅ Tab activated:', tabName);
+                } else {
+                    console.error('❌ Tab not found:', tabName);
+                    return;
+                }
 
-            // Update navigation
-            document.querySelectorAll('.nav-item').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+                // Update navigation
+                document.querySelectorAll('.nav-item').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                const navButton = document.querySelector(`[onclick="showTab('${tabName}')"]`);
+                if (navButton) {
+                    navButton.classList.add('active');
+                    console.log('✅ Navigation updated for:', tabName);
+                } else {
+                    console.warn('⚠️ Navigation button not found for:', tabName);
+                }
 
-            // Load tab content
-            loadTabContent(tabName);
+                // Load tab content
+                loadTabContent(tabName);
+                
+            } catch (error) {
+                console.error('❌ Error in showTab:', error);
+            }
         }
 
         function loadTabContent(tabName) {
@@ -3513,17 +3534,24 @@
 
         // Enhanced Modal & Side Panel System
         function showModal(modalId, asSidePanel = false) {
+            console.log('🔄 Opening modal:', modalId, 'as side panel:', asSidePanel);
+            
             const modal = document.getElementById(modalId);
-            if (!modal) return;
+            if (!modal) {
+                console.error('❌ Modal not found:', modalId);
+                return;
+            }
             
             if (asSidePanel) {
                 modal.classList.add('side-panel');
+                console.log('✅ Added side-panel class to:', modalId);
             } else {
                 modal.classList.remove('side-panel');
             }
             
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            console.log('✅ Modal activated:', modalId);
         }
 
         function hideModal(modalId) {
@@ -3993,7 +4021,6 @@
             
             // Show as side panel by default
             showSidePanel('lineDetailsModal');
-            }
         }
 
         function hideLineDetails() {
@@ -4837,19 +4864,7 @@
             showToast(`Оптимизация линии ${lineId} выполнена`, 'success');
         }
 
-        // Обработчики событий для фильтров
-        document.addEventListener('DOMContentLoaded', function() {
-            // Добавляем обработчики для фильтров очереди
-            const queueFilter = document.getElementById('queueFilter');
-            const queueSort = document.getElementById('queueSort');
-            
-            if (queueFilter) {
-                queueFilter.addEventListener('change', renderOrdersQueue);
-            }
-            if (queueSort) {
-                queueSort.addEventListener('change', renderOrdersQueue);
-            }
-        });
+        // Removed duplicate DOMContentLoaded - merged into main init
 
         // =============================================
         // MPSYSTEM LINE ACTIONS (Legacy)
@@ -4961,6 +4976,17 @@
                     await loadCriticalAlertsFromAPI();
                 }
             }, 30000);
+
+            // Setup filter handlers for planning page
+            const queueFilter = document.getElementById('queueFilter');
+            const queueSort = document.getElementById('queueSort');
+            
+            if (queueFilter) {
+                queueFilter.addEventListener('change', renderOrdersQueue);
+            }
+            if (queueSort) {
+                queueSort.addEventListener('change', renderOrdersQueue);
+            }
         });
 
         // UC-D002: Close modals on outside click
@@ -4969,15 +4995,8 @@
                 if (e.target.id === 'lineDetailsModal') {
                     hideLineDetails();
                 } else {
-                    e.target.classList.remove('active');
+                    hideModal(e.target.id);
                 }
-            }
-        });
-
-        // Close modals on outside click
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('active');
             }
         });
     </script>
