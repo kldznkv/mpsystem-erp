@@ -831,66 +831,85 @@
                                     <button class="btn-action" onclick="adjustPriority('extrusion-1')">🔼</button>
                                 </div>
                             </div>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>№ Заказа</th>
-                                        <th>Клиент</th>
-                                        <th>Продукт</th>
-                                        <th>Статус</th>
-                                        <th>Дата</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="activeOrdersTable">
-                                    <tr>
-                                        <td>ORD-240001</td>
-                                        <td>ООО "Упаковка+"</td>
-                                        <td>Пленка PE 20мкм</td>
-                                        <td><span class="status-badge status-in-production">В производстве</span></td>
-                                        <td>15.01.2024</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ORD-240002</td>
-                                        <td>ТД "Полимер"</td>
-                                        <td>Пленка PVC 50мкм</td>
-                                        <td><span class="status-badge status-approved">Утвержден</span></td>
-                                        <td>16.01.2024</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
+                </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Производственные линии</h3>
+                <!-- Критические уведомления -->
+                <div class="alerts-panel">
+                    <h3>🚨 Критические уведомления</h3>
+                    <div class="alerts-list" id="criticalAlerts">
+                        <div class="alert-item critical">
+                            <span class="alert-icon">⚠️</span>
+                            <span class="alert-text">Низкий остаток: Гранулы PE (осталось 50кг)</span>
+                            <span class="alert-time">5 мин назад</span>
+                            <button class="alert-action" onclick="orderMaterial('PE')">Заказать</button>
                         </div>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Линия</th>
-                                        <th>Статус</th>
-                                        <th>Загрузка</th>
-                                        <th>Текущий заказ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Линия PE-1</td>
-                                        <td><span class="status-badge status-completed">Работает</span></td>
-                                        <td>85%</td>
-                                        <td>ORD-240001</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Линия PVC-2</td>
-                                        <td><span class="status-badge status-new">Ожидание</span></td>
-                                        <td>0%</td>
-                                        <td>-</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="alert-item warning">
+                            <span class="alert-icon">⏰</span>
+                            <span class="alert-text">Просрочен заказ ORD-249987 (опоздание: 2 дня)</span>
+                            <span class="alert-time">1 час назад</span>
+                            <button class="alert-action" onclick="escalateOrder('ORD-249987')">Эскалация</button>
+                        </div>
+                        <div class="alert-item info">
+                            <span class="alert-icon">🔬</span>
+                            <span class="alert-text">Требуется контроль качества партии №243</span>
+                            <span class="alert-time">30 мин назад</span>
+                            <button class="alert-action" onclick="scheduleQC('243')">Запланировать</button>
+                        </div>
+                        <div class="alert-item warning">
+                            <span class="alert-icon">🔧</span>
+                            <span class="alert-text">Плановое ТО Экструзия-2 через 2 часа</span>
+                            <span class="alert-time">10 мин назад</span>
+                            <button class="alert-action" onclick="prepareMaintenance('extrusion-2')">Подготовить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Planning Tab -->
+            <div id="planning" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📋 Планирование производства</h3>
+                        <button class="btn btn-primary">+ Новый план</button>
+                    </div>
+                    <div class="dashboard-widgets">
+                        <div class="card">
+                            <h4>Планы производства будут доступны в следующей версии</h4>
+                            <p>Этот модуль будет включать планирование загрузки линий, календарь производства, и оптимизацию ресурсов.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quality Tab -->
+            <div id="quality" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🔬 Контроль качества</h3>
+                        <button class="btn btn-primary">+ Новый тест</button>
+                    </div>
+                    <div class="dashboard-widgets">
+                        <div class="card">
+                            <h4>Модуль контроля качества будет доступен в следующей версии</h4>
+                            <p>Этот модуль будет включать тестирование материалов, контроль параметров, и отчеты по качеству.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maintenance Tab -->
+            <div id="maintenance" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🔧 Техническое обслуживание</h3>
+                        <button class="btn btn-primary">+ Планировать ТО</button>
+                    </div>
+                    <div class="dashboard-widgets">
+                        <div class="card">
+                            <h4>Модуль технического обслуживания будет доступен в следующей версии</h4>
+                            <p>Этот модуль будет включать планирование ТО, учет запчастей, и историю обслуживания оборудования.</p>
                         </div>
                     </div>
                 </div>
@@ -1375,8 +1394,12 @@
             switch(tabName) {
                 case 'dashboard':
                     updateDashboardStats();
-                    loadOrders(); // For dashboard active orders table
+                    updateCurrentTime();
                     break;
+                case 'planning':
+                    // Redirect to procurement for now
+                    showTab('procurement');
+                    return;
                 case 'procurement':
                     loadMaterials();
                     loadSuppliers();
@@ -1389,6 +1412,14 @@
                     break;
                 case 'production':
                     loadProduction();
+                    break;
+                case 'quality':
+                    // Quality module placeholder
+                    showToast('Модуль контроля качества будет доступен в следующей версии', 'info');
+                    break;
+                case 'maintenance':
+                    // Maintenance module placeholder
+                    showToast('Модуль технического обслуживания будет доступен в следующей версии', 'info');
                     break;
                 case 'analytics':
                     updateDashboardStats();
@@ -1664,6 +1695,83 @@
             showToast('Редактирование поставщиков будет добавлено в следующем обновлении', 'warning');
         }
 
+        // MPSYSTEM specific functions
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = now.toLocaleTimeString('ru-RU');
+            }
+        }
+
+        function showLineDetails(lineId) {
+            showToast(`Детали линии ${lineId} будут доступны в модальном окне`, 'info');
+        }
+
+        function pauseLine(lineId) {
+            showToast(`Линия ${lineId} поставлена на паузу`, 'warning');
+        }
+
+        function adjustPriority(lineId) {
+            showToast(`Приоритет линии ${lineId} изменен`, 'info');
+        }
+
+        function startLine(lineId) {
+            showToast(`Линия ${lineId} запущена`, 'success');
+        }
+
+        function checkMaterials(lineId) {
+            showToast(`Проверка материалов для линии ${lineId}`, 'info');
+        }
+
+        function completeMaintenance(lineId) {
+            showToast(`Наладка линии ${lineId} завершена`, 'success');
+        }
+
+        function scheduleDelay(lineId) {
+            showToast(`Задержка для линии ${lineId} запланирована`, 'warning');
+        }
+
+        function rushTest(lineId) {
+            showToast(`Тест для ${lineId} ускорен`, 'info');
+        }
+
+        function viewResults(lineId) {
+            showToast(`Просмотр результатов ${lineId}`, 'info');
+        }
+
+        function prepareForLamination(lineId) {
+            showToast(`Подготовка к ламинации для ${lineId}`, 'info');
+        }
+
+        function checkQueue(lineId) {
+            showToast(`Проверка очереди для ${lineId}`, 'info');
+        }
+
+        function checkColors(lineId) {
+            showToast(`Проверка цветов для ${lineId}`, 'info');
+        }
+
+        function adjustColors(lineId) {
+            showToast(`Настройка цветов для ${lineId}`, 'info');
+        }
+
+        function orderMaterial(material) {
+            showToast(`Заказ материала ${material} отправлен`, 'success');
+        }
+
+        function escalateOrder(orderNumber) {
+            showToast(`Заказ ${orderNumber} эскалирован`, 'warning');
+        }
+
+        function scheduleQC(batchNumber) {
+            showToast(`Контроль качества партии ${batchNumber} запланирован`, 'info');
+        }
+
+        function prepareMaintenance(lineId) {
+            showToast(`Подготовка к ТО линии ${lineId}`, 'info');
+        }
+
         function showToast(message, type = 'success') {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
@@ -1677,9 +1785,22 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize MPSYSTEM
+            updateDashboardStats();
+            updateCurrentTime();
             loadOrders();
             loadInventory();
             loadProduction();
+            
+            // Auto-update time every second
+            setInterval(updateCurrentTime, 1000);
+            
+            // Auto-update dashboard every 30 seconds (as per ТЗ)
+            setInterval(function() {
+                if (document.querySelector('#dashboard.active')) {
+                    updateDashboardStats();
+                }
+            }, 30000);
         });
 
         // Close modals on outside click
