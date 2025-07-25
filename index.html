@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPSYSTEM - Управление производством упаковочных материалов</title>
+    <meta name="description" content="Веб-платформа для управления производством упаковочных материалов: экструзия, ламинация, печать">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏭%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="frontend/css/styles.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">🏭</span>
+                <div class="logo-text">
+                    <h1>MPSYSTEM</h1>
+                    <span class="subtitle">Упаковочные материалы</span>
+                </div>
+            </div>
+            <div class="system-status">
+                <span class="status-indicator online" id="systemStatus">● Online</span>
+                <span class="time" id="currentTime"></span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-item active" onclick="showTab('dashboard')">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </button>
+            <button class="nav-item" onclick="showTab('planning')">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Планирование</span>
+            </button>
+            <button class="nav-item" onclick="showTab('production')">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Производство</span>
+            </button>
+            <button class="nav-item" onclick="showTab('quality')">
+                <span class="nav-icon">🔬</span>
+                <span class="nav-text">Качество</span>
+            </button>
+            <button class="nav-item" onclick="showTab('warehouse')">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">Склад</span>
+            </button>
+            <button class="nav-item" onclick="showTab('purchasing')">
+                <span class="nav-icon">🛒</span>
+                <span class="nav-text">Закупки</span>
+            </button>
+            <button class="nav-item" onclick="showTab('orders')">
+                <span class="nav-icon">📑</span>
+                <span class="nav-text">Заказы</span>
+            </button>
+            <button class="nav-item" onclick="showTab('maintenance')">
+                <span class="nav-icon">🔧</span>
+                <span class="nav-text">ТО</span>
+            </button>
+            <button class="nav-item" onclick="showTab('analytics')">
+                <span class="nav-icon">📈</span>
+                <span class="nav-text">Аналитика</span>
+            </button>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-wrapper">
+            <!-- СТРАНИЦА: DASHBOARD (Главная панель) -->
+            <div id="dashboard" class="tab-content active">
+                <!-- Информация о пользователе -->
+                <div class="user-info">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-role">Системный администратор</span>
+                </div>
+
+                <!-- Верхний блок: Ключевые метрики (4 карточки) -->
+                <div class="dashboard-metrics">
+                    <div class="metrics-grid">
+                        <div class="metric-card availability">
+                            <div class="metric-header">
+                                <span class="metric-icon">📊</span>
+                                <span class="metric-title">Orders</span>
+                            </div>
+                            <div class="metric-value" id="totalOrders">47</div>
+                            <div class="metric-label">Всего заказов</div>
+                            <div class="metric-change positive">+12%</div>
+                        </div>
+                        <div class="metric-card performance">
+                            <div class="metric-header">
+                                <span class="metric-icon">⚙️</span>
+                                <span class="metric-title">Production</span>
+                            </div>
+                            <div class="metric-value" id="productionEfficiency">89.2%</div>
+                            <div class="metric-label">Эффективность</div>
+                            <div class="metric-change positive">+3.1%</div>
+                        </div>
+                        <div class="metric-card quality">
+                            <div class="metric-header">
+                                <span class="metric-icon">🔬</span>
+                                <span class="metric-title">Efficiency</span>
+                            </div>
+                            <div class="metric-value" id="overallEfficiency">92.4%</div>
+                            <div class="metric-label">OEE</div>
+                            <div class="metric-change negative">-1.2%</div>
+                        </div>
+                        <div class="metric-card total">
+                            <div class="metric-header">
+                                <span class="metric-icon">✅</span>
+                                <span class="metric-title">Quality</span>
+                            </div>
+                            <div class="metric-value" id="qualityScore">96.8%</div>
+                            <div class="metric-label">Качество</div>
+                            <div class="metric-change positive">+0.5%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Центральный блок: Производственные линии -->
+                <div class="production-overview">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>🏭 Обзор производственных линий</h3>
+                        </div>
+
+                        <!-- Группировка линий по типам -->
+                        <div class="line-group">
+                            <div class="line-group-header">
+                                <h4>🔄 Экструзия</h4>
+                                <span class="group-status">6 линий + лаборатория</span>
+                            </div>
+                            <div class="lines-grid">
+                                <div class="line-card" onclick="showLineDetails('EXT-1')">
+                                    <div class="line-header">
+                                        <span class="line-name">Линия EXT-1</span>
+                                        <span class="line-status running">Running</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Заказ ZP-2024/0142</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 73%"></div>
+                                            </div>
+                                            <span class="progress-text">73% (2ч 15м)</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>OEE: 94.2%</span>
+                                            <span>Очередь: 3</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="toggleLine('EXT-1', event)">⏸️</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="line-card" onclick="showLineDetails('EXT-2')">
+                                    <div class="line-header">
+                                        <span class="line-name">Линия EXT-2</span>
+                                        <span class="line-status idle">Idle</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Готова к работе</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 0%"></div>
+                                            </div>
+                                            <span class="progress-text">Ожидание</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>OEE: —</span>
+                                            <span>Очередь: 5</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="startLine('EXT-2', event)">▶️</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="line-card" onclick="showLineDetails('EXT-3')">
+                                    <div class="line-header">
+                                        <span class="line-name">Линия EXT-3</span>
+                                        <span class="line-status maintenance">Maintenance</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">ТО оборудования</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 45%"></div>
+                                            </div>
+                                            <span class="progress-text">45% (1ч 30м)</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>ТО завершится: 16:30</span>
+                                            <span>Очередь: 2</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="viewMaintenance('EXT-3', event)">🔧</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="line-card" onclick="showLineDetails('EXT-4')">
+                                    <div class="line-header">
+                                        <span class="line-name">Линия EXT-4</span>
+                                        <span class="line-status running">Running</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Заказ ZP-2024/0158</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 28%"></div>
+                                            </div>
+                                            <span class="progress-text">28% (4ч 45м)</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>OEE: 91.7%</span>
+                                            <span>Очередь: 4</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="toggleLine('EXT-4', event)">⏸️</button>
+                                    </div>
+                                </div>
+
+                                <div class="line-card" onclick="showLineDetails('CUT-1')">
+                                    <div class="line-header">
+                                        <span class="line-name">Резка CUT-1</span>
+                                        <span class="line-status running">Running</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Заказ ZP-2024/0134</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 82%"></div>
+                                            </div>
+                                            <span class="progress-text">82% (0ч 45м)</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>OEE: 96.1%</span>
+                                            <span>Очередь: 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="toggleLine('CUT-1', event)">⏸️</button>
+                                    </div>
+                                </div>
+
+                                <div class="line-card" onclick="showLineDetails('CUT-2')">
+                                    <div class="line-header">
+                                        <span class="line-name">Резка CUT-2</span>
+                                        <span class="line-status idle">Idle</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Готова к работе</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 0%"></div>
+                                            </div>
+                                            <span class="progress-text">Ожидание</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>OEE: —</span>
+                                            <span>Очередь: 0</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="startLine('CUT-2', event)">▶️</button>
+                                    </div>
+                                </div>
+
+                                <div class="line-card" onclick="showLineDetails('LAB-1')">
+                                    <div class="line-header">
+                                        <span class="line-name">Лаборатория</span>
+                                        <span class="line-status running">Testing</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Тестирование образцов</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 60%"></div>
+                                            </div>
+                                            <span class="progress-text">3 образца</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>Активных тестов: 3</span>
+                                            <span>Очередь: 7</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="viewLab('LAB-1', event)">🔬</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="line-group">
+                            <div class="line-group-header">
+                                <h4>📄 Ламинация</h4>
+                                <span class="group-status">1 линия + резка</span>
+                            </div>
+                            <div class="lines-grid">
+                                <div class="line-card" onclick="showLineDetails('LAM-1')">
+                                    <div class="line-header">
+                                        <span class="line-name">Линия LAM-1</span>
+                                        <span class="line-status running">Running</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Заказ ZP-2024/0167</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 41%"></div>
+                                            </div>
+                                            <span class="progress-text">41% (3ч 20м)</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>OEE: 88.9%</span>
+                                            <span>Очередь: 6</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="toggleLine('LAM-1', event)">⏸️</button>
+                                    </div>
+                                </div>
+
+                                <div class="line-card" onclick="showLineDetails('LAM-CUT-1')">
+                                    <div class="line-header">
+                                        <span class="line-name">Резка LAM-CUT</span>
+                                        <span class="line-status idle">Idle</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Готова к работе</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 0%"></div>
+                                            </div>
+                                            <span class="progress-text">Ожидание</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>OEE: —</span>
+                                            <span>Очередь: 2</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="startLine('LAM-CUT-1', event)">▶️</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="line-group">
+                            <div class="line-group-header">
+                                <h4>🎨 Печать</h4>
+                                <span class="group-status">2 линии</span>
+                            </div>
+                            <div class="lines-grid">
+                                <div class="line-card" onclick="showLineDetails('PRINT-FLEXO')">
+                                    <div class="line-header">
+                                        <span class="line-name">Флексопечать</span>
+                                        <span class="line-status running">Running</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Заказ ZP-2024/0189</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 67%"></div>
+                                            </div>
+                                            <span class="progress-text">67% (1ч 50м)</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>OEE: 93.4%</span>
+                                            <span>Очередь: 8</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="toggleLine('PRINT-FLEXO', event)">⏸️</button>
+                                    </div>
+                                </div>
+
+                                <div class="line-card" onclick="showLineDetails('PRINT-DIGITAL')">
+                                    <div class="line-header">
+                                        <span class="line-name">Цифровая печать</span>
+                                        <span class="line-status idle">Idle</span>
+                                    </div>
+                                    <div class="line-details">
+                                        <div class="current-order">Готова к работе</div>
+                                        <div class="progress-info">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 0%"></div>
+                                            </div>
+                                            <span class="progress-text">Ожидание</span>
+                                        </div>
+                                        <div class="line-metrics">
+                                            <span>OEE: —</span>
+                                            <span>Очередь: 4</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-actions">
+                                        <button class="btn-action" onclick="startLine('PRINT-DIGITAL', event)">▶️</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правый блок: Критические уведомления -->
+                <div class="alerts-panel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>🚨 Критические уведомления</h3>
+                        </div>
+                        <div class="alerts-list" id="criticalAlerts">
+                            <div class="alert-item critical">
+                                <div class="alert-icon">⚠️</div>
+                                <div class="alert-text">
+                                    <strong>Низкий остаток материала</strong><br>
+                                    LDPE пленка 50мкм: осталось 2 дня
+                                </div>
+                                <div class="alert-time">5 мин назад</div>
+                                <div class="alert-action">
+                                    <button class="btn btn-sm btn-primary" onclick="orderMaterial('LDPE-50')">Заказать</button>
+                                </div>
+                            </div>
+                            <div class="alert-item warning">
+                                <div class="alert-icon">⏰</div>
+                                <div class="alert-text">
+                                    <strong>Просроченный заказ</strong><br>
+                                    ZP-2024/0134 просрочен на 2 дня
+                                </div>
+                                <div class="alert-time">15 мин назад</div>
+                                <div class="alert-action">
+                                    <button class="btn btn-sm btn-warning" onclick="escalateOrder('ZP-2024/0134')">Эскалация</button>
+                                </div>
+                            </div>
+                            <div class="alert-item info">
+                                <div class="alert-icon">🔧</div>
+                                <div class="alert-text">
+                                    <strong>Плановое ТО</strong><br>
+                                    Линия EXT-2: ТО через 3 дня
+                                </div>
+                                <div class="alert-time">1 час назад</div>
+                                <div class="alert-action">
+                                    <button class="btn btn-sm btn-secondary" onclick="scheduleMaintenance('EXT-2')">Запланировать</button>
+                                </div>
+                            </div>
+                            <div class="alert-item warning">
+                                <div class="alert-icon">📉</div>
+                                <div class="alert-text">
+                                    <strong>Снижение качества</strong><br>
+                                    Партия B-1247: несоответствие толщины
+                                </div>
+                                <div class="alert-time">2 часа назад</div>
+                                <div class="alert-action">
+                                    <button class="btn btn-sm btn-danger" onclick="quarantineBatch('B-1247')">Карантин</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- СТРАНИЦА: ORDERS (Управление заказами) -->
+            <div id="orders" class="tab-content">
+                <!-- Верхний блок: Сводка по заказам (4 карточки) -->
+                <div class="orders-summary">
+                    <div class="summary-grid">
+                        <div class="summary-card new">
+                            <div class="summary-header">
+                                <span class="summary-icon">📝</span>
+                                <span class="summary-title">New</span>
+                            </div>
+                            <div class="summary-value" id="ordersNew">23</div>
+                            <div class="summary-label">Новые заказы</div>
+                        </div>
+                        <div class="summary-card queued">
+                            <div class="summary-header">
+                                <span class="summary-icon">⏳</span>
+                                <span class="summary-title">Queued</span>
+                            </div>
+                            <div class="summary-value" id="ordersQueued">45</div>
+                            <div class="summary-label">В очереди</div>
+                        </div>
+                        <div class="summary-card in-progress">
+                            <div class="summary-header">
+                                <span class="summary-icon">⚙️</span>
+                                <span class="summary-title">In Progress</span>
+                            </div>
+                            <div class="summary-value" id="ordersInProgress">18</div>
+                            <div class="summary-label">В производстве</div>
+                        </div>
+                        <div class="summary-card critical">
+                            <div class="summary-header">
+                                <span class="summary-icon">🚨</span>
+                                <span class="summary-title">Critical</span>
+                            </div>
+                            <div class="summary-value" id="ordersCritical">7</div>
+                            <div class="summary-label">Критичные</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Фильтры и поиск -->
+                <div class="orders-filters">
+                    <div class="filters-row">
+                        <div class="filter-group">
+                            <label>Статус заказа:</label>
+                            <select id="statusFilter" class="filter-select" onchange="applyOrdersFilters()">
+                                <option value="">Все статусы</option>
+                                <option value="new">Новый</option>
+                                <option value="confirmed">Подтвержден</option>
+                                <option value="planned">Запланирован</option>
+                                <option value="in_production">В производстве</option>
+                                <option value="completed">Завершен</option>
+                                <option value="shipped">Отгружен</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Клиент:</label>
+                            <input type="text" id="clientFilter" class="filter-input" placeholder="Поиск клиента..." list="clientsList" onchange="applyOrdersFilters()">
+                            <datalist id="clientsList">
+                                <option value="MLEKOVITA">
+                                <option value="AGRONA">
+                                <option value="LACPOL">
+                                <option value="DANONE">
+                                <option value="MONDELEZ">
+                            </datalist>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Приоритет:</label>
+                            <select id="priorityFilter" class="filter-select" onchange="applyOrdersFilters()">
+                                <option value="">Все приоритеты</option>
+                                <option value="low">Низкий</option>
+                                <option value="normal">Обычный</option>
+                                <option value="high">Высокий</option>
+                                <option value="urgent">Срочный</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Поиск:</label>
+                            <input type="text" id="searchFilter" class="filter-input" placeholder="Номер заказа, продукт..." onkeyup="handleSearchKeyup(event)">
+                            <button class="btn btn-primary" onclick="applyOrdersFilters()" data-loading="orders">🔍 Поиск</button>
+                            <button class="btn btn-secondary" onclick="resetOrdersFilters()">🔄 Сбросить</button>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <button class="btn btn-primary" onclick="showCreateOrderModal()">+ Новый заказ</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading indicator -->
+                    <div id="loading-orders" style="display: none;" class="loading-indicator">
+                        <span>Загрузка заказов...</span>
+                    </div>
+                </div>
+
+                <div class="orders-main">
+                    <!-- Основная таблица заказов -->
+                    <div class="orders-table-section">
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h3>📑 Список заказов</h3>
+                                <div class="header-actions">
+                                    <span id="orders-count" class="text-muted">Всего: 0</span>
+                                    <button class="btn btn-primary" onclick="refreshOrdersData()">🔄 Обновить</button>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <table class="orders-table">
+                                    <thead>
+                                        <tr>
+                                            <th>№ Заказа</th>
+                                            <th>Клиент</th>
+                                            <th>Продукт</th>
+                                            <th>Кол-во</th>
+                                            <th>Срок</th>
+                                            <th>Приоритет</th>
+                                            <th>Статус</th>
+                                            <th>Прогресс</th>
+                                            <th>Стоимость</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ordersTableBody">
+                                        <!-- Orders будут загружены динамически -->
+                                        <tr id="orders-loading-row" style="display: none;">
+                                            <td colspan="10" class="text-center">
+                                                <div class="loading-spinner">
+                                                    <span>Загрузка заказов...</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr id="orders-empty-row" style="display: none;">
+                                            <td colspan="10" class="text-center text-muted">
+                                                Заказы не найдены
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Pagination -->
+                            <div class="table-footer">
+                                <div id="orders-pagination" class="pagination">
+                                    <!-- Pagination будет генерироваться динамически -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Боковая панель: Timeline производства -->
+                    <div class="production-timeline-panel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>🏭 Timeline производства</h3>
+                                <div class="timeline-legend">
+                                    <span class="legend-item completed">✅ Завершено</span>
+                                    <span class="legend-item current">⏳ Текущий</span>
+                                    <span class="legend-item pending">⏸️ Ожидание</span>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-content" id="productionTimeline">
+                                <div class="timeline-placeholder">
+                                    Выберите заказ для просмотра timeline производства
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Остальные страницы остаются без изменений -->
+            <div id="planning" class="tab-content">
+                <h2>📋 Планирование производства</h2>
+                <p>Страница планирования находится в разработке...</p>
+            </div>
+
+            <div id="production" class="tab-content">
+                <h2>⚙️ Управление производством</h2>
+                <p>Страница производства находится в разработке...</p>
+            </div>
+
+            <div id="quality" class="tab-content">
+                <h2>🔬 Контроль качества</h2>
+                <p>Страница контроля качества находится в разработке...</p>
+            </div>
+
+            <div id="warehouse" class="tab-content">
+                <h2>📦 Управление складом</h2>
+                <p>Страница склада находится в разработке...</p>
+            </div>
+
+            <div id="purchasing" class="tab-content">
+                <h2>🛒 Управление закупками</h2>
+                <p>Страница закупок находится в разработке...</p>
+            </div>
+
+            <div id="maintenance" class="tab-content">
+                <h2>🔧 Техническое обслуживание</h2>
+                <p>Страница ТО находится в разработке...</p>
+            </div>
+
+            <div id="analytics" class="tab-content">
+                <h2>📈 Аналитика и отчеты</h2>
+                <p>Страница аналитики находится в разработке...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Order Modal -->
+    <div id="createOrderModal" class="modal side-panel">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title-area">
+                    <h3 class="modal-title">Создать новый заказ</h3>
+                    <small class="text-muted">Заполните все обязательные поля</small>
+                </div>
+                <div class="modal-controls">
+                    <button class="close" onclick="hideCreateOrderModal()">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="createOrderForm" onsubmit="handleCreateOrderSubmit(event)">
+                    <!-- Информация о клиенте -->
+                    <div class="form-section">
+                        <h4>📋 Информация о клиенте</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="clientId">ID клиента *</label>
+                                <input type="text" id="clientId" required pattern="[A-Z]{2}-[0-9]{3}" 
+                                       placeholder="ML-001" list="clientIdsList" onchange="updateClientName()">
+                                <datalist id="clientIdsList">
+                                    <option value="ML-001">
+                                    <option value="AG-001">
+                                    <option value="LP-001">
+                                    <option value="DN-001">
+                                    <option value="MZ-001">
+                                </datalist>
+                            </div>
+                            <div class="form-group">
+                                <label for="clientName">Название клиента *</label>
+                                <input type="text" id="clientName" required placeholder="MLEKOVITA" 
+                                       list="clientNamesList" onchange="updateClientId()">
+                                <datalist id="clientNamesList">
+                                    <option value="MLEKOVITA">
+                                    <option value="AGRONA">
+                                    <option value="LACPOL">
+                                    <option value="DANONE">
+                                    <option value="MONDELEZ">
+                                </datalist>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Информация о продукте -->
+                    <div class="form-section">
+                        <h4>📦 Информация о продукте</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productId">ID продукта *</label>
+                                <input type="text" id="productId" required pattern="[A-Z]{3}-[0-9]{3}" 
+                                       placeholder="PKG-001">
+                            </div>
+                            <div class="form-group">
+                                <label for="productName">Название продукта *</label>
+                                <input type="text" id="productName" required 
+                                       placeholder="Opakowania do serów żółtych 500g">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Количество и единицы -->
+                    <div class="form-section">
+                        <h4>📊 Количество и условия</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="quantity">Количество *</label>
+                                <input type="number" id="quantity" required min="0.001" step="0.001" 
+                                       placeholder="50000">
+                            </div>
+                            <div class="form-group">
+                                <label for="unit">Единица измерения *</label>
+                                <select id="unit" required>
+                                    <option value="">Выберите единицу</option>
+                                    <option value="pcs">шт</option>
+                                    <option value="kg">кг</option>
+                                    <option value="m">м</option>
+                                    <option value="m2">м²</option>
+                                    <option value="l">л</option>
+                                    <option value="ton">т</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dueDate">Срок поставки *</label>
+                                <input type="date" id="dueDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="priority">Приоритет *</label>
+                                <select id="priority" required>
+                                    <option value="normal">Обычный</option>
+                                    <option value="low">Низкий</option>
+                                    <option value="high">Высокий</option>
+                                    <option value="urgent">Срочный</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Финансовая информация -->
+                    <div class="form-section">
+                        <h4>💰 Финансовая информация</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="value">Стоимость заказа (PLN)</label>
+                                <input type="number" id="value" min="0" step="0.01" placeholder="125000.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="margin">Маржа (%)</label>
+                                <input type="number" id="margin" min="0" max="100" step="0.1" placeholder="18.5">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Дополнительная информация -->
+                    <div class="form-section">
+                        <h4>📝 Дополнительная информация</h4>
+                        <div class="form-group">
+                            <label for="specialRequirements">Особые требования</label>
+                            <textarea id="specialRequirements" rows="3" 
+                                      placeholder="Nadruk logo MLEKOVITA, certyfikat BRC, specific technical requirements..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="createdBy">Создано пользователем *</label>
+                            <input type="text" id="createdBy" required value="admin@mpsystem.pl">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="hideCreateOrderModal()">
+                    Отмена
+                </button>
+                <button type="submit" form="createOrderForm" class="btn btn-primary" data-loading="create-order">
+                    ✅ Создать заказ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="frontend/js/config.js"></script>
+    <script src="frontend/js/app.js"></script>
+</body>
+</html>
