@@ -1,6 +1,270 @@
     <script>
 // ===== UNIFIED JAVASCRIPT SYSTEM =====
 
+// ===== API SERVICE =====
+class ApiService {
+    constructor() {
+        this.baseUrl = CONFIG.API_BASE_URL;
+        this.headers = CONFIG.API_CONFIG.headers;
+        this.timeout = CONFIG.API_CONFIG.timeout;
+        this.retries = CONFIG.API_CONFIG.retries;
+    }
+
+    // Generic API request method with error handling and retries
+    async request(endpoint, options = {}) {
+        const url = this.baseUrl + endpoint;
+        const requestOptions = {
+            ...options,
+            headers: {
+                ...this.headers,
+                ...options.headers
+            }
+        };
+
+        let lastError;
+        for (let attempt = 1; attempt <= this.retries; attempt++) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+
+                const response = await fetch(url, {
+                    ...requestOptions,
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                lastError = error;
+                console.warn(`API request attempt ${attempt} failed:`, error.message);
+                
+                if (attempt < this.retries && !error.name === 'AbortError') {
+                    await this.delay(1000 * attempt); // Exponential backoff
+                } else {
+                    break;
+                }
+            }
+        }
+
+        throw lastError;
+    }
+
+    // Helper method for delay
+    delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // GET request
+    async get(endpoint, params = {}) {
+        const url = new URL(this.baseUrl + endpoint);
+        Object.keys(params).forEach(key => {
+            if (params[key] !== undefined && params[key] !== null) {
+                url.searchParams.append(key, params[key]);
+            }
+        });
+
+        return this.request(url.pathname + url.search, {
+            method: 'GET'
+        });
+    }
+
+    // POST request
+    async post(endpoint, data = {}) {
+        return this.request(endpoint, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+
+    // PUT request
+    async put(endpoint, data = {}) {
+        return this.request(endpoint, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    }
+
+    // DELETE request
+    async delete(endpoint) {
+        return this.request(endpoint, {
+            method: 'DELETE'
+        });
+    }
+}
+
+// ===== ORDERS API SERVICE =====
+class OrdersApiService {
+    constructor(apiService) {
+        this.api = apiService;
+    }
+
+    // Fetch orders with filters and pagination
+    async fetchOrders(filters = {}) {
+        const params = {
+            page: filters.page || CONFIG.PAGINATION.DEFAULT_PAGE,
+            limit: filters.limit || CONFIG.PAGINATION.DEFAULT_SIZE,
+            status: filters.status,
+            client_name: filters.client_name,
+            priority: filters.priority,
+            search: filters.search
+        };
+
+        return this.api.get(CONFIG.API_ENDPOINTS.ORDERS, params);
+    }
+
+    // Fetch single order by ID
+    async fetchOrderById(id) {
+        return this.api.get(CONFIG.API_ENDPOINTS.ORDER_BY_ID(id));
+    }
+
+    // Create new order
+    async createOrder(orderData) {
+        return this.api.post(CONFIG.API_ENDPOINTS.ORDERS, orderData);
+    }
+
+    // Update order
+    async updateOrder(id, orderData) {
+        return this.api.put(CONFIG.API_ENDPOINTS.ORDER_BY_ID(id), orderData);
+    }
+
+    // Update order status
+    async updateOrderStatus(id, status, progress = null) {
+        const data = { status };
+        if (progress !== null) {
+            data.progress = progress;
+        }
+        return this.api.put(CONFIG.API_ENDPOINTS.ORDER_BY_ID(id), data);
+    }
+
+    // Delete order
+    async deleteOrder(id) {
+        return this.api.delete(CONFIG.API_ENDPOINTS.ORDER_BY_ID(id));
+    }
+
+    // Get order progress
+    async getOrderProgress(id) {
+        return this.api.get(CONFIG.API_ENDPOINTS.ORDER_PROGRESS(id));
+    }
+}
+
+// ===== LOADING STATE MANAGER =====
+class LoadingManager {
+    constructor() {
+        this.loadingStates = new Set();
+    }
+
+    setLoading(key, isLoading = true) {
+        if (isLoading) {
+            this.loadingStates.add(key);
+        } else {
+            this.loadingStates.delete(key);
+        }
+        this.updateUI(key, isLoading);
+    }
+
+    isLoading(key) {
+        return this.loadingStates.has(key);
+    }
+
+    updateUI(key, isLoading) {
+        const elements = document.querySelectorAll(`[data-loading="${key}"]`);
+        elements.forEach(element => {
+            if (isLoading) {
+                element.classList.add('loading');
+                element.disabled = true;
+            } else {
+                element.classList.remove('loading');
+                element.disabled = false;
+            }
+        });
+
+        // Update specific loading indicators
+        const loadingIndicator = document.getElementById(`loading-${key}`);
+        if (loadingIndicator) {
+            loadingIndicator.style.display = isLoading ? 'block' : 'none';
+        }
+    }
+}
+
+// ===== NOTIFICATION MANAGER =====
+class NotificationManager {
+    constructor() {
+        this.container = null;
+        this.createContainer();
+    }
+
+    createContainer() {
+        this.container = document.createElement('div');
+        this.container.id = 'notification-container';
+        this.container.className = 'notification-container';
+        document.body.appendChild(this.container);
+    }
+
+    show(message, type = 'info', duration = 5000) {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        
+        const icon = this.getIcon(type);
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="notification-icon ${icon}"></i>
+                <span class="notification-message">${message}</span>
+                <button class="notification-close" onclick="this.parentElement.parentElement.remove()">×</button>
+            </div>
+        `;
+
+        this.container.appendChild(notification);
+
+        // Auto remove after duration
+        if (duration > 0) {
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, duration);
+        }
+
+        return notification;
+    }
+
+    getIcon(type) {
+        const icons = {
+            success: 'fas fa-check-circle',
+            error: 'fas fa-exclamation-circle',
+            warning: 'fas fa-exclamation-triangle',
+            info: 'fas fa-info-circle'
+        };
+        return icons[type] || icons.info;
+    }
+
+    success(message, duration = 5000) {
+        return this.show(message, 'success', duration);
+    }
+
+    error(message, duration = 7000) {
+        return this.show(message, 'error', duration);
+    }
+
+    warning(message, duration = 6000) {
+        return this.show(message, 'warning', duration);
+    }
+
+    info(message, duration = 5000) {
+        return this.show(message, 'info', duration);
+    }
+}
+
+// Global instances
+const apiService = new ApiService();
+const ordersApi = new OrdersApiService(apiService);
+const loadingManager = new LoadingManager();
+const notificationManager = new NotificationManager();
+
 // Enhanced ERP Storage System
 class ERPStorage {
     constructor() {
@@ -993,9 +1257,440 @@ let ordersData = [
 
 let filteredOrders = [...ordersData];
 
-function loadOrdersPage() {
-    updateOrdersSummary();
-    renderOrdersTable();
+async function loadOrdersPage() {
+    try {
+        loadingManager.setLoading('orders', true);
+        
+        // Fetch orders from API
+        const ordersResponse = await ordersApi.fetchOrders({
+            page: window.currentOrdersPage || 1,
+            limit: 20
+        });
+        
+        // Update global orders data
+        window.ordersData = ordersResponse.items || [];
+        
+        // Update UI
+        updateOrdersSummary();
+        renderOrdersTable();
+        updateOrdersPagination(ordersResponse);
+        
+        notificationManager.success(`Загружено ${ordersResponse.items?.length || 0} заказов`);
+        
+    } catch (error) {
+        console.error('Error loading orders:', error);
+        notificationManager.error('Ошибка загрузки заказов: ' + error.message);
+        
+        // Fallback to local data
+        updateOrdersSummary();
+        renderOrdersTable();
+    } finally {
+        loadingManager.setLoading('orders', false);
+    }
+}
+
+// ===== ORDERS API FUNCTIONS =====
+
+// Pagination handler
+function updateOrdersPagination(response) {
+    const pagination = document.getElementById('orders-pagination');
+    if (!pagination || !response.pages) return;
+    
+    const currentPage = response.page || 1;
+    const totalPages = response.pages || 1;
+    
+    let paginationHtml = '';
+    
+    // Previous button
+    if (currentPage > 1) {
+        paginationHtml += `<button onclick="loadOrdersPage(${currentPage - 1})" class="btn btn-sm">← Пред</button>`;
+    }
+    
+    // Page numbers
+    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+        const activeClass = i === currentPage ? 'btn-primary' : '';
+        paginationHtml += `<button onclick="loadOrdersPage(${i})" class="btn btn-sm ${activeClass}">${i}</button>`;
+    }
+    
+    // Next button
+    if (currentPage < totalPages) {
+        paginationHtml += `<button onclick="loadOrdersPage(${currentPage + 1})" class="btn btn-sm">След →</button>`;
+    }
+    
+    pagination.innerHTML = paginationHtml;
+    window.currentOrdersPage = currentPage;
+}
+
+// Create new order via API
+async function createNewOrder(orderData) {
+    try {
+        loadingManager.setLoading('create-order', true);
+        
+        const newOrder = await ordersApi.createOrder(orderData);
+        
+        notificationManager.success(`Заказ ${newOrder.number} успешно создан`);
+        
+        // Refresh orders list
+        await loadOrdersPage();
+        
+        // Close modal
+        const modal = document.getElementById('createOrderModal');
+        if (modal) modal.style.display = 'none';
+        
+        return newOrder;
+        
+    } catch (error) {
+        console.error('Error creating order:', error);
+        notificationManager.error('Ошибка создания заказа: ' + error.message);
+        throw error;
+    } finally {
+        loadingManager.setLoading('create-order', false);
+    }
+}
+
+// Update order status via API
+async function updateOrderStatusAPI(orderId, newStatus, progress = null) {
+    try {
+        loadingManager.setLoading(`order-${orderId}`, true);
+        
+        const updatedOrder = await ordersApi.updateOrderStatus(orderId, newStatus, progress);
+        
+        notificationManager.success(`Статус заказа обновлен: ${CONFIG.HELPERS.getStatusConfig(newStatus).label}`);
+        
+        // Update local data
+        const orderIndex = window.ordersData.findIndex(o => o.id === orderId);
+        if (orderIndex !== -1) {
+            window.ordersData[orderIndex] = updatedOrder;
+        }
+        
+        // Refresh UI
+        renderOrdersTable();
+        updateOrdersSummary();
+        
+        return updatedOrder;
+        
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        notificationManager.error('Ошибка обновления статуса: ' + error.message);
+        throw error;
+    } finally {
+        loadingManager.setLoading(`order-${orderId}`, false);
+    }
+}
+
+// Delete order via API
+async function deleteOrderAPI(orderId) {
+    if (!confirm('Вы уверены, что хотите удалить этот заказ?')) {
+        return;
+    }
+    
+    try {
+        loadingManager.setLoading(`order-${orderId}`, true);
+        
+        await ordersApi.deleteOrder(orderId);
+        
+        notificationManager.success('Заказ успешно удален');
+        
+        // Refresh orders list
+        await loadOrdersPage();
+        
+    } catch (error) {
+        console.error('Error deleting order:', error);
+        notificationManager.error('Ошибка удаления заказа: ' + error.message);
+    } finally {
+        loadingManager.setLoading(`order-${orderId}`, false);
+    }
+}
+
+// Fetch order details via API
+async function fetchOrderDetails(orderId) {
+    try {
+        loadingManager.setLoading(`order-details-${orderId}`, true);
+        
+        const order = await ordersApi.fetchOrderById(orderId);
+        return order;
+        
+    } catch (error) {
+        console.error('Error fetching order details:', error);
+        notificationManager.error('Ошибка загрузки деталей заказа: ' + error.message);
+        throw error;
+    } finally {
+        loadingManager.setLoading(`order-details-${orderId}`, false);
+    }
+}
+
+// Apply filters and reload orders
+async function applyOrdersFilters() {
+    const filters = {
+        status: document.getElementById('statusFilter')?.value,
+        client_name: document.getElementById('clientFilter')?.value,
+        priority: document.getElementById('priorityFilter')?.value,
+        search: document.getElementById('searchFilter')?.value,
+        page: 1 // Reset to first page when filtering
+    };
+    
+    try {
+        loadingManager.setLoading('orders', true);
+        
+        const ordersResponse = await ordersApi.fetchOrders(filters);
+        
+        // Update global orders data
+        window.ordersData = ordersResponse.items || [];
+        
+        // Update UI
+        updateOrdersSummary();
+        renderOrdersTable();
+        updateOrdersPagination(ordersResponse);
+        
+    } catch (error) {
+        console.error('Error applying filters:', error);
+        notificationManager.error('Ошибка применения фильтров: ' + error.message);
+    } finally {
+        loadingManager.setLoading('orders', false);
+    }
+}
+
+// ===== ORDERS UI HELPERS =====
+
+// Handle search input with debounce
+let searchTimeout;
+function handleSearchKeyup(event) {
+    clearTimeout(searchTimeout);
+    
+    if (event.key === 'Enter') {
+        applyOrdersFilters();
+        return;
+    }
+    
+    searchTimeout = setTimeout(() => {
+        applyOrdersFilters();
+    }, 500); // Debounce for 500ms
+}
+
+// Reset all filters
+function resetOrdersFilters() {
+    document.getElementById('statusFilter').value = '';
+    document.getElementById('clientFilter').value = '';
+    document.getElementById('priorityFilter').value = '';
+    document.getElementById('searchFilter').value = '';
+    
+    applyOrdersFilters();
+}
+
+// Refresh orders data manually
+async function refreshOrdersData() {
+    window.currentOrdersPage = 1; // Reset to first page
+    await loadOrdersPage();
+}
+
+// Show create order modal
+function showCreateOrderModal() {
+    const modal = document.getElementById('createOrderModal');
+    if (modal) {
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+        
+        // Set default due date (tomorrow)
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 7); // Default to one week from now
+        document.getElementById('dueDate').value = CONFIG.HELPERS.formatDate(tomorrow, 'API');
+    }
+}
+
+// Hide create order modal
+function hideCreateOrderModal() {
+    const modal = document.getElementById('createOrderModal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            // Clear form
+            document.getElementById('createOrderForm').reset();
+        }, 300);
+    }
+}
+
+// Handle create order form submission
+async function handleCreateOrderSubmit(event) {
+    event.preventDefault();
+    
+    // Get form data
+    const formData = {
+        client_id: document.getElementById('clientId').value,
+        client_name: document.getElementById('clientName').value,
+        product_id: document.getElementById('productId').value,
+        product_name: document.getElementById('productName').value,
+        quantity: parseFloat(document.getElementById('quantity').value),
+        unit: document.getElementById('unit').value,
+        due_date: document.getElementById('dueDate').value,
+        priority: document.getElementById('priority').value,
+        value: document.getElementById('value').value ? parseFloat(document.getElementById('value').value) : null,
+        margin: document.getElementById('margin').value ? parseFloat(document.getElementById('margin').value) : null,
+        special_requirements: document.getElementById('specialRequirements').value || null,
+        created_by: document.getElementById('createdBy').value
+    };
+    
+    // Validate required fields
+    if (!formData.client_id || !formData.client_name || !formData.product_id || 
+        !formData.product_name || !formData.quantity || !formData.unit || 
+        !formData.due_date || !formData.priority || !formData.created_by) {
+        notificationManager.error('Пожалуйста, заполните все обязательные поля');
+        return;
+    }
+    
+    try {
+        await createNewOrder(formData);
+    } catch (error) {
+        console.error('Form submission error:', error);
+    }
+}
+
+// Client ID/Name auto-update helpers
+function updateClientName() {
+    const clientId = document.getElementById('clientId').value;
+    const clientName = document.getElementById('clientName');
+    
+    const clientMap = {
+        'ML-001': 'MLEKOVITA',
+        'AG-001': 'AGRONA',
+        'LP-001': 'LACPOL',
+        'DN-001': 'DANONE',
+        'MZ-001': 'MONDELEZ'
+    };
+    
+    if (clientMap[clientId]) {
+        clientName.value = clientMap[clientId];
+    }
+}
+
+function updateClientId() {
+    const clientName = document.getElementById('clientName').value;
+    const clientId = document.getElementById('clientId');
+    
+    const nameMap = {
+        'MLEKOVITA': 'ML-001',
+        'AGRONA': 'AG-001',
+        'LACPOL': 'LP-001',
+        'DANONE': 'DN-001',
+        'MONDELEZ': 'MZ-001'
+    };
+    
+    if (nameMap[clientName]) {
+        clientId.value = nameMap[clientName];
+    }
+}
+
+// Update render orders table function
+function renderOrdersTable() {
+    const tbody = document.getElementById('ordersTableBody');
+    const loadingRow = document.getElementById('orders-loading-row');
+    const emptyRow = document.getElementById('orders-empty-row');
+    const ordersCount = document.getElementById('orders-count');
+    
+    if (!tbody) return;
+    
+    // Hide loading and empty rows
+    if (loadingRow) loadingRow.style.display = 'none';
+    if (emptyRow) emptyRow.style.display = 'none';
+    
+    // Clear existing rows (except special rows)
+    const existingRows = tbody.querySelectorAll('tr:not(#orders-loading-row):not(#orders-empty-row)');
+    existingRows.forEach(row => row.remove());
+    
+    const orders = window.ordersData || [];
+    
+    // Update count
+    if (ordersCount) {
+        ordersCount.textContent = `Всего: ${orders.length}`;
+    }
+    
+    if (orders.length === 0) {
+        if (emptyRow) emptyRow.style.display = 'table-row';
+        return;
+    }
+    
+    orders.forEach(order => {
+        const row = document.createElement('tr');
+        
+        // Check if order is overdue
+        const isOverdue = CONFIG.HELPERS.isOrderOverdue(order.due_date, order.status);
+        const daysUntilDue = CONFIG.HELPERS.calculateDaysUntilDue(order.due_date);
+        
+        // Status config
+        const statusConfig = CONFIG.HELPERS.getStatusConfig(order.status);
+        const priorityConfig = CONFIG.HELPERS.getPriorityConfig(order.priority);
+        const unitConfig = CONFIG.HELPERS.getUnitConfig(order.unit);
+        
+        row.innerHTML = `
+            <td>
+                <a href="#" class="order-number-link" onclick="showOrderDetails('${order.id}')" 
+                   title="Показать детали заказа">
+                    ${order.number || `ZP-${new Date().getFullYear()}/${String(order.id).padStart(4, '0')}`}
+                </a>
+            </td>
+            <td>${order.client_name}</td>
+            <td title="${order.product_name}">${order.product_name.length > 30 ? order.product_name.substring(0, 30) + '...' : order.product_name}</td>
+            <td>${CONFIG.HELPERS.formatQuantity(order.quantity)} ${unitConfig.label}</td>
+            <td class="${isOverdue ? 'order-overdue' : ''}" title="${isOverdue ? 'Просрочен на ' + Math.abs(daysUntilDue) + ' дн.' : daysUntilDue + ' дн. до срока'}">
+                ${CONFIG.HELPERS.formatDate(order.due_date)}
+            </td>
+            <td>
+                <span class="order-priority-badge ${order.priority}">${priorityConfig.label}</span>
+            </td>
+            <td>
+                <span class="order-status-badge ${order.status}">${statusConfig.label}</span>
+            </td>
+            <td>
+                <div class="order-progress">
+                    <div class="order-progress-bar">
+                        <div class="order-progress-fill" style="width: ${order.progress || 0}%"></div>
+                    </div>
+                    <span class="order-progress-text">${order.progress || 0}%</span>
+                </div>
+            </td>
+            <td class="currency">
+                ${order.value ? CONFIG.HELPERS.formatCurrency(order.value) : '—'}
+            </td>
+            <td>
+                <div class="action-buttons">
+                    <button class="btn btn-sm" onclick="showOrderDetails('${order.id}')" title="Детали">👁️</button>
+                    <button class="btn btn-sm" onclick="editOrderStatus('${order.id}')" title="Изменить статус">⚡</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteOrderAPI('${order.id}')" title="Удалить">🗑️</button>
+                </div>
+            </td>
+        `;
+        
+        tbody.appendChild(row);
+    });
+}
+
+// Show order details modal
+async function showOrderDetails(orderId) {
+    try {
+        const order = await fetchOrderDetails(orderId);
+        
+        // Create or update order details modal (implement as needed)
+        console.log('Order details:', order);
+        notificationManager.info(`Показ деталей заказа ${order.number}`);
+        
+    } catch (error) {
+        console.error('Error showing order details:', error);
+    }
+}
+
+// Edit order status inline
+async function editOrderStatus(orderId) {
+    const newStatus = prompt('Введите новый статус заказа:\n- new\n- confirmed\n- planned\n- in_production\n- completed\n- shipped');
+    
+    if (newStatus && ['new', 'confirmed', 'planned', 'in_production', 'completed', 'shipped'].includes(newStatus)) {
+        try {
+            await updateOrderStatusAPI(orderId, newStatus);
+        } catch (error) {
+            console.error('Error updating order status:', error);
+        }
+    } else if (newStatus) {
+        notificationManager.error('Неверный статус заказа');
+    }
 }
 
 function updateOrdersSummary() {

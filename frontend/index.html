@@ -730,7 +730,7 @@
                     <div class="filters-row">
                         <div class="filter-group">
                             <label>Статус заказа:</label>
-                            <select id="filterStatus" class="filter-select">
+                            <select id="statusFilter" class="filter-select" onchange="applyOrdersFilters()">
                                 <option value="">Все статусы</option>
                                 <option value="new">Новый</option>
                                 <option value="confirmed">Подтвержден</option>
@@ -743,70 +743,96 @@
                         
                         <div class="filter-group">
                             <label>Клиент:</label>
-                            <input type="text" id="filterClient" class="filter-input" placeholder="Поиск клиента..." list="clientsList">
+                            <input type="text" id="clientFilter" class="filter-input" placeholder="Поиск клиента..." list="clientsList" onchange="applyOrdersFilters()">
                             <datalist id="clientsList">
-                                <option value="ООО Пакет-Сервис">
-                                <option value="АО Упаковочные решения">
-                                <option value="ИП Васильев">
-                                <option value="ТК Логистик">
-                                <option value="МегаТрейд">
+                                <option value="MLEKOVITA">
+                                <option value="AGRONA">
+                                <option value="LACPOL">
+                                <option value="DANONE">
+                                <option value="MONDELEZ">
                             </datalist>
                         </div>
                         
                         <div class="filter-group">
-                            <label>Период:</label>
-                            <input type="date" id="filterDateFrom" class="filter-date">
-                            <span>—</span>
-                            <input type="date" id="filterDateTo" class="filter-date">
-                        </div>
-                        
-                        <div class="filter-group">
                             <label>Приоритет:</label>
-                            <div class="priority-checkboxes">
-                                <label><input type="checkbox" value="urgent" checked> Срочный</label>
-                                <label><input type="checkbox" value="high" checked> Высокий</label>
-                                <label><input type="checkbox" value="normal" checked> Обычный</label>
-                                <label><input type="checkbox" value="low" checked> Низкий</label>
-                            </div>
+                            <select id="priorityFilter" class="filter-select" onchange="applyOrdersFilters()">
+                                <option value="">Все приоритеты</option>
+                                <option value="low">Низкий</option>
+                                <option value="normal">Обычный</option>
+                                <option value="high">Высокий</option>
+                                <option value="urgent">Срочный</option>
+                            </select>
                         </div>
                         
                         <div class="filter-group">
                             <label>Поиск:</label>
-                            <input type="text" id="searchOrder" class="filter-input" placeholder="Номер заказа...">
-                            <button class="btn btn-primary" onclick="applyOrderFilters()">🔍 Поиск</button>
-                            <button class="btn btn-secondary" onclick="resetOrderFilters()">🔄 Сбросить</button>
+                            <input type="text" id="searchFilter" class="filter-input" placeholder="Номер заказа, продукт..." onkeyup="handleSearchKeyup(event)">
+                            <button class="btn btn-primary" onclick="applyOrdersFilters()" data-loading="orders">🔍 Поиск</button>
+                            <button class="btn btn-secondary" onclick="resetOrdersFilters()">🔄 Сбросить</button>
                         </div>
+                        
+                        <div class="filter-group">
+                            <button class="btn btn-primary" onclick="showCreateOrderModal()">+ Новый заказ</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading indicator -->
+                    <div id="loading-orders" style="display: none;" class="loading-indicator">
+                        <span>Загрузка заказов...</span>
                     </div>
                 </div>
 
                 <div class="orders-main">
                     <!-- Основная таблица заказов -->
                     <div class="orders-table-section">
-                        <div class="card">
+                        <div class="card table-card">
                             <div class="card-header">
                                 <h3>📑 Список заказов</h3>
-                                <button class="btn btn-primary" onclick="showCreateOrderModal()">+ Новый заказ</button>
+                                <div class="header-actions">
+                                    <span id="orders-count" class="text-muted">Всего: 0</span>
+                                    <button class="btn btn-primary" onclick="refreshOrdersData()">🔄 Обновить</button>
+                                </div>
                             </div>
 
                             <div class="table-container">
                                 <table class="orders-table">
                                     <thead>
                                         <tr>
-                                            <th>Номер заказа</th>
+                                            <th>№ Заказа</th>
                                             <th>Клиент</th>
                                             <th>Продукт</th>
-                                            <th>Количество</th>
-                                            <th>Срок поставки</th>
+                                            <th>Кол-во</th>
+                                            <th>Срок</th>
                                             <th>Приоритет</th>
                                             <th>Статус</th>
                                             <th>Прогресс</th>
+                                            <th>Стоимость</th>
                                             <th>Действия</th>
                                         </tr>
                                     </thead>
                                     <tbody id="ordersTableBody">
                                         <!-- Orders будут загружены динамически -->
+                                        <tr id="orders-loading-row" style="display: none;">
+                                            <td colspan="10" class="text-center">
+                                                <div class="loading-spinner">
+                                                    <span>Загрузка заказов...</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr id="orders-empty-row" style="display: none;">
+                                            <td colspan="10" class="text-center text-muted">
+                                                Заказы не найдены
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            
+                            <!-- Pagination -->
+                            <div class="table-footer">
+                                <div id="orders-pagination" class="pagination">
+                                    <!-- Pagination будет генерироваться динамически -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1950,50 +1976,144 @@
         </div>
     </div>
 
-    <!-- Order Modal -->
-    <div id="orderModal" class="modal">
+    <!-- Create Order Modal -->
+    <div id="createOrderModal" class="modal side-panel">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Новый заказ</h3>
+                <div class="modal-title-area">
+                    <h3 class="modal-title">Создать новый заказ</h3>
+                    <small class="text-muted">Заполните все обязательные поля</small>
+                </div>
                 <div class="modal-controls">
-                    <button class="btn btn-sm btn-secondary" onclick="toggleModalType('orderModal')" title="Переключить вид">⇄</button>
-                    <button class="close" onclick="hideModal('orderModal')">&times;</button>
+                    <button class="close" onclick="hideCreateOrderModal()">&times;</button>
                 </div>
             </div>
             <div class="modal-body">
-                <form id="orderForm">
-                    <div class="form-group">
-                        <label for="customerSelect">Клиент</label>
-                        <select id="customerSelect" required>
-                            <option value="">Выберите клиента</option>
-                            <option value="client1">ООО "Упаковка+"</option>
-                            <option value="client2">ТД "Полимер"</option>
-                            <option value="client3">ЗАО "Пластик"</option>
-                        </select>
+                <form id="createOrderForm" onsubmit="handleCreateOrderSubmit(event)">
+                    <!-- Информация о клиенте -->
+                    <div class="form-section">
+                        <h4>📋 Информация о клиенте</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="clientId">ID клиента *</label>
+                                <input type="text" id="clientId" required pattern="[A-Z]{2}-[0-9]{3}" 
+                                       placeholder="ML-001" list="clientIdsList" onchange="updateClientName()">
+                                <datalist id="clientIdsList">
+                                    <option value="ML-001">
+                                    <option value="AG-001">
+                                    <option value="LP-001">
+                                    <option value="DN-001">
+                                    <option value="MZ-001">
+                                </datalist>
+                            </div>
+                            <div class="form-group">
+                                <label for="clientName">Название клиента *</label>
+                                <input type="text" id="clientName" required placeholder="MLEKOVITA" 
+                                       list="clientNamesList" onchange="updateClientId()">
+                                <datalist id="clientNamesList">
+                                    <option value="MLEKOVITA">
+                                    <option value="AGRONA">
+                                    <option value="LACPOL">
+                                    <option value="DANONE">
+                                    <option value="MONDELEZ">
+                                </datalist>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="productSelect">Продукт</label>
-                        <select id="productSelect" required>
-                            <option value="">Выберите продукт</option>
-                            <option value="Пленка PET прозрачная 30мкм">Пленка PET прозрачная 30мкм</option>
-                            <option value="Пленка LDPE 50мкм">Пленка LDPE 50мкм</option>
-                            <option value="Пленка PE 20мкм">Пленка PE 20мкм</option>
-                            <option value="Пленка PVC 50мкм">Пленка PVC 50мкм</option>
-                        </select>
+
+                    <!-- Информация о продукте -->
+                    <div class="form-section">
+                        <h4>📦 Информация о продукте</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productId">ID продукта *</label>
+                                <input type="text" id="productId" required pattern="[A-Z]{3}-[0-9]{3}" 
+                                       placeholder="PKG-001">
+                            </div>
+                            <div class="form-group">
+                                <label for="productName">Название продукта *</label>
+                                <input type="text" id="productName" required 
+                                       placeholder="Opakowania do serów żółtych 500g">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="quantityInput">Количество (кг)</label>
-                        <input type="number" id="quantityInput" min="1" required>
+
+                    <!-- Количество и единицы -->
+                    <div class="form-section">
+                        <h4>📊 Количество и условия</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="quantity">Количество *</label>
+                                <input type="number" id="quantity" required min="0.001" step="0.001" 
+                                       placeholder="50000">
+                            </div>
+                            <div class="form-group">
+                                <label for="unit">Единица измерения *</label>
+                                <select id="unit" required>
+                                    <option value="">Выберите единицу</option>
+                                    <option value="pcs">шт</option>
+                                    <option value="kg">кг</option>
+                                    <option value="m">м</option>
+                                    <option value="m2">м²</option>
+                                    <option value="l">л</option>
+                                    <option value="ton">т</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dueDate">Срок поставки *</label>
+                                <input type="date" id="dueDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="priority">Приоритет *</label>
+                                <select id="priority" required>
+                                    <option value="normal">Обычный</option>
+                                    <option value="low">Низкий</option>
+                                    <option value="high">Высокий</option>
+                                    <option value="urgent">Срочный</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="deliveryDate">Дата поставки</label>
-                        <input type="date" id="deliveryDate" required>
+
+                    <!-- Финансовая информация -->
+                    <div class="form-section">
+                        <h4>💰 Финансовая информация</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="value">Стоимость заказа (PLN)</label>
+                                <input type="number" id="value" min="0" step="0.01" placeholder="125000.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="margin">Маржа (%)</label>
+                                <input type="number" id="margin" min="0" max="100" step="0.1" placeholder="18.5">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Дополнительная информация -->
+                    <div class="form-section">
+                        <h4>📝 Дополнительная информация</h4>
+                        <div class="form-group">
+                            <label for="specialRequirements">Особые требования</label>
+                            <textarea id="specialRequirements" rows="3" 
+                                      placeholder="Nadruk logo MLEKOVITA, certyfikat BRC, specific technical requirements..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="createdBy">Создано пользователем *</label>
+                            <input type="text" id="createdBy" required value="admin@mpsystem.pl">
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="hideModal('orderModal')">Отмена</button>
-                <button class="btn btn-primary" onclick="createOrder()">Создать заказ</button>
+                <button type="button" class="btn btn-secondary" onclick="hideCreateOrderModal()">
+                    Отмена
+                </button>
+                <button type="submit" form="createOrderForm" class="btn btn-primary" data-loading="create-order">
+                    ✅ Создать заказ
+                </button>
             </div>
         </div>
     </div>
