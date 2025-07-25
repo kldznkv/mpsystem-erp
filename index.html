@@ -388,6 +388,18 @@
             .card {
                 padding: 1.5rem;
             }
+
+            /* Side panels on mobile become full screen */
+            .modal.side-panel .modal-content {
+                width: 100vw;
+                max-width: 100vw;
+                border-left: none;
+                border-radius: 0;
+            }
+
+            .modal.side-panel .modal-body {
+                height: calc(100vh - 120px);
+            }
         }
 
         .tab-content.active {
@@ -692,7 +704,7 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        /* ===== MODALS ===== */
+        /* ===== MODALS & SIDE PANELS ===== */
         .modal {
             display: none;
             position: fixed;
@@ -711,6 +723,16 @@
             justify-content: center;
         }
 
+        /* Side panel variant */
+        .modal.side-panel {
+            justify-content: flex-end;
+            align-items: stretch;
+        }
+
+        .modal.side-panel.active {
+            animation: slideInRight 0.3s ease;
+        }
+
         .modal-content {
             background: white;
             border-radius: 8px;
@@ -720,6 +742,68 @@
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border: 1px solid #e5e7eb;
+        }
+
+        /* Side panel content */
+        .modal.side-panel .modal-content {
+            width: 600px;
+            max-width: 600px;
+            height: 100vh;
+            max-height: 100vh;
+            border-radius: 0;
+            border-left: 1px solid #e5e7eb;
+            border-right: none;
+            border-top: none;
+            border-bottom: none;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            transform: translateX(100%);
+            animation: slideInRight 0.3s ease forwards;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Side panel header with close button on left */
+        .modal.side-panel .modal-header {
+            border-bottom: 1px solid #e5e7eb;
+            background: #f8fafc;
+            padding: 1rem 1.5rem;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+
+        .modal.side-panel .close {
+            order: -1;
+            margin-right: auto;
+        }
+
+        /* Side panel body with custom scroll */
+        .modal.side-panel .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            height: calc(100vh - 140px);
+        }
+
+        .modal.side-panel .modal-footer {
+            border-top: 1px solid #e5e7eb;
+            background: white;
+            padding: 1rem 1.5rem;
+            margin-top: auto;
         }
 
         .modal-header {
@@ -769,6 +853,33 @@
         .close:hover {
             background: #f3f4f6;
             color: #374151;
+        }
+
+        /* Modal controls */
+        .modal-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-controls .btn {
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* Side panel specific adjustments */
+        .modal.side-panel .modal-controls {
+            order: -1;
+            margin-right: auto;
+        }
+
+        .modal.side-panel .modal-title,
+        .modal.side-panel h2 {
+            order: 1;
         }
 
         /* ===== LINE DETAILS MODAL ===== */
@@ -2587,7 +2698,10 @@
                     <div class="modal-content planning-modal">
                         <div class="modal-header">
                             <h2>📋 Планирование заказа</h2>
-                            <button class="close" onclick="hidePlanningModal()">&times;</button>
+                            <div class="modal-controls">
+                                <button class="btn btn-sm btn-secondary" onclick="toggleModalType('planningModal')" title="Переключить вид">⇄</button>
+                                <button class="close" onclick="hidePlanningModal()">&times;</button>
+                            </div>
                         </div>
                         
                         <div class="planning-details">
@@ -2957,7 +3071,10 @@
             <div class="modal-header">
                 <h2 id="lineModalTitle">Детали производственной линии</h2>
                 <div class="line-status-badge" id="lineModalStatus">Работает</div>
-                <button class="close" onclick="hideLineDetails()">&times;</button>
+                <div class="modal-controls">
+                    <button class="btn btn-sm btn-secondary" onclick="toggleModalType('lineDetailsModal')" title="Переключить вид">⇄</button>
+                    <button class="close" onclick="hideLineDetails()">&times;</button>
+                </div>
             </div>
             
             <div class="line-details-grid">
@@ -3051,7 +3168,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Новый заказ</h3>
-                <button class="close" onclick="hideModal('orderModal')">&times;</button>
+                <div class="modal-controls">
+                    <button class="btn btn-sm btn-secondary" onclick="toggleModalType('orderModal')" title="Переключить вид">⇄</button>
+                    <button class="close" onclick="hideModal('orderModal')">&times;</button>
+                </div>
             </div>
             <div class="modal-body">
                 <form id="orderForm">
@@ -3391,13 +3511,60 @@
             }
         }
 
-        // Modal System
-        function showModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
+        // Enhanced Modal & Side Panel System
+        function showModal(modalId, asSidePanel = false) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            
+            if (asSidePanel) {
+                modal.classList.add('side-panel');
+            } else {
+                modal.classList.remove('side-panel');
+            }
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function hideModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            
+            if (modal.classList.contains('side-panel')) {
+                const content = modal.querySelector('.modal-content');
+                if (content) {
+                    content.style.animation = 'slideOutRight 0.3s ease forwards';
+                    setTimeout(() => {
+                        modal.classList.remove('active');
+                        modal.classList.remove('side-panel');
+                        content.style.animation = '';
+                        document.body.style.overflow = '';
+                    }, 300);
+                    return;
+                }
+            }
+            
+            modal.classList.remove('active');
+            modal.classList.remove('side-panel');
+            document.body.style.overflow = '';
+        }
+
+        // Show any modal as side panel
+        function showSidePanel(modalId) {
+            showModal(modalId, true);
+        }
+
+        // Toggle between modal and side panel
+        function toggleModalType(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            
+            const isSidePanel = modal.classList.contains('side-panel');
+            hideModal(modalId);
+            
+            setTimeout(() => {
+                showModal(modalId, !isSidePanel);
+            }, 100);
         }
 
         // Enhanced Data Loading Functions
@@ -3824,11 +3991,8 @@
             // Find line data from production lines API
             loadLineDetails(lineId);
             
-            // Show modal
-            const modal = document.getElementById('lineDetailsModal');
-            if (modal) {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
+            // Show as side panel by default
+            showSidePanel('lineDetailsModal');
             }
         }
 
@@ -4181,13 +4345,14 @@
         }
 
         function showCreateOrderModal() {
-            showModal('orderModal');
+            showSidePanel('orderModal');
         }
 
         function showOrderDetails(orderId) {
             const order = ordersData.find(o => o.id === orderId);
             if (order) {
-                showToast(`Детали заказа ${order.number} будут доступны в модальном окне`, 'info');
+                // TODO: Create order details modal/side panel
+                showToast(`Детали заказа ${order.number} - откроется в боковой панели`, 'info');
             }
         }
 
@@ -4600,7 +4765,7 @@
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('startTime').value = now.toISOString().slice(0, 16);
 
-            showModal('planningModal');
+            showSidePanel('planningModal');
         }
 
         function hidePlanningModal() {
