@@ -862,6 +862,304 @@
             grid-column: 1 / -1;
         }
 
+        /* ===== PURCHASING PAGE STYLES ===== */
+        .purchasing-summary {
+            margin-bottom: 1.5rem;
+        }
+
+        .purchasing-tabs {
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1rem;
+            border: none;
+            background: transparent;
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+
+        .purchasing-tab-content {
+            display: none;
+            padding: 1.5rem;
+        }
+
+        .purchasing-tab-content.active {
+            display: block;
+        }
+
+        .purchasing-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8125rem;
+        }
+
+        .purchasing-table th {
+            background: #f8fafc;
+            padding: 0.5rem 0.625rem;
+            text-align: left;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .purchasing-table td {
+            padding: 0.5rem 0.625rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .purchasing-table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Header actions */
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        /* Criticality badges */
+        .criticality-badge {
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .criticality-badge.low {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .criticality-badge.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .criticality-badge.high {
+            background: #fed7aa;
+            color: #c2410c;
+        }
+
+        .criticality-badge.critical {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        /* Purchase order status badges */
+        .po-status-badge {
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .po-status-badge.draft {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .po-status-badge.sent {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .po-status-badge.confirmed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .po-status-badge.partially_delivered {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .po-status-badge.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* Deliveries layout */
+        .deliveries-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1.5rem;
+            height: 600px;
+        }
+
+        .deliveries-filters {
+            border-right: 1px solid #e5e7eb;
+            padding-right: 1rem;
+        }
+
+        .filters-content {
+            padding: 1rem 0;
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .filter-input,
+        .filter-select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .deliveries-main {
+            overflow-y: auto;
+        }
+
+        .delivery-count {
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .deliveries-list {
+            padding: 1rem 0;
+        }
+
+        .delivery-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .delivery-card:hover {
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .delivery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-supplier {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .delivery-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .delivery-items {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Material list in PO */
+        .materials-list {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .materials-list .material-item {
+            display: block;
+            margin-bottom: 0.125rem;
+        }
+
+        /* Supplier rating */
+        .supplier-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .rating-stars {
+            color: #fbbf24;
+            font-size: 0.875rem;
+        }
+
+        .rating-value {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        /* Responsive for purchasing page */
+        @media (max-width: 768px) {
+            .deliveries-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .deliveries-filters {
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+                padding-right: 0;
+                padding-bottom: 1rem;
+            }
+
+            .tab-buttons {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+
         .modal-header {
             padding: 1.25rem 1.5rem;
             border-bottom: 1px solid #f3f4f6;
@@ -2256,6 +2554,10 @@
                 <span class="nav-icon">📦</span>
                 <span class="nav-text">Склад</span>
             </button>
+            <button class="nav-item" onclick="showTab('purchasing')">
+                <span class="nav-icon">🛒</span>
+                <span class="nav-text">Закупки</span>
+            </button>
             <button class="nav-item" onclick="showTab('orders')">
                 <span class="nav-icon">📑</span>
                 <span class="nav-text">Заказы</span>
@@ -3062,6 +3364,191 @@
                 </div>
             </div>
 
+            <!-- СТРАНИЦА: PURCHASING (Закупки) -->
+            <div id="purchasing" class="tab-content">
+                <!-- Верхний блок: Сводка по закупкам (4 карточки) -->
+                <div class="purchasing-summary">
+                    <div class="summary-grid">
+                        <div class="summary-card pending">
+                            <div class="summary-header">
+                                <span class="summary-icon">⏳</span>
+                                <span class="summary-title">Pending Requests</span>
+                            </div>
+                            <div class="summary-value" id="pendingRequests">12</div>
+                            <div class="summary-label">Заявки на закупку</div>
+                        </div>
+                        <div class="summary-card on-order">
+                            <div class="summary-header">
+                                <span class="summary-icon">📋</span>
+                                <span class="summary-title">On Order</span>
+                            </div>
+                            <div class="summary-value" id="onOrderValue">€45K</div>
+                            <div class="summary-label">Заказано поставщикам</div>
+                        </div>
+                        <div class="summary-card delivered">
+                            <div class="summary-header">
+                                <span class="summary-icon">📦</span>
+                                <span class="summary-title">Delivered Today</span>
+                            </div>
+                            <div class="summary-value" id="deliveredToday">8</div>
+                            <div class="summary-label">Поставок сегодня</div>
+                        </div>
+                        <div class="summary-card budget">
+                            <div class="summary-header">
+                                <span class="summary-icon">💰</span>
+                                <span class="summary-title">Budget Variance</span>
+                            </div>
+                            <div class="summary-value" id="budgetVariance">-2.1%</div>
+                            <div class="summary-label">Отклонение бюджета</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Табы основного контента -->
+                <div class="purchasing-tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="showPurchasingTab('requests')">📋 Заявки на закупку</button>
+                        <button class="tab-btn" onclick="showPurchasingTab('orders')">🛒 Заказы поставщикам</button>
+                        <button class="tab-btn" onclick="showPurchasingTab('deliveries')">📦 Поставки</button>
+                        <button class="tab-btn" onclick="showPurchasingTab('suppliers')">🏭 Поставщики</button>
+                    </div>
+
+                    <!-- Таб 1: Заявки на закупку -->
+                    <div id="purchasingRequests" class="purchasing-tab-content active">
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h3>📋 Заявки на закупку</h3>
+                                <div class="header-actions">
+                                    <button class="btn btn-secondary" onclick="generateMRPRequests()">🔄 Сгенерировать MRP</button>
+                                    <button class="btn btn-primary" onclick="showCreateRequestModal()">+ Новая заявка</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="purchasing-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Материал</th>
+                                            <th>Требуемое количество</th>
+                                            <th>Текущий остаток</th>
+                                            <th>Критичность</th>
+                                            <th>Предлагаемый поставщик</th>
+                                            <th>Дата требования</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="purchaseRequestsTable">
+                                        <!-- Заявки будут загружены динамически -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Таб 2: Заказы поставщикам -->
+                    <div id="purchasingOrders" class="purchasing-tab-content">
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h3>🛒 Заказы поставщикам</h3>
+                                <div class="header-actions">
+                                    <button class="btn btn-secondary" onclick="exportPurchaseOrders()">📄 Экспорт</button>
+                                    <button class="btn btn-primary" onclick="showCreatePOModal()">+ Новый заказ</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="purchasing-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Номер заказа</th>
+                                            <th>Поставщик</th>
+                                            <th>Материалы</th>
+                                            <th>Сумма заказа</th>
+                                            <th>Статус</th>
+                                            <th>Плановая дата</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="purchaseOrdersTable">
+                                        <!-- Заказы будут загружены динамически -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Таб 3: Поставки -->
+                    <div id="purchasingDeliveries" class="purchasing-tab-content">
+                        <div class="deliveries-layout">
+                            <div class="deliveries-filters">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>📅 Фильтры поставок</h3>
+                                    </div>
+                                    <div class="filters-content">
+                                        <div class="filter-group">
+                                            <label>Дата от:</label>
+                                            <input type="date" id="deliveryDateFrom" class="filter-input">
+                                        </div>
+                                        <div class="filter-group">
+                                            <label>Дата до:</label>
+                                            <input type="date" id="deliveryDateTo" class="filter-input">
+                                        </div>
+                                        <div class="filter-group">
+                                            <label>Поставщик:</label>
+                                            <select id="deliverySupplier" class="filter-select">
+                                                <option value="">Все поставщики</option>
+                                            </select>
+                                        </div>
+                                        <button class="btn btn-primary" onclick="filterDeliveries()">🔍 Применить</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deliveries-main">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>📦 Поставки сегодня</h3>
+                                        <span class="delivery-count" id="todayDeliveryCount">8 поставок</span>
+                                    </div>
+                                    <div class="deliveries-list" id="deliveriesList">
+                                        <!-- Карточки поставок будут загружены динамически -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Таб 4: Поставщики -->
+                    <div id="purchasingSuppliers" class="purchasing-tab-content">
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h3>🏭 База поставщиков</h3>
+                                <div class="header-actions">
+                                    <button class="btn btn-secondary" onclick="importSuppliers()">📥 Импорт</button>
+                                    <button class="btn btn-primary" onclick="showCreateSupplierModal()">+ Новый поставщик</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="purchasing-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Поставщик</th>
+                                            <th>Категории материалов</th>
+                                            <th>Рейтинг</th>
+                                            <th>Условия оплаты</th>
+                                            <th>Активных заказов</th>
+                                            <th>Контакт</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="suppliersTable">
+                                        <!-- Поставщики будут загружены динамически -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Production Tab -->
             <div id="production" class="tab-content">
                 <div class="card">
@@ -3568,6 +4055,9 @@
                     break;
                 case 'warehouse':
                     loadInventory();
+                    break;
+                case 'purchasing':
+                    loadPurchasingPage();
                     break;
                 case 'production':
                     loadProduction();
@@ -4916,6 +5406,441 @@
 
         function optimizeLine(lineId) {
             showToast(`Оптимизация линии ${lineId} выполнена`, 'success');
+        }
+
+        // =============================================
+        // PURCHASING PAGE FUNCTIONS
+        // =============================================
+
+        // Sample data for purchasing
+        let purchasingData = {
+            requests: [
+                {
+                    id: 'req-001',
+                    materialId: 'mat-001',
+                    materialName: 'Пленка ПВД прозрачная',
+                    requiredQuantity: 500,
+                    unit: 'кг',
+                    currentStock: 50,
+                    criticalityLevel: 'critical',
+                    requestedBy: 'system',
+                    requestDate: '2024-01-15',
+                    requiredDate: '2024-01-18',
+                    status: 'pending',
+                    suggestedSupplierId: 'sup-001',
+                    suggestedSupplierName: 'ООО Пластик-Групп',
+                    notes: 'Критически низкий остаток'
+                },
+                {
+                    id: 'req-002',
+                    materialId: 'mat-002',
+                    materialName: 'Краситель черный',
+                    requiredQuantity: 25,
+                    unit: 'кг',
+                    currentStock: 15,
+                    criticalityLevel: 'high',
+                    requestedBy: 'user-001',
+                    requestDate: '2024-01-16',
+                    requiredDate: '2024-01-20',
+                    status: 'pending',
+                    suggestedSupplierId: 'sup-002',
+                    suggestedSupplierName: 'ХимПоставка Лтд',
+                    notes: 'Для планового производства'
+                },
+                {
+                    id: 'req-003',
+                    materialId: 'mat-003',
+                    materialName: 'Клей полиуретановый',
+                    requiredQuantity: 100,
+                    unit: 'кг',
+                    currentStock: 80,
+                    criticalityLevel: 'medium',
+                    requestedBy: 'system',
+                    requestDate: '2024-01-17',
+                    requiredDate: '2024-01-22',
+                    status: 'approved',
+                    suggestedSupplierId: 'sup-003',
+                    suggestedSupplierName: 'СпецХим',
+                    notes: 'Плановая закупка'
+                }
+            ],
+            orders: [
+                {
+                    id: 'po-001',
+                    number: 'PO-2024/0012',
+                    supplierId: 'sup-001',
+                    supplierName: 'ООО Пластик-Групп',
+                    items: [
+                        { materialName: 'Пленка ПВД прозрачная', quantity: 1000, unit: 'кг', price: 120 },
+                        { materialName: 'Пленка ПВД цветная', quantity: 500, unit: 'кг', price: 135 }
+                    ],
+                    totalAmount: 187500,
+                    currency: 'RUB',
+                    orderDate: '2024-01-10',
+                    requestedDeliveryDate: '2024-01-18',
+                    confirmedDeliveryDate: '2024-01-19',
+                    status: 'confirmed',
+                    paymentTerms: '30 дней',
+                    deliveryTerms: 'EXW склад поставщика',
+                    createdBy: 'manager-001'
+                },
+                {
+                    id: 'po-002',
+                    number: 'PO-2024/0013',
+                    supplierId: 'sup-002',
+                    supplierName: 'ХимПоставка Лтд',
+                    items: [
+                        { materialName: 'Краситель черный', quantity: 50, unit: 'кг', price: 850 },
+                        { materialName: 'Краситель красный', quantity: 25, unit: 'кг', price: 920 }
+                    ],
+                    totalAmount: 65500,
+                    currency: 'RUB',
+                    orderDate: '2024-01-12',
+                    requestedDeliveryDate: '2024-01-20',
+                    confirmedDeliveryDate: null,
+                    status: 'sent',
+                    paymentTerms: '14 дней',
+                    deliveryTerms: 'FCA склад поставщика',
+                    createdBy: 'manager-002'
+                }
+            ],
+            deliveries: [
+                {
+                    id: 'del-001',
+                    purchaseOrderId: 'po-001',
+                    supplierName: 'ООО Пластик-Групп',
+                    deliveryDate: '2024-01-18',
+                    status: 'scheduled',
+                    items: 'Пленка ПВД прозрачная (1000 кг), Пленка ПВД цветная (500 кг)',
+                    documentsReady: true,
+                    notes: 'Поставка согласно графику'
+                },
+                {
+                    id: 'del-002',
+                    purchaseOrderId: 'po-002',
+                    supplierName: 'ХимПоставка Лтд',
+                    deliveryDate: '2024-01-18',
+                    status: 'delivered',
+                    items: 'Краситель черный (50 кг)',
+                    documentsReady: true,
+                    notes: 'Частичная поставка'
+                }
+            ],
+            suppliers: [
+                {
+                    id: 'sup-001',
+                    name: 'ООО Пластик-Групп',
+                    categories: ['Полимеры', 'Пленки'],
+                    rating: 4.8,
+                    paymentTerms: '30 дней',
+                    activeOrders: 3,
+                    contact: '+7 (495) 123-45-67',
+                    email: 'orders@plastik-group.ru',
+                    address: 'Москва, ул. Промышленная, 15'
+                },
+                {
+                    id: 'sup-002',
+                    name: 'ХимПоставка Лтд',
+                    categories: ['Красители', 'Добавки'],
+                    rating: 4.5,
+                    paymentTerms: '14 дней',
+                    activeOrders: 1,
+                    contact: '+7 (812) 987-65-43',
+                    email: 'sales@himpostavka.ru',
+                    address: 'СПб, пр. Химиков, 42'
+                },
+                {
+                    id: 'sup-003',
+                    name: 'СпецХим',
+                    categories: ['Клеи', 'Растворители'],
+                    rating: 4.2,
+                    paymentTerms: '21 день',
+                    activeOrders: 0,
+                    contact: '+7 (383) 555-22-11',
+                    email: 'info@spechim.ru',
+                    address: 'Новосибирск, ул. Химическая, 8'
+                }
+            ]
+        };
+
+        // Main purchasing page loader
+        function loadPurchasingPage() {
+            updatePurchasingSummary();
+            showPurchasingTab('requests');
+        }
+
+        // Update purchasing summary metrics
+        function updatePurchasingSummary() {
+            const pendingRequests = purchasingData.requests.filter(r => r.status === 'pending').length;
+            const onOrderValue = purchasingData.orders.reduce((sum, order) => 
+                order.status !== 'completed' ? sum + order.totalAmount : sum, 0);
+            const deliveredToday = purchasingData.deliveries.filter(d => 
+                d.deliveryDate === '2024-01-18' && d.status === 'delivered').length;
+
+            document.getElementById('pendingRequests').textContent = pendingRequests;
+            document.getElementById('onOrderValue').textContent = '€' + Math.round(onOrderValue / 90) + 'K';
+            document.getElementById('deliveredToday').textContent = deliveredToday;
+            document.getElementById('budgetVariance').textContent = '-2.1%';
+        }
+
+        // Show purchasing tab
+        function showPurchasingTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.purchasing-tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById('purchasing' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add('active');
+            event.target.classList.add('active');
+
+            // Load tab content
+            switch(tabName) {
+                case 'requests':
+                    loadPurchaseRequests();
+                    break;
+                case 'orders':
+                    loadPurchaseOrders();
+                    break;
+                case 'deliveries':
+                    loadDeliveries();
+                    break;
+                case 'suppliers':
+                    loadSuppliers();
+                    break;
+            }
+        }
+
+        // Load purchase requests
+        function loadPurchaseRequests() {
+            const tbody = document.getElementById('purchaseRequestsTable');
+            if (!tbody) return;
+
+            tbody.innerHTML = purchasingData.requests.map(request => `
+                <tr>
+                    <td>
+                        <div><strong>${request.materialName}</strong></div>
+                        <div style="font-size: 0.75rem; color: #6b7280;">${request.materialId}</div>
+                    </td>
+                    <td>${request.requiredQuantity} ${request.unit}</td>
+                    <td>${request.currentStock} ${request.unit}</td>
+                    <td>
+                        <span class="criticality-badge ${request.criticalityLevel}">
+                            ${getCriticalityLabel(request.criticalityLevel)}
+                        </span>
+                    </td>
+                    <td>${request.suggestedSupplierName}</td>
+                    <td>${formatDate(request.requiredDate)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-primary" onclick="createPOFromRequest('${request.id}')">📋</button>
+                            <button class="btn btn-sm btn-secondary" onclick="editRequest('${request.id}')">✏️</button>
+                            <button class="btn btn-sm btn-danger" onclick="rejectRequest('${request.id}')">❌</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Load purchase orders
+        function loadPurchaseOrders() {
+            const tbody = document.getElementById('purchaseOrdersTable');
+            if (!tbody) return;
+
+            tbody.innerHTML = purchasingData.orders.map(order => `
+                <tr>
+                    <td>
+                        <a href="#" onclick="showPODetails('${order.id}')" class="order-number-link">${order.number}</a>
+                    </td>
+                    <td>${order.supplierName}</td>
+                    <td>
+                        <div class="materials-list">
+                            ${order.items.map(item => 
+                                `<span class="material-item">${item.materialName} (${item.quantity} ${item.unit})</span>`
+                            ).join('')}
+                        </div>
+                    </td>
+                    <td>${order.totalAmount.toLocaleString()} ${order.currency}</td>
+                    <td>
+                        <span class="po-status-badge ${order.status}">
+                            ${getPOStatusLabel(order.status)}
+                        </span>
+                    </td>
+                    <td>${formatDate(order.requestedDeliveryDate)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-primary" onclick="showPODetails('${order.id}')">👁️</button>
+                            <button class="btn btn-sm btn-secondary" onclick="editPO('${order.id}')">✏️</button>
+                            <button class="btn btn-sm btn-warning" onclick="trackPO('${order.id}')">📍</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Load deliveries
+        function loadDeliveries() {
+            const deliveriesList = document.getElementById('deliveriesList');
+            if (!deliveriesList) return;
+
+            deliveriesList.innerHTML = purchasingData.deliveries.map(delivery => `
+                <div class="delivery-card">
+                    <div class="delivery-header">
+                        <span class="delivery-supplier">${delivery.supplierName}</span>
+                        <span class="delivery-date">${formatDate(delivery.deliveryDate)}</span>
+                    </div>
+                    <div class="delivery-items">${delivery.items}</div>
+                    <div class="delivery-actions">
+                        <button class="btn btn-sm btn-success" onclick="acceptDelivery('${delivery.id}')">✅ Принять</button>
+                        <button class="btn btn-sm btn-warning" onclick="postponeDelivery('${delivery.id}')">⏳ Перенести</button>
+                        <button class="btn btn-sm btn-danger" onclick="rejectDelivery('${delivery.id}')">❌ Отклонить</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load suppliers in purchasing context
+        function loadSuppliers() {
+            const tbody = document.getElementById('suppliersTable');
+            if (!tbody) return;
+
+            tbody.innerHTML = purchasingData.suppliers.map(supplier => `
+                <tr>
+                    <td>
+                        <div><strong>${supplier.name}</strong></div>
+                        <div style="font-size: 0.75rem; color: #6b7280;">${supplier.address}</div>
+                    </td>
+                    <td>${supplier.categories.join(', ')}</td>
+                    <td>
+                        <div class="supplier-rating">
+                            <span class="rating-stars">${'★'.repeat(Math.floor(supplier.rating))}${'☆'.repeat(5-Math.floor(supplier.rating))}</span>
+                            <span class="rating-value">${supplier.rating}</span>
+                        </div>
+                    </td>
+                    <td>${supplier.paymentTerms}</td>
+                    <td>${supplier.activeOrders}</td>
+                    <td>
+                        <div style="font-size: 0.75rem;">
+                            <div>${supplier.contact}</div>
+                            <div>${supplier.email}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-primary" onclick="showSupplierDetails('${supplier.id}')">👁️</button>
+                            <button class="btn btn-sm btn-secondary" onclick="editSupplier('${supplier.id}')">✏️</button>
+                            <button class="btn btn-sm btn-success" onclick="createPOForSupplier('${supplier.id}')">🛒</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Utility functions
+        function getCriticalityLabel(level) {
+            const labels = {
+                'low': 'Низкая',
+                'medium': 'Средняя', 
+                'high': 'Высокая',
+                'critical': 'Критическая'
+            };
+            return labels[level] || level;
+        }
+
+        function getPOStatusLabel(status) {
+            const labels = {
+                'draft': 'Черновик',
+                'sent': 'Отправлен',
+                'confirmed': 'Подтвержден',
+                'partially_delivered': 'Частично доставлен',
+                'completed': 'Выполнен'
+            };
+            return labels[status] || status;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ru-RU');
+        }
+
+        // Action functions (placeholders)
+        function generateMRPRequests() {
+            showToast('Генерация MRP заявок выполнена. Добавлено 3 новые заявки.', 'success');
+            // Reload requests
+            setTimeout(() => loadPurchaseRequests(), 1000);
+        }
+
+        function showCreateRequestModal() {
+            showToast('Модал создания заявки на закупку будет реализован в следующей версии', 'info');
+        }
+
+        function createPOFromRequest(requestId) {
+            showToast(`Создание заказа поставщику из заявки ${requestId}`, 'success');
+        }
+
+        function editRequest(requestId) {
+            showToast(`Редактирование заявки ${requestId}`, 'info');
+        }
+
+        function rejectRequest(requestId) {
+            showToast(`Заявка ${requestId} отклонена`, 'warning');
+        }
+
+        function showCreatePOModal() {
+            showToast('Модал создания заказа поставщику будет реализован в следующей версии', 'info');
+        }
+
+        function showPODetails(orderId) {
+            showToast(`Детали заказа ${orderId} будут показаны в боковой панели`, 'info');
+        }
+
+        function editPO(orderId) {
+            showToast(`Редактирование заказа ${orderId}`, 'info');
+        }
+
+        function trackPO(orderId) {
+            showToast(`Отслеживание заказа ${orderId}`, 'info');
+        }
+
+        function exportPurchaseOrders() {
+            showToast('Экспорт заказов поставщикам выполнен', 'success');
+        }
+
+        function filterDeliveries() {
+            showToast('Фильтры применены к списку поставок', 'success');
+        }
+
+        function acceptDelivery(deliveryId) {
+            showToast(`Поставка ${deliveryId} принята`, 'success');
+        }
+
+        function postponeDelivery(deliveryId) {
+            showToast(`Поставка ${deliveryId} перенесена`, 'warning');
+        }
+
+        function rejectDelivery(deliveryId) {
+            showToast(`Поставка ${deliveryId} отклонена`, 'error');
+        }
+
+        function importSuppliers() {
+            showToast('Импорт поставщиков будет реализован в следующей версии', 'info');
+        }
+
+        function showCreateSupplierModal() {
+            showToast('Модал создания поставщика будет реализован в следующей версии', 'info');
+        }
+
+        function showSupplierDetails(supplierId) {
+            showToast(`Детали поставщика ${supplierId} будут показаны в боковой панели`, 'info');
+        }
+
+        function createPOForSupplier(supplierId) {
+            showToast(`Создание заказа для поставщика ${supplierId}`, 'success');
         }
 
         // Removed duplicate DOMContentLoaded - merged into main init
