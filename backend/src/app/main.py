@@ -9,7 +9,7 @@ from typing import Dict, Any
 
 from app.api.v1.api import api_router
 from app.core.config import settings
-from app.db.database import create_database, check_db_health, get_db_info
+from app.db.init_db import init_db, check_db_initialized, get_db_stats
 
 # Configure logging
 logging.basicConfig(
@@ -27,24 +27,25 @@ async def lifespan(app: FastAPI):
     logger.info(f"Environment: {settings.ENVIRONMENT}")
     logger.info(f"Debug mode: {settings.DEBUG}")
     
-    # Create database tables
     try:
-        create_database()
-        logger.info("✅ Database initialized successfully")
+        # Initialize database
+        logger.info("Initializing database...")
+        init_db()
+        logger.info("✅ Database initialization completed")
         
-        # Log database info
-        db_info = get_db_info()
-        logger.info(f"Database type: {db_info['database_type']}")
+        # Get database statistics
+        db_stats = get_db_stats()
+        if db_stats["initialized"]:
+            logger.info(f"✅ Database ready - Total records: {db_stats['total_records']}")
+            for table, count in db_stats["tables"].items():
+                logger.info(f"   - {table}: {count} records")
+        else:
+            logger.warning(f"⚠️ Database initialization issues: {db_stats.get('error', 'Unknown error')}")
         
     except Exception as e:
         logger.error(f"❌ Database initialization failed: {e}")
-        raise
-    
-    # Check database health
-    if check_db_health():
-        logger.info("✅ Database health check passed")
-    else:
-        logger.warning("⚠️ Database health check failed")
+        # Don't raise here - let the app start anyway for debugging
+        logger.warning("⚠️ Starting application without database initialization")
     
     logger.info("✅ MPSYSTEM Backend started successfully")
     yield
@@ -125,13 +126,20 @@ async def add_security_headers(request: Request, call_next):
 @app.get("/", response_model=Dict[str, Any])
 async def root():
     """Root endpoint with basic API information"""
+    db_stats = get_db_stats()
+    
     return {
         "message": "Welcome to MPSYSTEM ERP Backend API",
         "project": settings.PROJECT_NAME,
         "version": settings.VERSION,
         "environment": settings.ENVIRONMENT,
         "docs_url": f"{settings.API_V1_STR}/docs",
-        "status": "operational"
+        "status": "operational",
+        "database": {
+            "initialized": db_stats["initialized"],
+            "total_records": db_stats["total_records"],
+            "tables": db_stats["tables"]
+        }
     }
 
 
@@ -141,10 +149,8 @@ async def health_check():
     """Comprehensive health check endpoint"""
     
     # Check database health
-    db_healthy = check_db_health()
-    
-    # Get database info
-    db_info = get_db_info()
+    db_stats = get_db_stats()
+    db_healthy = db_stats["initialized"]
     
     # Overall health status
     healthy = db_healthy
@@ -156,7 +162,10 @@ async def health_check():
         "environment": settings.ENVIRONMENT,
         "database": {
             "healthy": db_healthy,
-            "type": db_info["database_type"],
+            "initialized": db_stats["initialized"],
+            "total_records": db_stats["total_records"],
+            "tables": db_stats["tables"],
+            "error": db_stats.get("error")
         },
         "checks": {
             "database": "pass" if db_healthy else "fail",
@@ -167,14 +176,36 @@ async def health_check():
     return JSONResponse(content=health_data, status_code=status_code)
 
 
-# Database info endpoint
-@app.get("/db-info", response_model=Dict[str, Any])
-async def database_info():
-    """Get database connection information"""
-    if settings.DEBUG:
-        return get_db_info()
-    else:
-        return {"message": "Database info only available in debug mode"}
+# Database management endpoints (debug only)
+@app.get("/db-stats", response_model=Dict[str, Any])
+async def database_stats():
+    """Get detailed database statistics"""
+    return get_db_stats()
+
+
+@app.post("/db-init")
+async def initialize_database():
+    """Manually initialize database (debug endpoint)"""
+    if not settings.DEBUG:
+        return JSONResponse(
+            content={"error": "Database initialization only available in debug mode"},
+            status_code=403
+        )
+    
+    try:
+        init_db()
+        db_stats = get_db_stats()
+        
+        return {
+            "message": "Database initialized successfully",
+            "stats": db_stats
+        }
+    except Exception as e:
+        logger.error(f"Manual database initialization failed: {e}")
+        return JSONResponse(
+            content={"error": f"Database initialization failed: {str(e)}"},
+            status_code=500
+        )
 
 
 # Configuration info endpoint  

@@ -14,6 +14,15 @@ from app.models.base import (
     WarehouseType, MaterialType, QualityStatus, 
     ProductionLineStatus, OrderStatus, OrderPriority
 )
+from sqlalchemy.orm import Session
+from datetime import datetime, date, timedelta
+import logging
+from typing import List
+
+from app.models.orders import Order, OrderPriority, OrderStatus, OrderUnit
+from app.services.orders import OrderService
+
+logger = logging.getLogger(__name__)
 
 
 async def init_database():
@@ -302,6 +311,422 @@ async def create_sample_data(session: AsyncSession):
     
     await session.commit()
     print("✅ Sample data created successfully")
+
+
+def create_sample_orders(db: Session) -> List[Order]:
+    """Create sample orders with realistic data for Polish packaging industry"""
+    
+    logger.info("Creating sample orders data...")
+    
+    # Check if orders already exist
+    existing_orders = db.query(Order).count()
+    if existing_orders > 0:
+        logger.info(f"Orders already exist ({existing_orders} orders), skipping creation")
+        return []
+    
+    order_service = OrderService(db)
+    
+    # Sample data based on Polish packaging industry
+    sample_orders_data = [
+        {
+            "client_id": "ML-001",
+            "client_name": "MLEKOVITA",
+            "product_id": "PKG-001",
+            "product_name": "Opakowania do serów żółtych 500g",
+            "quantity": 50000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=14),
+            "priority": OrderPriority.HIGH,
+            "status": OrderStatus.CONFIRMED,
+            "value": 125000.0,
+            "margin": 18.5,
+            "progress": 10,
+            "special_requirements": "Nadruk logo MLEKOVITA, certyfikat BRC",
+            "created_by": "jan.kowalski@mpsystem.pl"
+        },
+        {
+            "client_id": "AG-001", 
+            "client_name": "AGRONA",
+            "product_id": "FLM-002",
+            "product_name": "Folia stretch 500mm x 300m",
+            "quantity": 2000.0,
+            "unit": OrderUnit.M,
+            "due_date": date.today() + timedelta(days=7),
+            "priority": OrderPriority.URGENT,
+            "status": OrderStatus.IN_PRODUCTION,
+            "value": 84000.0,
+            "margin": 22.0,
+            "progress": 65,
+            "special_requirements": "Grubość 23μm, transparent, paleta drewniana",
+            "created_by": "maria.nowak@mpsystem.pl"
+        },
+        {
+            "client_id": "LP-001",
+            "client_name": "LACPOL",
+            "product_id": "LAM-003",
+            "product_name": "Laminat do jogurtów 125ml",
+            "quantity": 100000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=21),
+            "priority": OrderPriority.NORMAL,
+            "status": OrderStatus.PLANNED,
+            "value": 180000.0,
+            "margin": 16.8,
+            "progress": 25,
+            "special_requirements": "Barrier properties: O2 < 1cc/m²/day, WVTR < 0.5g/m²/day",
+            "created_by": "piotr.wisniewski@mpsystem.pl"
+        },
+        {
+            "client_id": "DN-001",
+            "client_name": "DANONE",
+            "product_id": "CUP-004",
+            "product_name": "Kubki PS do jogurtów 150ml",
+            "quantity": 75000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=10),
+            "priority": OrderPriority.HIGH,
+            "status": OrderStatus.IN_PRODUCTION,
+            "value": 225000.0,
+            "margin": 14.5,
+            "progress": 80,
+            "special_requirements": "IML labeling ready, crystal clear PS",
+            "created_by": "anna.kowalczyk@mpsystem.pl"
+        },
+        {
+            "client_id": "MZ-001",
+            "client_name": "MONDELEZ",
+            "product_id": "WRP-005",
+            "product_name": "Wrappers do czekolad 100g",
+            "quantity": 200000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=28),
+            "priority": OrderPriority.NORMAL,
+            "status": OrderStatus.NEW,
+            "value": 160000.0,
+            "margin": 19.2,
+            "progress": 0,
+            "special_requirements": "Foil backing, high barrier, FDA approved",
+            "created_by": "tomasz.kowalski@mpsystem.pl"
+        },
+        {
+            "client_id": "ML-001",
+            "client_name": "MLEKOVITA",
+            "product_id": "PKG-006",
+            "product_name": "Opakowania do masła 250g",
+            "quantity": 30000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=5),
+            "priority": OrderPriority.URGENT,
+            "status": OrderStatus.COMPLETED,
+            "value": 96000.0,
+            "margin": 20.3,
+            "progress": 90,
+            "special_requirements": "Pergamin wewnętrzny, easy peel",
+            "created_by": "katarzyna.nowak@mpsystem.pl"
+        },
+        {
+            "client_id": "AG-001",
+            "client_name": "AGRONA", 
+            "product_id": "BAG-007",
+            "product_name": "Worki na warzywa 2kg",
+            "quantity": 25000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=18),
+            "priority": OrderPriority.NORMAL,
+            "status": OrderStatus.CONFIRMED,
+            "value": 45000.0,
+            "margin": 25.1,
+            "progress": 10,
+            "special_requirements": "Micro-perforacje, recyclable LDPE",
+            "created_by": "jan.kowalski@mpsystem.pl"
+        },
+        {
+            "client_id": "LP-001",
+            "client_name": "LACPOL",
+            "product_id": "LID-008",
+            "product_name": "Wieczka do jogurtów PP",
+            "quantity": 80000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=12),
+            "priority": OrderPriority.HIGH,
+            "status": OrderStatus.IN_PRODUCTION,
+            "value": 64000.0,
+            "margin": 17.8,
+            "progress": 45,
+            "special_requirements": "Nakłuwalne, kolor biały RAL 9003",
+            "created_by": "maria.nowak@mpsystem.pl"
+        },
+        {
+            "client_id": "DN-001",
+            "client_name": "DANONE",
+            "product_id": "LAB-009",
+            "product_name": "Etykiety IML do kubków",
+            "quantity": 75000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=8),
+            "priority": OrderPriority.HIGH,
+            "status": OrderStatus.SHIPPED,
+            "value": 37500.0,
+            "margin": 28.5,
+            "progress": 100,
+            "special_requirements": "Druk 6 kolorów + lakier, cold cure adhesive",
+            "created_by": "piotr.wisniewski@mpsystem.pl"
+        },
+        {
+            "client_id": "MZ-001",
+            "client_name": "MONDELEZ",
+            "product_id": "BOX-010",
+            "product_name": "Pudełka do ciastek 200g",
+            "quantity": 15000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=35),
+            "priority": OrderPriority.LOW,
+            "status": OrderStatus.NEW,
+            "value": 75000.0,
+            "margin": 15.2,
+            "progress": 0,
+            "special_requirements": "Karton SBS 300g/m², UV spot lacquer",
+            "created_by": "anna.kowalczyk@mpsystem.pl"
+        },
+        {
+            "client_id": "ML-001",
+            "client_name": "MLEKOVITA",
+            "product_id": "TUB-011",
+            "product_name": "Pojemniki do serków 150g",
+            "quantity": 40000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=16),
+            "priority": OrderPriority.NORMAL,
+            "status": OrderStatus.PLANNED,
+            "value": 120000.0,
+            "margin": 19.7,
+            "progress": 25,
+            "special_requirements": "PP termoformowane, pokrywa easy peel",
+            "created_by": "tomasz.kowalski@mpsystem.pl"
+        },
+        {
+            "client_id": "AG-001",
+            "client_name": "AGRONA",
+            "product_id": "NET-012", 
+            "product_name": "Siatki na owoce 2kg",
+            "quantity": 10000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=22),
+            "priority": OrderPriority.NORMAL,
+            "status": OrderStatus.CONFIRMED,
+            "value": 25000.0,
+            "margin": 30.5,
+            "progress": 10,
+            "special_requirements": "PE mesh, kolor czerwony, zamknięcie clip",
+            "created_by": "katarzyna.nowak@mpsystem.pl"
+        },
+        {
+            "client_id": "LP-001",
+            "client_name": "LACPOL",
+            "product_id": "BOT-013",
+            "product_name": "Butelki PET 500ml",
+            "quantity": 50000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=25),
+            "priority": OrderPriority.NORMAL,
+            "status": OrderStatus.PLANNED,
+            "value": 150000.0,
+            "margin": 12.8,
+            "progress": 25,
+            "special_requirements": "Crystal clear PET, 28mm neck, lightweight",
+            "created_by": "jan.kowalski@mpsystem.pl"
+        },
+        {
+            "client_id": "DN-001",
+            "client_name": "DANONE",
+            "product_id": "CAP-014",
+            "product_name": "Nakrętki do butelek 28mm",
+            "quantity": 50000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=20),
+            "priority": OrderPriority.HIGH,
+            "status": OrderStatus.IN_PRODUCTION,
+            "value": 25000.0,
+            "margin": 22.4,
+            "progress": 70,
+            "special_requirements": "PP kolor niebieski, tamper evident",
+            "created_by": "maria.nowak@mpsystem.pl"
+        },
+        {
+            "client_id": "MZ-001",
+            "client_name": "MONDELEZ",
+            "product_id": "FLW-015",
+            "product_name": "Flow pack do wafelków",
+            "quantity": 80000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=30),
+            "priority": OrderPriority.NORMAL,
+            "status": OrderStatus.NEW,
+            "value": 96000.0,
+            "margin": 21.3,
+            "progress": 0,
+            "special_requirements": "BOPP metalised, cold seal, excellent machinability",
+            "created_by": "piotr.wisniewski@mpsystem.pl"
+        },
+        {
+            "client_id": "ML-001",
+            "client_name": "MLEKOVITA",
+            "product_id": "STR-016",
+            "product_name": "Paski do zamykania ser żółty",
+            "quantity": 100000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=15),
+            "priority": OrderPriority.HIGH,
+            "status": OrderStatus.CONFIRMED,
+            "value": 30000.0,
+            "margin": 35.8,
+            "progress": 10,
+            "special_requirements": "LDPE kolor żółty, nadruk 1+0",
+            "created_by": "anna.kowalczyk@mpsystem.pl"
+        },
+        {
+            "client_id": "AG-001",
+            "client_name": "AGRONA",
+            "product_id": "BAG-017",
+            "product_name": "Worki próżniowe 30x40cm",
+            "quantity": 5000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=12),
+            "priority": OrderPriority.URGENT,
+            "status": OrderStatus.IN_PRODUCTION,
+            "value": 45000.0,
+            "margin": 18.9,
+            "progress": 55,
+            "special_requirements": "PA/PE struktura, grubość 90μm, texture",
+            "created_by": "tomasz.kowalski@mpsystem.pl"
+        },
+        {
+            "client_id": "LP-001",
+            "client_name": "LACPOL",
+            "product_id": "CUP-018",
+            "product_name": "Kubki do śmietany 200ml",
+            "quantity": 60000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() + timedelta(days=18),
+            "priority": OrderPriority.NORMAL,
+            "status": OrderStatus.PLANNED,
+            "value": 90000.0,
+            "margin": 16.5,
+            "progress": 25,
+            "special_requirements": "PP injection molded, kolor biały, stackable",
+            "created_by": "katarzyna.nowak@mpsystem.pl"
+        },
+        # Dodajemy kilka zakazów z przeszłością (overdue)
+        {
+            "client_id": "DN-001",
+            "client_name": "DANONE",
+            "product_id": "LID-019",
+            "product_name": "Pokrywki aluminiowe 83mm",
+            "quantity": 20000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() - timedelta(days=3),  # OVERDUE
+            "priority": OrderPriority.URGENT,
+            "status": OrderStatus.IN_PRODUCTION,
+            "value": 60000.0,
+            "margin": 24.2,
+            "progress": 85,
+            "special_requirements": "Aluminium 0.2mm, easy peel, sterile",
+            "created_by": "jan.kowalski@mpsystem.pl"
+        },
+        {
+            "client_id": "MZ-001",
+            "client_name": "MONDELEZ",
+            "product_id": "TRA-020",
+            "product_name": "Tace do ciastek 6-pack",
+            "quantity": 12000.0,
+            "unit": OrderUnit.PCS,
+            "due_date": date.today() - timedelta(days=1),  # OVERDUE
+            "priority": OrderPriority.HIGH,
+            "status": OrderStatus.PLANNED,
+            "value": 36000.0,
+            "margin": 19.8,
+            "progress": 25,
+            "special_requirements": "PET cristal, compartments 6x, food safe",
+            "created_by": "maria.nowak@mpsystem.pl"
+        }
+    ]
+    
+    created_orders = []
+    
+    try:
+        for i, order_data in enumerate(sample_orders_data, 1):
+            try:
+                # Create order using OrderService to ensure business logic
+                from app.schemas.orders import OrderCreate
+                
+                order_create = OrderCreate(
+                    client_id=order_data["client_id"],
+                    client_name=order_data["client_name"],
+                    product_id=order_data["product_id"],
+                    product_name=order_data["product_name"],
+                    quantity=order_data["quantity"],
+                    unit=order_data["unit"],
+                    due_date=order_data["due_date"],
+                    priority=order_data["priority"],
+                    value=order_data.get("value"),
+                    margin=order_data.get("margin"),
+                    special_requirements=order_data.get("special_requirements"),
+                    created_by=order_data["created_by"]
+                )
+                
+                # Create the order
+                order_response = order_service.create_order(order_create)
+                
+                # Update status and progress if different from NEW
+                if order_data.get("status", OrderStatus.NEW) != OrderStatus.NEW:
+                    order_service.update_order_status(
+                        order_id=order_response.id,
+                        new_status=order_data["status"],
+                        progress=order_data.get("progress", 0)
+                    )
+                
+                created_orders.append(order_response)
+                logger.info(f"Created order {i}/{len(sample_orders_data)}: {order_response.number}")
+                
+            except Exception as e:
+                logger.error(f"Failed to create order {i}: {e}")
+                continue
+    
+    except Exception as e:
+        logger.error(f"Error creating sample orders: {e}")
+        db.rollback()
+        raise
+    
+    logger.info(f"Successfully created {len(created_orders)} sample orders")
+    return created_orders
+
+
+def create_all_sample_data(db: Session) -> dict:
+    """Create all sample data for the application"""
+    
+    logger.info("Starting sample data creation...")
+    
+    results = {
+        "orders": [],
+        "success": True,
+        "message": ""
+    }
+    
+    try:
+        # Create sample orders
+        orders = create_sample_orders(db)
+        results["orders"] = orders
+        
+        results["message"] = f"Sample data created successfully: {len(orders)} orders"
+        logger.info(results["message"])
+        
+    except Exception as e:
+        results["success"] = False
+        results["message"] = f"Error creating sample data: {str(e)}"
+        logger.error(results["message"])
+        db.rollback()
+    
+    return results
 
 
 if __name__ == "__main__":
