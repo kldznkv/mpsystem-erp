@@ -567,6 +567,7 @@ function showTab(tabName) {
 
 // Alternative navigation function
 function navigateToPage(pageId) {
+    console.log('🧭 Navigating to:', pageId);
     return showTab(pageId);
 }
 
@@ -3952,6 +3953,7 @@ function showToast(message, type = 'success') {
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('🚀 MPSYSTEM ERP loaded - DOM готов!');
     console.log('🔧 Инициализация навигации...');
+    console.log('📍 MPSYSTEM App initialized');
     
     // Проверяем что все страницы существуют
     const expectedPages = ['dashboard', 'planning', 'production', 'quality', 'warehouse', 'purchasing', 'orders', 'maintenance', 'analytics'];
@@ -3990,6 +3992,19 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.warn('⚠️ Нет активной страницы, устанавливаю dashboard');
         showTab('dashboard');
     }
+    
+    // Добавляем event listeners для навигационного меню
+    const navItems = document.querySelectorAll('.nav-item[data-page]');
+    navItems.forEach(item => {
+        const pageId = item.getAttribute('data-page');
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('🖱️ Клик по навигации:', pageId);
+            navigateToPage(pageId);
+        });
+    });
+    
+    console.log('🎯 Event listeners установлены для', navItems.length, 'навигационных элементов');
     
     // Initialize MPSYSTEM
     await updateDashboardStats();
@@ -4038,3 +4053,7 @@ document.addEventListener('click', function(e) {
             hideModal(e.target.id);
         }
     }
+});
+
+// MPSYSTEM App initialization complete
+console.log('✅ MPSYSTEM App initialized successfully!');
