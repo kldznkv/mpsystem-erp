@@ -30,7 +30,9 @@ class BaseModel(Base, TimestampMixin):
     __abstract__ = True
 
 
-# Import all models to ensure they're registered with SQLAlchemy
-from app.models.warehouse import *
-from app.models.procurement import *
-from app.models.production import *
+# Import all the models, so that Base has them before being
+# imported by Alembic migrations
+from app.db.database import Base  # noqa
+from app.models.warehouse import *  # noqa
+from app.models.production import *  # noqa  
+from app.models.procurement import *  # noqa
