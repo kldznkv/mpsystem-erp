@@ -1,21 +1,38 @@
+# 🏭 MPSYSTEM Production ERP - Backend Dependencies
+
+# Core FastAPI stack
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
-sqlalchemy==2.0.23
-alembic==1.12.1
-aiosqlite==0.19.0
-psycopg2-binary==2.9.9
-python-multipart==0.0.6
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
 pydantic==2.5.0
 pydantic-settings==2.1.0
-python-dotenv==1.0.0
-redis==5.0.1
-celery==5.3.4
-pandas==2.1.4
-openpyxl==3.1.2
-fastapi-pagination==0.12.13
-httpx==0.25.2
+
+# Database
+sqlalchemy==2.0.23
+alembic==1.13.0
+aiosqlite==0.19.0
+asyncpg==0.29.0  # PostgreSQL async driver for production
+
+# Authentication & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+
+# Additional utilities
+python-dateutil==2.8.2
+pytz==2023.3
+
+# Development tools (optional)
 pytest==7.4.3
 pytest-asyncio==0.21.1
-aiofiles==23.2.0
+httpx==0.25.2  # for testing
+
+# Production optimizations
+uvloop==0.19.0  # Event loop for Unix
+httptools==0.6.1  # HTTP parser
+
+# File handling
+openpyxl==3.1.2  # Excel support
+pandas==2.1.4  # Data processing (optional)
+
+# Environment management
+python-dotenv==1.0.0
