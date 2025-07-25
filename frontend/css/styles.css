@@ -3832,3 +3832,673 @@ input:focus, select:focus, textarea:focus {
     animation: spin 1s linear infinite;
     color: inherit;
 }
+
+/* ===== КОМПАКТНЫЕ ФИЛЬТРЫ ORDERS ===== */
+.orders-filters-compact {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.filters-row-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.filters-main-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.filters-separator {
+    width: 1px;
+    height: 32px;
+    background: #e5e7eb;
+    margin: 0 8px;
+}
+
+.filters-action-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.filter-compact {
+    min-width: 140px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background: white;
+    color: #374151;
+    transition: all 0.2s ease;
+}
+
+.filter-compact:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filter-compact:hover {
+    border-color: #9ca3af;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-input {
+    width: 280px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background: #f9fafb;
+    transition: all 0.2s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+.btn-icon.btn-secondary {
+    color: #6b7280;
+}
+
+.btn-compact {
+    height: 36px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-compact.btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-compact.btn-primary:hover {
+    background: #2563eb;
+}
+
+.loading-compact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-top: 8px;
+}
+
+.loading-spinner-small {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ===== ГОРИЗОНТАЛЬНЫЙ TIMELINE ===== */
+.timeline-content-horizontal {
+    padding: 16px;
+    min-height: 200px;
+}
+
+.timeline-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+    color: #9ca3af;
+}
+
+.placeholder-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.timeline-placeholder p {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.timeline-legend-compact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid;
+}
+
+.legend-dot.pending {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.legend-dot.current {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.legend-dot.completed {
+    background: #10b981;
+    border-color: #10b981;
+}
+
+.horizontal-timeline {
+    padding: 20px 0;
+}
+
+.timeline-stages {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.stage-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid;
+    background: white;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.stage.pending .stage-dot {
+    border-color: #d1d5db;
+    background: #f9fafb;
+}
+
+.stage.current .stage-dot {
+    border-color: #3b82f6;
+    background: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+.stage.completed .stage-dot {
+    border-color: #10b981;
+    background: #10b981;
+}
+
+.stage-label {
+    text-align: center;
+}
+
+.stage-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 2px;
+}
+
+.stage-time {
+    font-size: 0.6875rem;
+    color: #6b7280;
+}
+
+.stage.current .stage-name {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.stage.completed .stage-name {
+    color: #10b981;
+}
+
+.stage-connector {
+    position: absolute;
+    top: 8px;
+    height: 3px;
+    width: calc(100% / 6 - 16px);
+    z-index: 1;
+}
+
+.stage-connector:nth-of-type(2) { left: calc(100% / 6); }
+.stage-connector:nth-of-type(4) { left: calc(200% / 6); }
+.stage-connector:nth-of-type(6) { left: calc(300% / 6); }
+.stage-connector:nth-of-type(8) { left: calc(400% / 6); }
+.stage-connector:nth-of-type(10) { left: calc(500% / 6); }
+
+.stage-connector.pending {
+    background: #e5e7eb;
+}
+
+.stage-connector.current {
+    background: linear-gradient(to right, #10b981 0%, #3b82f6 100%);
+}
+
+.stage-connector.completed {
+    background: #10b981;
+}
+
+.timeline-progress-info {
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.progress-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.order-number {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.875rem;
+}
+
+.progress-percent {
+    font-weight: 600;
+    color: #3b82f6;
+    font-size: 0.875rem;
+}
+
+.estimated-completion {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+/* ===== УЛУЧШЕННАЯ ТАБЛИЦА ORDERS ===== */
+.orders-table-section .table-container {
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    background: white;
+}
+
+.orders-table thead {
+    background: #f8fafc;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.orders-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.orders-table tbody tr {
+    transition: all 0.15s ease;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.orders-table tbody tr:hover {
+    background: #f8fafc;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.orders-table td {
+    padding: 14px 16px;
+    vertical-align: middle;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: #374151;
+}
+
+/* Улучшенные статусы и приоритеты для Orders */
+.order-status-badge, .order-priority-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border: 1px solid;
+}
+
+/* Мягкие цвета для статусов */
+.order-status-badge.new {
+    background: #f0f9ff;
+    color: #0369a1;
+    border-color: #bae6fd;
+}
+
+.order-status-badge.confirmed {
+    background: #ecfdf5;
+    color: #059669;
+    border-color: #a7f3d0;
+}
+
+.order-status-badge.planned {
+    background: #fef3c7;
+    color: #d97706;
+    border-color: #fde68a;
+}
+
+.order-status-badge.in_production {
+    background: #ede9fe;
+    color: #7c3aed;
+    border-color: #c4b5fd;
+}
+
+.order-status-badge.completed {
+    background: #f0fdf4;
+    color: #16a34a;
+    border-color: #bbf7d0;
+}
+
+.order-status-badge.shipped {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #cbd5e1;
+}
+
+/* Мягкие цвета для приоритетов */
+.order-priority-badge.low {
+    background: #f0fdf4;
+    color: #15803d;
+    border-color: #bbf7d0;
+}
+
+.order-priority-badge.normal {
+    background: #f8fafc;
+    color: #64748b;
+    border-color: #e2e8f0;
+}
+
+.order-priority-badge.high {
+    background: #fef3c7;
+    color: #d97706;
+    border-color: #fde68a;
+}
+
+.order-priority-badge.urgent {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+/* Компактный прогресс */
+.order-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+}
+
+.order-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.order-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.order-progress-text {
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-weight: 500;
+    min-width: 35px;
+}
+
+/* Ссылка номера заказа */
+.order-number-link {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.order-number-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* Просроченные заказы */
+.order-overdue {
+    color: #dc2626 !important;
+    font-weight: 600;
+    position: relative;
+}
+
+.order-overdue::after {
+    content: '⚠️';
+    margin-left: 4px;
+    font-size: 0.75rem;
+}
+
+/* Форматирование валюты */
+.currency {
+    font-weight: 600;
+    color: #059669;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Responsive таблица Orders */
+@media (max-width: 1200px) {
+    .orders-table th:nth-child(8),
+    .orders-table td:nth-child(8) {
+        display: none; /* Скрыть прогресс на планшетах */
+    }
+}
+
+@media (max-width: 768px) {
+    .orders-table th:nth-child(3),
+    .orders-table td:nth-child(3),
+    .orders-table th:nth-child(6),
+    .orders-table td:nth-child(6),
+    .orders-table th:nth-child(9),
+    .orders-table td:nth-child(9) {
+        display: none; /* Скрыть продукт, приоритет, стоимость на мобильных */
+    }
+    
+    .orders-table th,
+    .orders-table td {
+        padding: 8px 12px;
+        font-size: 0.8125rem;
+    }
+    
+    .filters-row-horizontal {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .filters-main-group,
+    .filters-action-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+         .search-input {
+         width: 100%;
+     }
+}
+
+/* ===== КОМПАКТНАЯ ФОРМА СОЗДАНИЯ ЗАКАЗА ===== */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-section-compact {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.form-section-compact.full-width {
+    grid-column: 1 / -1;
+    background: white;
+    border: 1px solid #e5e7eb;
+}
+
+.form-section-compact h4 {
+    margin: 0 0 12px 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-group-compact {
+    margin-bottom: 12px;
+}
+
+.form-group-compact:last-child {
+    margin-bottom: 0;
+}
+
+.form-group-compact label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 4px;
+}
+
+.form-group-compact input,
+.form-group-compact select,
+.form-group-compact textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.form-group-compact input:focus,
+.form-group-compact select:focus,
+.form-group-compact textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-row-compact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.input-readonly {
+    background: #f9fafb !important;
+    color: #6b7280 !important;
+    cursor: not-allowed;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+/* Responsive форма */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .form-row-compact {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .form-section-compact {
+        padding: 12px;
+    }
+}

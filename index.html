@@ -504,25 +504,22 @@
                     </div>
                 </div>
 
-                <!-- Фильтры и поиск -->
-                <div class="orders-filters">
-                    <div class="filters-row">
-                        <div class="filter-group">
-                            <label>Статус заказа:</label>
-                            <select id="statusFilter" class="filter-select" onchange="applyOrdersFilters()">
-                                <option value="">Все статусы</option>
-                                <option value="new">Новый</option>
-                                <option value="confirmed">Подтвержден</option>
-                                <option value="planned">Запланирован</option>
-                                <option value="in_production">В производстве</option>
-                                <option value="completed">Завершен</option>
-                                <option value="shipped">Отгружен</option>
+                <!-- Компактные фильтры -->
+                <div class="orders-filters-compact">
+                    <div class="filters-row-horizontal">
+                        <!-- Группа основных фильтров -->
+                        <div class="filters-main-group">
+                            <select id="statusFilter" class="filter-compact" onchange="applyOrdersFilters()">
+                                <option value="">📋 Все статусы</option>
+                                <option value="new">🆕 Новый</option>
+                                <option value="confirmed">✅ Подтвержден</option>
+                                <option value="planned">📅 Запланирован</option>
+                                <option value="in_production">⚙️ В производстве</option>
+                                <option value="completed">✔️ Завершен</option>
+                                <option value="shipped">📦 Отгружен</option>
                             </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label>Клиент:</label>
-                            <input type="text" id="clientFilter" class="filter-input" placeholder="Поиск клиента..." list="clientsList" onchange="applyOrdersFilters()">
+                            
+                            <input type="text" id="clientFilter" class="filter-compact" placeholder="👥 Клиент..." list="clientsList" onchange="applyOrdersFilters()">
                             <datalist id="clientsList">
                                 <option value="MLEKOVITA">
                                 <option value="AGRONA">
@@ -530,34 +527,46 @@
                                 <option value="DANONE">
                                 <option value="MONDELEZ">
                             </datalist>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label>Приоритет:</label>
-                            <select id="priorityFilter" class="filter-select" onchange="applyOrdersFilters()">
-                                <option value="">Все приоритеты</option>
-                                <option value="low">Низкий</option>
-                                <option value="normal">Обычный</option>
-                                <option value="high">Высокий</option>
-                                <option value="urgent">Срочный</option>
+                            
+                            <select id="priorityFilter" class="filter-compact" onchange="applyOrdersFilters()">
+                                <option value="">🔥 Все приоритеты</option>
+                                <option value="low">🟢 Низкий</option>
+                                <option value="normal">🔵 Обычный</option>
+                                <option value="high">🟡 Высокий</option>
+                                <option value="urgent">🔴 Срочный</option>
                             </select>
                         </div>
                         
-                        <div class="filter-group">
-                            <label>Поиск:</label>
-                            <input type="text" id="searchFilter" class="filter-input" placeholder="Номер заказа, продукт..." onkeyup="handleSearchKeyup(event)">
-                            <button class="btn btn-primary" onclick="applyOrdersFilters()" data-loading="orders">🔍 Поиск</button>
-                            <button class="btn btn-secondary" onclick="resetOrdersFilters()">🔄 Сбросить</button>
-                        </div>
+                        <!-- Разделитель -->
+                        <div class="filters-separator"></div>
                         
-                        <div class="filter-group">
-                            <button class="btn btn-primary" onclick="showCreateOrderModal()">+ Новый заказ</button>
+                        <!-- Группа поиска и действий -->
+                        <div class="filters-action-group">
+                            <div class="search-box">
+                                <input type="text" id="searchFilter" class="search-input" placeholder="🔍 Поиск по номеру, продукту..." onkeyup="handleSearchKeyup(event)">
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-secondary" onclick="applyOrdersFilters()" data-loading="orders" title="Поиск">
+                                    🔍
+                                </button>
+                                <button class="btn-icon btn-secondary" onclick="resetOrdersFilters()" title="Сбросить фильтры">
+                                    🔄
+                                </button>
+                                <button class="btn-icon btn-secondary" onclick="modeDetector.detectApiMode()" title="Проверить API">
+                                    📡
+                                </button>
+                                <button class="btn-compact btn-primary" onclick="showCreateOrderModal()">
+                                    ➕ Новый заказ
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Loading indicator -->
-                    <div id="loading-orders" style="display: none;" class="loading-indicator">
-                        <span>Загрузка заказов...</span>
+                    <!-- Компактный loading indicator -->
+                    <div id="loading-orders" style="display: none;" class="loading-compact">
+                        <div class="loading-spinner-small"></div>
+                        <span>Загрузка...</span>
                     </div>
                 </div>
 

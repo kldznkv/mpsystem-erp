@@ -725,25 +725,22 @@
                     </div>
                 </div>
 
-                <!-- Фильтры и поиск -->
-                <div class="orders-filters">
-                    <div class="filters-row">
-                        <div class="filter-group">
-                            <label>Статус заказа:</label>
-                            <select id="statusFilter" class="filter-select" onchange="applyOrdersFilters()">
-                                <option value="">Все статусы</option>
-                                <option value="new">Новый</option>
-                                <option value="confirmed">Подтвержден</option>
-                                <option value="planned">Запланирован</option>
-                                <option value="in_production">В производстве</option>
-                                <option value="completed">Завершен</option>
-                                <option value="shipped">Отгружен</option>
+                <!-- Компактные фильтры -->
+                <div class="orders-filters-compact">
+                    <div class="filters-row-horizontal">
+                        <!-- Группа основных фильтров -->
+                        <div class="filters-main-group">
+                            <select id="statusFilter" class="filter-compact" onchange="applyOrdersFilters()">
+                                <option value="">📋 Все статусы</option>
+                                <option value="new">🆕 Новый</option>
+                                <option value="confirmed">✅ Подтвержден</option>
+                                <option value="planned">📅 Запланирован</option>
+                                <option value="in_production">⚙️ В производстве</option>
+                                <option value="completed">✔️ Завершен</option>
+                                <option value="shipped">📦 Отгружен</option>
                             </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label>Клиент:</label>
-                            <input type="text" id="clientFilter" class="filter-input" placeholder="Поиск клиента..." list="clientsList" onchange="applyOrdersFilters()">
+                            
+                            <input type="text" id="clientFilter" class="filter-compact" placeholder="👥 Клиент..." list="clientsList" onchange="applyOrdersFilters()">
                             <datalist id="clientsList">
                                 <option value="MLEKOVITA">
                                 <option value="AGRONA">
@@ -751,34 +748,46 @@
                                 <option value="DANONE">
                                 <option value="MONDELEZ">
                             </datalist>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label>Приоритет:</label>
-                            <select id="priorityFilter" class="filter-select" onchange="applyOrdersFilters()">
-                                <option value="">Все приоритеты</option>
-                                <option value="low">Низкий</option>
-                                <option value="normal">Обычный</option>
-                                <option value="high">Высокий</option>
-                                <option value="urgent">Срочный</option>
+                            
+                            <select id="priorityFilter" class="filter-compact" onchange="applyOrdersFilters()">
+                                <option value="">🔥 Все приоритеты</option>
+                                <option value="low">🟢 Низкий</option>
+                                <option value="normal">🔵 Обычный</option>
+                                <option value="high">🟡 Высокий</option>
+                                <option value="urgent">🔴 Срочный</option>
                             </select>
                         </div>
                         
-                        <div class="filter-group">
-                            <label>Поиск:</label>
-                            <input type="text" id="searchFilter" class="filter-input" placeholder="Номер заказа, продукт..." onkeyup="handleSearchKeyup(event)">
-                            <button class="btn btn-primary" onclick="applyOrdersFilters()" data-loading="orders">🔍 Поиск</button>
-                            <button class="btn btn-secondary" onclick="resetOrdersFilters()">🔄 Сбросить</button>
-                        </div>
+                        <!-- Разделитель -->
+                        <div class="filters-separator"></div>
                         
-                        <div class="filter-group">
-                            <button class="btn btn-primary" onclick="showCreateOrderModal()">+ Новый заказ</button>
+                        <!-- Группа поиска и действий -->
+                        <div class="filters-action-group">
+                            <div class="search-box">
+                                <input type="text" id="searchFilter" class="search-input" placeholder="🔍 Поиск по номеру, продукту..." onkeyup="handleSearchKeyup(event)">
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-secondary" onclick="applyOrdersFilters()" data-loading="orders" title="Поиск">
+                                    🔍
+                                </button>
+                                <button class="btn-icon btn-secondary" onclick="resetOrdersFilters()" title="Сбросить фильтры">
+                                    🔄
+                                </button>
+                                <button class="btn-icon btn-secondary" onclick="modeDetector.detectApiMode()" title="Проверить API">
+                                    📡
+                                </button>
+                                <button class="btn-compact btn-primary" onclick="showCreateOrderModal()">
+                                    ➕ Новый заказ
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Loading indicator -->
-                    <div id="loading-orders" style="display: none;" class="loading-indicator">
-                        <span>Загрузка заказов...</span>
+                    <!-- Компактный loading indicator -->
+                    <div id="loading-orders" style="display: none;" class="loading-compact">
+                        <div class="loading-spinner-small"></div>
+                        <span>Загрузка...</span>
                     </div>
                 </div>
 
@@ -838,21 +847,95 @@
                         </div>
                     </div>
 
-                    <!-- Боковая панель: Timeline производства -->
+                    <!-- Боковая панель: Горизонтальный Timeline -->
                     <div class="production-timeline-panel">
                         <div class="card">
                             <div class="card-header">
                                 <h3>🏭 Timeline производства</h3>
-                                <div class="timeline-legend">
-                                    <span class="legend-item completed">✅ Завершено</span>
-                                    <span class="legend-item current">⏳ Текущий</span>
-                                    <span class="legend-item pending">⏸️ Ожидание</span>
+                                <div class="timeline-legend-compact">
+                                    <span class="legend-dot pending"></span>
+                                    <span class="legend-dot current"></span>
+                                    <span class="legend-dot completed"></span>
                                 </div>
                             </div>
                             
-                            <div class="timeline-content" id="productionTimeline">
+                            <div class="timeline-content-horizontal" id="productionTimeline">
                                 <div class="timeline-placeholder">
-                                    Выберите заказ для просмотра timeline производства
+                                    <div class="placeholder-icon">📋</div>
+                                    <p>Выберите заказ для просмотра timeline</p>
+                                </div>
+                                
+                                <!-- Template для timeline когда заказ выбран -->
+                                <div class="horizontal-timeline" id="orderTimeline" style="display: none;">
+                                    <div class="timeline-stages">
+                                        <div class="stage completed" data-stage="storage1">
+                                            <div class="stage-dot"></div>
+                                            <div class="stage-label">
+                                                <div class="stage-name">MAG1</div>
+                                                <div class="stage-time">✓</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="stage-connector completed"></div>
+                                        
+                                        <div class="stage current" data-stage="extrusion">
+                                            <div class="stage-dot"></div>
+                                            <div class="stage-label">
+                                                <div class="stage-name">Экструзия</div>
+                                                <div class="stage-time">2ч 15м</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="stage-connector current"></div>
+                                        
+                                        <div class="stage pending" data-stage="storage2">
+                                            <div class="stage-dot"></div>
+                                            <div class="stage-label">
+                                                <div class="stage-name">MAG3</div>
+                                                <div class="stage-time">—</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="stage-connector pending"></div>
+                                        
+                                        <div class="stage pending" data-stage="uv">
+                                            <div class="stage-dot"></div>
+                                            <div class="stage-label">
+                                                <div class="stage-name">UV</div>
+                                                <div class="stage-time">—</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="stage-connector pending"></div>
+                                        
+                                        <div class="stage pending" data-stage="storage3">
+                                            <div class="stage-dot"></div>
+                                            <div class="stage-label">
+                                                <div class="stage-name">MAG4</div>
+                                                <div class="stage-time">—</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="stage-connector pending"></div>
+                                        
+                                        <div class="stage pending" data-stage="ready">
+                                            <div class="stage-dot"></div>
+                                            <div class="stage-label">
+                                                <div class="stage-name">Готово</div>
+                                                <div class="stage-time">—</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-progress-info">
+                                        <div class="progress-summary">
+                                            <span class="order-number">ZP-2024/0142</span>
+                                            <span class="progress-percent">73%</span>
+                                        </div>
+                                        <div class="estimated-completion">
+                                            Готовность: сегодня 18:30
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1991,119 +2074,115 @@
             </div>
             <div class="modal-body">
                 <form id="createOrderForm" onsubmit="handleCreateOrderSubmit(event)">
-                    <!-- Информация о клиенте -->
-                    <div class="form-section">
-                        <h4>📋 Информация о клиенте</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="clientId">ID клиента *</label>
-                                <input type="text" id="clientId" required pattern="[A-Z]{2}-[0-9]{3}" 
-                                       placeholder="ML-001" list="clientIdsList" onchange="updateClientName()">
-                                <datalist id="clientIdsList">
-                                    <option value="ML-001">
-                                    <option value="AG-001">
-                                    <option value="LP-001">
-                                    <option value="DN-001">
-                                    <option value="MZ-001">
-                                </datalist>
+                    <!-- Компактная группированная форма -->
+                    <div class="form-grid">
+                        <!-- Левая колонка -->
+                        <div class="form-column">
+                            <div class="form-section-compact">
+                                <h4>👥 Клиент</h4>
+                                <div class="form-group-compact">
+                                    <label for="clientName">Название клиента *</label>
+                                    <input type="text" id="clientName" required placeholder="MLEKOVITA" 
+                                           list="clientNamesList" onchange="updateClientId()" class="input-with-icon">
+                                    <datalist id="clientNamesList">
+                                        <option value="MLEKOVITA">
+                                        <option value="AGRONA">
+                                        <option value="LACPOL">
+                                        <option value="DANONE">
+                                        <option value="MONDELEZ">
+                                    </datalist>
+                                </div>
+                                <div class="form-group-compact">
+                                    <label for="clientId">ID клиента</label>
+                                    <input type="text" id="clientId" pattern="[A-Z]{2}-[0-9]{3}" 
+                                           placeholder="ML-001" readonly class="input-readonly">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="clientName">Название клиента *</label>
-                                <input type="text" id="clientName" required placeholder="MLEKOVITA" 
-                                       list="clientNamesList" onchange="updateClientId()">
-                                <datalist id="clientNamesList">
-                                    <option value="MLEKOVITA">
-                                    <option value="AGRONA">
-                                    <option value="LACPOL">
-                                    <option value="DANONE">
-                                    <option value="MONDELEZ">
-                                </datalist>
+
+                            <div class="form-section-compact">
+                                <h4>📦 Продукт</h4>
+                                <div class="form-group-compact">
+                                    <label for="productName">Название продукта *</label>
+                                    <input type="text" id="productName" required 
+                                           placeholder="Opakowania do serów żółtych 500g">
+                                </div>
+                                <div class="form-group-compact">
+                                    <label for="productId">ID продукта</label>
+                                    <input type="text" id="productId" pattern="[A-Z]{3}-[0-9]{3}" 
+                                           placeholder="PKG-001">
+                                </div>
+                            </div>
+
+                            <div class="form-section-compact">
+                                <h4>📊 Количество</h4>
+                                <div class="form-row-compact">
+                                    <div class="form-group-compact">
+                                        <label for="quantity">Количество *</label>
+                                        <input type="number" id="quantity" required min="0.001" step="0.001" 
+                                               placeholder="50000">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label for="unit">Единица *</label>
+                                        <select id="unit" required>
+                                            <option value="pcs">шт</option>
+                                            <option value="kg">кг</option>
+                                            <option value="m">м</option>
+                                            <option value="m2">м²</option>
+                                            <option value="l">л</option>
+                                            <option value="ton">т</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Правая колонка -->
+                        <div class="form-column">
+                            <div class="form-section-compact">
+                                <h4>📅 Сроки и приоритет</h4>
+                                <div class="form-group-compact">
+                                    <label for="dueDate">Срок поставки *</label>
+                                    <input type="date" id="dueDate" required>
+                                </div>
+                                <div class="form-group-compact">
+                                    <label for="priority">Приоритет *</label>
+                                    <select id="priority" required>
+                                        <option value="normal">🔵 Обычный</option>
+                                        <option value="low">🟢 Низкий</option>
+                                        <option value="high">🟡 Высокий</option>
+                                        <option value="urgent">🔴 Срочный</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-section-compact">
+                                <h4>💰 Финансы</h4>
+                                <div class="form-group-compact">
+                                    <label for="value">Стоимость (PLN)</label>
+                                    <input type="number" id="value" min="0" step="0.01" placeholder="125000.00">
+                                </div>
+                                <div class="form-group-compact">
+                                    <label for="margin">Маржа (%)</label>
+                                    <input type="number" id="margin" min="0" max="100" step="0.1" placeholder="18.5">
+                                </div>
+                            </div>
+
+                            <div class="form-section-compact">
+                                <h4>👤 Создание</h4>
+                                <div class="form-group-compact">
+                                    <label for="createdBy">Создатель *</label>
+                                    <input type="text" id="createdBy" required value="admin@mpsystem.pl" readonly class="input-readonly">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Информация о продукте -->
-                    <div class="form-section">
-                        <h4>📦 Информация о продукте</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="productId">ID продукта *</label>
-                                <input type="text" id="productId" required pattern="[A-Z]{3}-[0-9]{3}" 
-                                       placeholder="PKG-001">
-                            </div>
-                            <div class="form-group">
-                                <label for="productName">Название продукта *</label>
-                                <input type="text" id="productName" required 
-                                       placeholder="Opakowania do serów żółtych 500g">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Количество и единицы -->
-                    <div class="form-section">
-                        <h4>📊 Количество и условия</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="quantity">Количество *</label>
-                                <input type="number" id="quantity" required min="0.001" step="0.001" 
-                                       placeholder="50000">
-                            </div>
-                            <div class="form-group">
-                                <label for="unit">Единица измерения *</label>
-                                <select id="unit" required>
-                                    <option value="">Выберите единицу</option>
-                                    <option value="pcs">шт</option>
-                                    <option value="kg">кг</option>
-                                    <option value="m">м</option>
-                                    <option value="m2">м²</option>
-                                    <option value="l">л</option>
-                                    <option value="ton">т</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="dueDate">Срок поставки *</label>
-                                <input type="date" id="dueDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="priority">Приоритет *</label>
-                                <select id="priority" required>
-                                    <option value="normal">Обычный</option>
-                                    <option value="low">Низкий</option>
-                                    <option value="high">Высокий</option>
-                                    <option value="urgent">Срочный</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Финансовая информация -->
-                    <div class="form-section">
-                        <h4>💰 Финансовая информация</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="value">Стоимость заказа (PLN)</label>
-                                <input type="number" id="value" min="0" step="0.01" placeholder="125000.00">
-                            </div>
-                            <div class="form-group">
-                                <label for="margin">Маржа (%)</label>
-                                <input type="number" id="margin" min="0" max="100" step="0.1" placeholder="18.5">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Дополнительная информация -->
-                    <div class="form-section">
-                        <h4>📝 Дополнительная информация</h4>
-                        <div class="form-group">
-                            <label for="specialRequirements">Особые требования</label>
-                            <textarea id="specialRequirements" rows="3" 
-                                      placeholder="Nadruk logo MLEKOVITA, certyfikat BRC, specific technical requirements..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="createdBy">Создано пользователем *</label>
-                            <input type="text" id="createdBy" required value="admin@mpsystem.pl">
+                    <!-- Полная ширина для комментариев -->
+                    <div class="form-section-compact full-width">
+                        <h4>📝 Особые требования</h4>
+                        <div class="form-group-compact">
+                            <textarea id="specialRequirements" rows="2" 
+                                      placeholder="Nadruk logo, certyfikat BRC, specific technical requirements..."></textarea>
                         </div>
                     </div>
                 </form>
