@@ -975,6 +975,442 @@
             text-decoration: underline;
         }
 
+        /* ===== PLANNING PAGE STYLES ===== */
+        .planning-metrics {
+            margin-bottom: 2rem;
+        }
+
+        .planning-workspace {
+            display: grid;
+            grid-template-columns: 300px 1fr 280px;
+            gap: 1.5rem;
+            min-height: 600px;
+        }
+
+        /* Orders Queue Panel */
+        .orders-queue-panel {
+            min-width: 0;
+        }
+
+        .queue-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .orders-queue {
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 1rem 0;
+        }
+
+        .order-queue-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            cursor: grab;
+            transition: all 0.2s ease;
+            border-left: 4px solid #e5e7eb;
+        }
+
+        .order-queue-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .order-queue-card.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+
+        .order-queue-card.priority-urgent {
+            border-left-color: #ef4444;
+        }
+
+        .order-queue-card.priority-high {
+            border-left-color: #f59e0b;
+        }
+
+        .order-queue-card.priority-normal {
+            border-left-color: #3b82f6;
+        }
+
+        .order-queue-card.priority-low {
+            border-left-color: #10b981;
+        }
+
+        .queue-card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .queue-order-number {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .queue-priority-badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .queue-card-info {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .queue-card-info div {
+            margin-bottom: 0.25rem;
+        }
+
+        .queue-deadline {
+            color: #ef4444;
+            font-weight: 500;
+        }
+
+        /* Production Lines Panel */
+        .production-lines-panel {
+            min-width: 0;
+        }
+
+        .timeline-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .production-lines-grid {
+            padding: 1rem 0;
+        }
+
+        .production-line-row {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .line-row-header {
+            background: #f8fafc;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .line-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .line-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .line-status-indicator {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .line-status-running {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .line-status-idle {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .line-status-maintenance {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .line-capacity {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .line-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .line-timeline {
+            padding: 1rem;
+            position: relative;
+        }
+
+        .timeline-slots {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: 1px;
+            height: 40px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .timeline-slot {
+            background: #e5e7eb;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .timeline-slot.occupied {
+            background: #3b82f6;
+        }
+
+        .timeline-slot.setup {
+            background: #f59e0b;
+        }
+
+        .timeline-slot.maintenance {
+            background: #ef4444;
+        }
+
+        .timeline-slot:hover {
+            opacity: 0.8;
+        }
+
+        .timeline-task {
+            position: absolute;
+            top: 2px;
+            bottom: 2px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: white;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 4px;
+        }
+
+        .task-production {
+            background: #3b82f6;
+        }
+
+        .task-setup {
+            background: #f59e0b;
+        }
+
+        .task-maintenance {
+            background: #ef4444;
+        }
+
+        /* Recommendations Panel */
+        .recommendations-panel {
+            min-width: 0;
+        }
+
+        .recommendations-content {
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 1rem 0;
+        }
+
+        .recommendation-item {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .recommendation-item.warning {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .recommendation-item.error {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .recommendation-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+        }
+
+        .recommendation-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-accept {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .btn-decline {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        /* Planning Modal */
+        .planning-modal {
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .planning-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .order-info-section,
+        .line-selection-section,
+        .timing-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .timing-section {
+            grid-column: 1 / -1;
+        }
+
+        .timing-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .line-option {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .line-option:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .line-option.selected {
+            border-color: var(--primary-color);
+            background: #f0f9ff;
+        }
+
+        .line-option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .line-option-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .line-efficiency {
+            font-size: 0.8rem;
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .line-option-details {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Drag and Drop */
+        .drop-zone {
+            min-height: 60px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            color: var(--text-secondary);
+            background: #f9fafb;
+            transition: all 0.2s ease;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--primary-color);
+            background: #f0f9ff;
+            color: var(--primary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .planning-workspace {
+                grid-template-columns: 280px 1fr 260px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .planning-workspace {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .planning-details {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .timing-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* ===== UTILITIES ===== */
         .text-center { text-align: center; }
         .text-right { text-align: right; }
@@ -1720,17 +2156,153 @@
                 </div>
             </div>
 
-            <!-- Planning Tab -->
+            <!-- СТРАНИЦА: PLANNING (Планирование производства) -->
             <div id="planning" class="tab-content">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">📋 Планирование производства</h3>
-                        <button class="btn btn-primary">+ Новый план</button>
+                <!-- Верхний блок: Метрики планирования -->
+                <div class="planning-metrics">
+                    <div class="metrics-grid">
+                        <div class="metric-card planning-orders">
+                            <div class="metric-header">
+                                <span class="metric-icon">📋</span>
+                                <span class="metric-title">Orders to Schedule</span>
+                            </div>
+                            <div class="metric-value" id="ordersToSchedule">23</div>
+                            <div class="metric-label">К планированию</div>
+                        </div>
+                        <div class="metric-card planning-lines">
+                            <div class="metric-header">
+                                <span class="metric-icon">⚙️</span>
+                                <span class="metric-title">Lines Available</span>
+                            </div>
+                            <div class="metric-value" id="linesAvailable">6</div>
+                            <div class="metric-label">Доступно линий</div>
+                        </div>
+                        <div class="metric-card planning-setup">
+                            <div class="metric-header">
+                                <span class="metric-icon">🔧</span>
+                                <span class="metric-title">Setup Time</span>
+                            </div>
+                            <div class="metric-value" id="setupTime">45 min</div>
+                            <div class="metric-label">Переналадка</div>
+                        </div>
+                        <div class="metric-card planning-materials">
+                            <div class="metric-header">
+                                <span class="metric-icon">📦</span>
+                                <span class="metric-title">Materials Ready</span>
+                            </div>
+                            <div class="metric-value" id="materialsReady">89%</div>
+                            <div class="metric-label">Материалы готовы</div>
+                        </div>
                     </div>
-                    <div class="dashboard-widgets">
+                </div>
+
+                <!-- Основная область планирования -->
+                <div class="planning-workspace">
+                    <!-- Левая панель: Очередь заказов -->
+                    <div class="orders-queue-panel">
                         <div class="card">
-                            <h4>Планы производства будут доступны в следующей версии</h4>
-                            <p>Этот модуль будет включать планирование загрузки линий, календарь производства, и оптимизацию ресурсов.</p>
+                            <div class="card-header">
+                                <h3>📋 Очередь заказов</h3>
+                                <div class="queue-controls">
+                                    <select id="queueFilter" class="filter-select">
+                                        <option value="all">Все заказы</option>
+                                        <option value="new">Новые</option>
+                                        <option value="confirmed">В очереди</option>
+                                        <option value="urgent">Срочные</option>
+                                    </select>
+                                    <select id="queueSort" class="filter-select">
+                                        <option value="priority">По приоритету</option>
+                                        <option value="deadline">По срокам</option>
+                                        <option value="client">По клиенту</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="orders-queue" id="ordersQueue">
+                                <!-- Карточки заказов будут загружены динамически -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Центральная область: Линии производства -->
+                    <div class="production-lines-panel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>🏭 Линии производства</h3>
+                                <div class="timeline-controls">
+                                    <button class="btn btn-sm btn-secondary" onclick="switchTimelineView('day')">День</button>
+                                    <button class="btn btn-sm btn-primary" onclick="switchTimelineView('week')">Неделя</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="switchTimelineView('month')">Месяц</button>
+                                </div>
+                            </div>
+                            
+                            <div class="production-lines-grid" id="productionLinesGrid">
+                                <!-- Линии производства будут загружены динамически -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Правая панель: Рекомендации системы -->
+                    <div class="recommendations-panel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>🤖 Рекомендации системы</h3>
+                                <button class="btn btn-sm btn-primary" onclick="generateRecommendations()">🔄 Обновить</button>
+                            </div>
+                            
+                            <div class="recommendations-content" id="recommendationsContent">
+                                <!-- Рекомендации будут загружены динамически -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модальное окно для детального планирования -->
+                <div id="planningModal" class="modal">
+                    <div class="modal-content planning-modal">
+                        <div class="modal-header">
+                            <h2>📋 Планирование заказа</h2>
+                            <button class="close" onclick="hidePlanningModal()">&times;</button>
+                        </div>
+                        
+                        <div class="planning-details">
+                            <div class="order-info-section">
+                                <h3>Информация о заказе</h3>
+                                <div id="planningOrderInfo">
+                                    <!-- Информация о заказе -->
+                                </div>
+                            </div>
+                            
+                            <div class="line-selection-section">
+                                <h3>Выбор линии</h3>
+                                <div id="lineOptions">
+                                    <!-- Опции выбора линии -->
+                                </div>
+                            </div>
+                            
+                            <div class="timing-section">
+                                <h3>Временные параметры</h3>
+                                <div class="timing-inputs">
+                                    <div class="input-group">
+                                        <label>Дата начала:</label>
+                                        <input type="datetime-local" id="startTime">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Приоритет в очереди:</label>
+                                        <select id="queuePriority">
+                                            <option value="1">Высший (1)</option>
+                                            <option value="2">Высокий (2)</option>
+                                            <option value="3">Средний (3)</option>
+                                            <option value="4">Низкий (4)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-actions">
+                            <button class="btn btn-primary" onclick="scheduleOrder()">📅 Запланировать</button>
+                            <button class="btn btn-secondary" onclick="hidePlanningModal()">Отмена</button>
                         </div>
                     </div>
                 </div>
@@ -2465,9 +3037,8 @@
                     updateCurrentTime();
                     break;
                 case 'planning':
-                    // Redirect to procurement for now
-                    showTab('procurement');
-                    return;
+                    loadPlanningPage();
+                    break;
                 case 'procurement':
                     loadMaterials();
                     loadSuppliers();
@@ -3312,6 +3883,483 @@
                 showToast('Заказ удален', 'success');
             }
         }
+
+        // =============================================
+        // PLANNING PAGE FUNCTIONS
+        // =============================================
+
+        // Sample planning data
+        let planningData = {
+            ordersToSchedule: 23,
+            linesAvailable: 6,
+            setupTime: '45 min',
+            materialsReady: '89%',
+            
+            queuedOrders: [
+                {
+                    id: 'ord-001',
+                    number: 'ZP-2024/0318',
+                    client: 'ООО Пакет-Сервис',
+                    product: 'Пленка ПВД прозрачная 30мкм',
+                    quantity: 2500,
+                    unit: 'кг',
+                    deadline: '2024-02-15',
+                    priority: 'high',
+                    status: 'confirmed',
+                    materialType: 'transparent',
+                    width: 300,
+                    thickness: 30
+                },
+                {
+                    id: 'ord-002',
+                    number: 'ZP-2024/0319',
+                    client: 'АО Упаковочные решения',
+                    product: 'Пакет с печатью 4+0',
+                    quantity: 10000,
+                    unit: 'шт',
+                    deadline: '2024-02-20',
+                    priority: 'urgent',
+                    status: 'new',
+                    materialType: 'colored',
+                    color: 'red',
+                    width: 250,
+                    thickness: 40
+                },
+                {
+                    id: 'ord-003',
+                    number: 'ZP-2024/0320',
+                    client: 'ИП Васильев',
+                    product: 'Пленка ламинированная',
+                    quantity: 1200,
+                    unit: 'м2',
+                    deadline: '2024-02-25',
+                    priority: 'normal',
+                    status: 'confirmed',
+                    materialType: 'transparent',
+                    width: 400,
+                    thickness: 50
+                }
+            ],
+            
+            productionLines: [
+                {
+                    id: 'extrusion-1',
+                    name: 'Экструзия Линия 1',
+                    type: 'extrusion',
+                    status: 'running',
+                    currentOrder: 'ZP-2024/0315',
+                    capacity: '95%',
+                    efficiency: 92,
+                    maxWidth: 500,
+                    capabilities: ['transparent', 'colored'],
+                    schedule: generateLineSchedule('extrusion-1')
+                },
+                {
+                    id: 'extrusion-2',
+                    name: 'Экструзия Линия 2',
+                    type: 'extrusion',
+                    status: 'idle',
+                    currentOrder: null,
+                    capacity: '0%',
+                    efficiency: 88,
+                    maxWidth: 600,
+                    capabilities: ['transparent', 'colored'],
+                    schedule: generateLineSchedule('extrusion-2')
+                },
+                {
+                    id: 'lamination-1',
+                    name: 'Ламинация Линия 1',
+                    type: 'lamination',
+                    status: 'running',
+                    currentOrder: 'ZP-2024/0317',
+                    capacity: '78%',
+                    efficiency: 85,
+                    maxWidth: 400,
+                    capabilities: ['multilayer'],
+                    schedule: generateLineSchedule('lamination-1')
+                },
+                {
+                    id: 'printing-1',
+                    name: 'Флексопечать',
+                    type: 'printing',
+                    status: 'maintenance',
+                    currentOrder: null,
+                    capacity: '0%',
+                    efficiency: 90,
+                    maxWidth: 350,
+                    capabilities: ['printing'],
+                    schedule: generateLineSchedule('printing-1')
+                }
+            ]
+        };
+
+        let currentTimelineView = 'week';
+        let draggedOrder = null;
+
+        function generateLineSchedule(lineId) {
+            // Генерируем случайное расписание для демонстрации
+            const schedule = [];
+            for (let i = 0; i < 24; i++) {
+                if (Math.random() > 0.7) {
+                    schedule.push({
+                        type: Math.random() > 0.8 ? 'setup' : 'production',
+                        order: `ZP-${2024}/0${Math.floor(Math.random() * 999) + 300}`,
+                        duration: Math.floor(Math.random() * 4) + 1
+                    });
+                } else {
+                    schedule.push(null);
+                }
+            }
+            return schedule;
+        }
+
+        function loadPlanningPage() {
+            updatePlanningMetrics();
+            renderOrdersQueue();
+            renderProductionLines();
+            generateRecommendations();
+        }
+
+        function updatePlanningMetrics() {
+            document.getElementById('ordersToSchedule').textContent = planningData.ordersToSchedule;
+            document.getElementById('linesAvailable').textContent = planningData.linesAvailable;
+            document.getElementById('setupTime').textContent = planningData.setupTime;
+            document.getElementById('materialsReady').textContent = planningData.materialsReady;
+        }
+
+        function renderOrdersQueue() {
+            const container = document.getElementById('ordersQueue');
+            if (!container) return;
+
+            const filter = document.getElementById('queueFilter')?.value || 'all';
+            const sort = document.getElementById('queueSort')?.value || 'priority';
+
+            let filteredOrders = [...planningData.queuedOrders];
+
+            // Фильтрация
+            if (filter !== 'all') {
+                if (filter === 'urgent') {
+                    filteredOrders = filteredOrders.filter(o => o.priority === 'urgent');
+                } else {
+                    filteredOrders = filteredOrders.filter(o => o.status === filter);
+                }
+            }
+
+            // Сортировка
+            filteredOrders.sort((a, b) => {
+                switch (sort) {
+                    case 'priority':
+                        const priorityOrder = { 'urgent': 0, 'high': 1, 'normal': 2, 'low': 3 };
+                        return priorityOrder[a.priority] - priorityOrder[b.priority];
+                    case 'deadline':
+                        return new Date(a.deadline) - new Date(b.deadline);
+                    case 'client':
+                        return a.client.localeCompare(b.client);
+                    default:
+                        return 0;
+                }
+            });
+
+            container.innerHTML = filteredOrders.map(order => `
+                <div class="order-queue-card priority-${order.priority}" 
+                     draggable="true" 
+                     data-order-id="${order.id}"
+                     ondragstart="handleDragStart(event)"
+                     ondragend="handleDragEnd(event)"
+                     onclick="showPlanningModal('${order.id}')">
+                    
+                    <div class="queue-card-header">
+                        <span class="queue-order-number">${order.number}</span>
+                        <span class="queue-priority-badge priority-${order.priority}">
+                            ${getPriorityLabel(order.priority)}
+                        </span>
+                    </div>
+                    
+                    <div class="queue-card-info">
+                        <div><strong>${order.client}</strong></div>
+                        <div>${order.product}</div>
+                        <div>${order.quantity} ${order.unit}</div>
+                        <div class="queue-deadline">⏰ ${formatDate(order.deadline)}</div>
+                        <div>📏 ${order.width}мм × ${order.thickness}мкм</div>
+                        ${order.materialType ? `<div>🎨 ${order.materialType === 'transparent' ? 'Прозрачный' : 'Цветной'}</div>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderProductionLines() {
+            const container = document.getElementById('productionLinesGrid');
+            if (!container) return;
+
+            container.innerHTML = planningData.productionLines.map(line => `
+                <div class="production-line-row" data-line-id="${line.id}">
+                    <div class="line-row-header">
+                        <div class="line-info">
+                            <span class="line-name">${line.name}</span>
+                            <span class="line-status-indicator line-status-${line.status}">
+                                ${getLineStatusLabel(line.status)}
+                            </span>
+                            <span class="line-capacity">Загрузка: ${line.capacity}</span>
+                        </div>
+                        <div class="line-controls">
+                            <button class="btn btn-sm btn-secondary" onclick="showLineDetails('${line.id}')">
+                                📊 Детали
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="optimizeLine('${line.id}')">
+                                🔧 Оптимизировать
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="line-timeline">
+                        <div class="timeline-slots"
+                             ondrop="handleDrop(event, '${line.id}')"
+                             ondragover="handleDragOver(event)">
+                            ${renderTimelineSlots(line)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTimelineSlots(line) {
+            const slots = [];
+            for (let i = 0; i < 24; i++) {
+                const task = line.schedule[i];
+                if (task) {
+                    slots.push(`
+                        <div class="timeline-slot occupied ${task.type}" title="${task.order}">
+                            <div class="timeline-task task-${task.type}">
+                                ${task.order.slice(-3)}
+                            </div>
+                        </div>
+                    `);
+                } else {
+                    slots.push(`<div class="timeline-slot" title="Свободно ${i}:00"></div>`);
+                }
+            }
+            return slots.join('');
+        }
+
+        function getLineStatusLabel(status) {
+            const labels = {
+                'running': '▶️ Работает',
+                'idle': '⏸️ Простой',
+                'maintenance': '🔧 ТО'
+            };
+            return labels[status] || status;
+        }
+
+        function generateRecommendations() {
+            const container = document.getElementById('recommendationsContent');
+            if (!container) return;
+
+            const recommendations = [
+                {
+                    type: 'optimization',
+                    title: 'Оптимизация переналадки',
+                    description: 'Рекомендуется сгруппировать прозрачные заказы ZP-2024/0318 и ZP-2024/0320 на одной линии для экономии времени на переналадку.',
+                    actions: ['accept', 'decline'],
+                    orderId: 'ord-001'
+                },
+                {
+                    type: 'warning',
+                    title: 'Нехватка материалов',
+                    description: 'Для заказа ZP-2024/0319 недостаточно красного красителя. Ожидаемая поставка через 2 дня.',
+                    actions: ['order_material'],
+                    orderId: 'ord-002'
+                },
+                {
+                    type: 'info',
+                    title: 'Эффективность линии',
+                    description: 'Экструзия Линия 1 показывает высокую эффективность (92%) для данного типа заказов. Рекомендуется использовать для срочных заказов.',
+                    actions: ['accept'],
+                    lineId: 'extrusion-1'
+                },
+                {
+                    type: 'error',
+                    title: 'Превышение сроков',
+                    description: 'Заказ ZP-2024/0319 может быть выполнен с опозданием на 1 день при текущем планировании.',
+                    actions: ['reschedule', 'priority'],
+                    orderId: 'ord-002'
+                }
+            ];
+
+            container.innerHTML = recommendations.map((rec, index) => `
+                <div class="recommendation-item ${rec.type}">
+                    <div class="recommendation-title">${rec.title}</div>
+                    <div class="recommendation-description">${rec.description}</div>
+                    <div class="recommendation-actions">
+                        ${rec.actions.includes('accept') ? '<button class="btn-accept" onclick="acceptRecommendation(' + index + ')">✅ Принять</button>' : ''}
+                        ${rec.actions.includes('decline') ? '<button class="btn-decline" onclick="declineRecommendation(' + index + ')">❌ Отклонить</button>' : ''}
+                        ${rec.actions.includes('order_material') ? '<button class="btn-accept" onclick="orderMaterial(\'' + rec.orderId + '\')">📦 Заказать</button>' : ''}
+                        ${rec.actions.includes('reschedule') ? '<button class="btn-accept" onclick="rescheduleOrder(\'' + rec.orderId + '\')">📅 Перепланировать</button>' : ''}
+                        ${rec.actions.includes('priority') ? '<button class="btn-accept" onclick="increasePriority(\'' + rec.orderId + '\')">🔼 Приоритет</button>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchTimelineView(view) {
+            currentTimelineView = view;
+            document.querySelectorAll('.timeline-controls .btn').forEach(btn => {
+                btn.className = 'btn btn-sm btn-secondary';
+            });
+            event.target.className = 'btn btn-sm btn-primary';
+            
+            renderProductionLines();
+            showToast(`Переключено на вид: ${view === 'day' ? 'День' : view === 'week' ? 'Неделя' : 'Месяц'}`, 'info');
+        }
+
+        // Drag and Drop функциональность
+        function handleDragStart(event) {
+            draggedOrder = event.target.getAttribute('data-order-id');
+            event.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(event) {
+            event.target.classList.remove('dragging');
+            draggedOrder = null;
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+        }
+
+        function handleDrop(event, lineId) {
+            event.preventDefault();
+            if (draggedOrder) {
+                const order = planningData.queuedOrders.find(o => o.id === draggedOrder);
+                if (order) {
+                    showPlanningModal(draggedOrder, lineId);
+                }
+            }
+        }
+
+        // Модальное окно планирования
+        function showPlanningModal(orderId, suggestedLineId = null) {
+            const order = planningData.queuedOrders.find(o => o.id === orderId);
+            if (!order) return;
+
+            // Заполняем информацию о заказе
+            document.getElementById('planningOrderInfo').innerHTML = `
+                <div><strong>Заказ:</strong> ${order.number}</div>
+                <div><strong>Клиент:</strong> ${order.client}</div>
+                <div><strong>Продукт:</strong> ${order.product}</div>
+                <div><strong>Количество:</strong> ${order.quantity} ${order.unit}</div>
+                <div><strong>Срок:</strong> ${formatDate(order.deadline)}</div>
+                <div><strong>Приоритет:</strong> ${getPriorityLabel(order.priority)}</div>
+            `;
+
+            // Генерируем опции выбора линии
+            const compatibleLines = planningData.productionLines.filter(line => 
+                isLineCompatible(line, order)
+            );
+
+            document.getElementById('lineOptions').innerHTML = compatibleLines.map(line => `
+                <div class="line-option ${line.id === suggestedLineId ? 'selected' : ''}" 
+                     onclick="selectLine('${line.id}')">
+                    <div class="line-option-header">
+                        <span class="line-option-name">${line.name}</span>
+                        <span class="line-efficiency">⚡ ${line.efficiency}%</span>
+                    </div>
+                    <div class="line-option-details">
+                        Загрузка: ${line.capacity} • Макс. ширина: ${line.maxWidth}мм<br>
+                        Статус: ${getLineStatusLabel(line.status)}
+                    </div>
+                </div>
+            `).join('');
+
+            // Устанавливаем текущее время
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('startTime').value = now.toISOString().slice(0, 16);
+
+            showModal('planningModal');
+        }
+
+        function hidePlanningModal() {
+            hideModal('planningModal');
+        }
+
+        function selectLine(lineId) {
+            document.querySelectorAll('.line-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.line-option').classList.add('selected');
+        }
+
+        function isLineCompatible(line, order) {
+            // Проверяем технические ограничения
+            if (order.width > line.maxWidth) return false;
+            if (order.materialType && !line.capabilities.includes(order.materialType)) return false;
+            return true;
+        }
+
+        function scheduleOrder() {
+            const selectedLine = document.querySelector('.line-option.selected');
+            const startTime = document.getElementById('startTime').value;
+            const priority = document.getElementById('queuePriority').value;
+
+            if (!selectedLine) {
+                showToast('Выберите линию производства', 'error');
+                return;
+            }
+
+            const lineId = selectedLine.onclick.toString().match(/'([^']+)'/)[1];
+            showToast(`Заказ запланирован на линию ${lineId} с приоритетом ${priority}`, 'success');
+            hidePlanningModal();
+            
+            // Обновляем данные (в реальном приложении отправили бы на сервер)
+            renderOrdersQueue();
+            renderProductionLines();
+        }
+
+        // Действия с рекомендациями
+        function acceptRecommendation(index) {
+            showToast('Рекомендация принята', 'success');
+            generateRecommendations();
+        }
+
+        function declineRecommendation(index) {
+            showToast('Рекомендация отклонена', 'info');
+            generateRecommendations();
+        }
+
+        function orderMaterial(orderId) {
+            showToast('Заказ материалов отправлен в закупки', 'success');
+        }
+
+        function rescheduleOrder(orderId) {
+            showPlanningModal(orderId);
+        }
+
+        function increasePriority(orderId) {
+            const order = planningData.queuedOrders.find(o => o.id === orderId);
+            if (order) {
+                order.priority = 'urgent';
+                renderOrdersQueue();
+                showToast('Приоритет заказа повышен', 'success');
+            }
+        }
+
+        function optimizeLine(lineId) {
+            showToast(`Оптимизация линии ${lineId} выполнена`, 'success');
+        }
+
+        // Обработчики событий для фильтров
+        document.addEventListener('DOMContentLoaded', function() {
+            // Добавляем обработчики для фильтров очереди
+            const queueFilter = document.getElementById('queueFilter');
+            const queueSort = document.getElementById('queueSort');
+            
+            if (queueFilter) {
+                queueFilter.addEventListener('change', renderOrdersQueue);
+            }
+            if (queueSort) {
+                queueSort.addEventListener('change', renderOrdersQueue);
+            }
+        });
 
         // =============================================
         // MPSYSTEM LINE ACTIONS (Legacy)
