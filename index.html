@@ -146,14 +146,97 @@
             margin: 0;
         }
 
-        /* ===== STATS GRID ===== */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        /* ===== DASHBOARD METRICS ===== */
+        .dashboard-metrics {
+            margin-bottom: 2rem;
         }
 
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #60a5fa);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .metric-icon {
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            background: #f3f4f6;
+            border-radius: 8px;
+        }
+
+        .metric-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 2.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0.5rem 0;
+            line-height: 1;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-change {
+            font-size: 0.8rem;
+            color: #10b981;
+            font-weight: 500;
+            background: #f0fdf4;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .metric-change.negative {
+            color: #ef4444;
+            background: #fef2f2;
+        }
+
+        /* Legacy stat styles for compatibility */
         .stat-card {
             background: white;
             border-radius: 12px;
@@ -162,11 +245,6 @@
             border: 1px solid #e2e8f0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             transition: all 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .stat-value {
@@ -397,6 +475,212 @@
         .close:hover {
             background: #f3f4f6;
             color: #374151;
+        }
+
+        /* ===== LINE DETAILS MODAL ===== */
+        .modal-content.line-modal {
+            max-width: 900px;
+            max-height: 90vh;
+        }
+
+        .line-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .detail-section {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .detail-section.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .detail-section h3 {
+            margin: 0 0 1rem 0;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .detail-item label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .progress-detail {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            margin-left: 1rem;
+        }
+
+        .progress-detail .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .progress-detail .progress-fill {
+            height: 100%;
+            background: #f97316;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .metric-item .metric-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-item .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .process-params {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .param-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .param-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .param-status {
+            font-size: 1.2rem;
+        }
+
+        .param-status.normal {
+            color: #10b981;
+        }
+
+        .param-status.warning {
+            color: #f59e0b;
+        }
+
+        .param-status.critical {
+            color: #ef4444;
+        }
+
+        .line-status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: #10b981;
+            color: white;
+        }
+
+        .line-status-badge.idle {
+            background: #6b7280;
+        }
+
+        .line-status-badge.maintenance {
+            background: #f59e0b;
+        }
+
+        .line-status-badge.stopped {
+            background: #ef4444;
+        }
+
+        .modal-actions {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-action.primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-action.secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-action.warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-action.info {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         /* ===== UTILITIES ===== */
@@ -775,30 +1059,48 @@
     <main class="container">
         <div class="main-container">
             <!-- Dashboard Tab -->
-            <div id="dashboard" class="tab-content active">
-                <!-- Ключевые метрики (4 карточки) -->
-                <div class="stats-grid">
-                    <div class="card stat-card">
-                        <h3>Orders</h3>
-                        <div class="stat-value" id="totalOrders">847</div>
-                        <div class="stat-label">Active</div>
+                    <div id="dashboard" class="tab-content active">
+            <!-- UC-D001: Верхний блок - Ключевые метрики (4 карточки) -->
+            <div class="dashboard-metrics">
+                <div class="metrics-grid">
+                    <div class="metric-card" data-metric="orders">
+                        <div class="metric-header">
+                            <span class="metric-icon">📊</span>
+                            <span class="metric-title">Orders</span>
+                        </div>
+                        <div class="metric-value" id="totalOrders">847</div>
+                        <div class="metric-label">Active</div>
+                        <div class="metric-change" id="ordersChange">+12 today</div>
                     </div>
-                    <div class="card stat-card">
-                        <h3>Production</h3>
-                        <div class="stat-value" id="productionCapacity">94.2%</div>
-                        <div class="stat-label">Capacity</div>
+                    <div class="metric-card" data-metric="production">
+                        <div class="metric-header">
+                            <span class="metric-icon">⚙️</span>
+                            <span class="metric-title">Production</span>
+                        </div>
+                        <div class="metric-value" id="productionCapacity">94.2%</div>
+                        <div class="metric-label">Capacity</div>
+                        <div class="metric-change" id="productionChange">+2.1% vs target</div>
                     </div>
-                    <div class="card stat-card">
-                        <h3>Efficiency</h3>
-                        <div class="stat-value" id="oeeMetric">87.3%</div>
-                        <div class="stat-label">OEE</div>
+                    <div class="metric-card" data-metric="efficiency">
+                        <div class="metric-header">
+                            <span class="metric-icon">📈</span>
+                            <span class="metric-title">Efficiency</span>
+                        </div>
+                        <div class="metric-value" id="oeeMetric">87.3%</div>
+                        <div class="metric-label">OEE</div>
+                        <div class="metric-change" id="efficiencyChange">+1.2% vs yesterday</div>
                     </div>
-                    <div class="card stat-card">
-                        <h3>Quality</h3>
-                        <div class="stat-value" id="qualityRate">99.1%</div>
-                        <div class="stat-label">Pass Rate</div>
+                    <div class="metric-card" data-metric="quality">
+                        <div class="metric-header">
+                            <span class="metric-icon">✅</span>
+                            <span class="metric-title">Quality</span>
+                        </div>
+                        <div class="metric-value" id="qualityRate">99.1%</div>
+                        <div class="metric-label">Pass Rate</div>
+                        <div class="metric-change" id="qualityChange">Excellent</div>
                     </div>
                 </div>
+            </div>
 
                 <!-- Производственные линии -->
                 <div class="production-overview">
@@ -1080,6 +1382,101 @@
             </div>
         </div>
     </main>
+
+    <!-- UC-D002: Line Details Modal -->
+    <div id="lineDetailsModal" class="modal">
+        <div class="modal-content line-modal">
+            <div class="modal-header">
+                <h2 id="lineModalTitle">Детали производственной линии</h2>
+                <div class="line-status-badge" id="lineModalStatus">Работает</div>
+                <button class="close" onclick="hideLineDetails()">&times;</button>
+            </div>
+            
+            <div class="line-details-grid">
+                <!-- Основная информация -->
+                <div class="detail-section">
+                    <h3>📊 Текущее состояние</h3>
+                    <div class="detail-item">
+                        <label>Текущий заказ:</label>
+                        <span id="lineModalOrder">ORD-250001</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Прогресс:</label>
+                        <div class="progress-detail">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="lineModalProgress" style="width: 65%"></div>
+                            </div>
+                            <span id="lineModalProgressText">65% (2ч 30мин осталось)</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <label>Оператор:</label>
+                        <span id="lineModalOperator">Иванов И.И.</span>
+                    </div>
+                </div>
+
+                <!-- Метрики производительности -->
+                <div class="detail-section">
+                    <h3>📈 Производительность</h3>
+                    <div class="metrics-row">
+                        <div class="metric-item">
+                            <div class="metric-title">OEE</div>
+                            <div class="metric-value" id="lineModalOEE">89%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-title">Очередь</div>
+                            <div class="metric-value" id="lineModalQueue">3</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-title">Скорость</div>
+                            <div class="metric-value" id="lineModalSpeed">120%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- История и параметры -->
+                <div class="detail-section full-width">
+                    <h3>📋 Параметры процесса</h3>
+                    <div class="process-params">
+                        <div class="param-item">
+                            <label>Температура:</label>
+                            <span class="param-value">185°C</span>
+                            <span class="param-status normal">✓</span>
+                        </div>
+                        <div class="param-item">
+                            <label>Давление:</label>
+                            <span class="param-value">2.1 бар</span>
+                            <span class="param-status normal">✓</span>
+                        </div>
+                        <div class="param-item">
+                            <label>Скорость линии:</label>
+                            <span class="param-value">150 м/мин</span>
+                            <span class="param-status warning">⚠</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UC-D003: Быстрые действия -->
+            <div class="modal-actions">
+                <h3>🎮 Быстрые действия</h3>
+                <div class="action-buttons">
+                    <button class="btn-action primary" onclick="executeLineAction('pause')">
+                        ⏸️ Пауза
+                    </button>
+                    <button class="btn-action secondary" onclick="executeLineAction('priority')">
+                        🔼 Приоритет
+                    </button>
+                    <button class="btn-action warning" onclick="executeLineAction('maintenance')">
+                        🔧 ТО
+                    </button>
+                    <button class="btn-action info" onclick="viewLineHistory()">
+                        📊 История
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Order Modal -->
     <div id="orderModal" class="modal">
@@ -1814,10 +2211,172 @@
         }
 
         // =============================================
-        // MPSYSTEM LINE ACTIONS
+        // UC-D001: DASHBOARD AUTO-UPDATE (30 seconds)
         // =============================================
 
+        async function updateDashboardMetrics() {
+            try {
+                const response = await fetch('./api/v1/dashboard/metrics.json');
+                if (response.ok) {
+                    const metrics = await response.json();
+                    
+                    // Update metrics with animation
+                    animateMetricUpdate('totalOrders', metrics.orders_active);
+                    animateMetricUpdate('productionCapacity', metrics.production_capacity + '%');
+                    animateMetricUpdate('oeeMetric', metrics.oee_efficiency + '%');
+                    animateMetricUpdate('qualityRate', metrics.quality_pass_rate + '%');
+                    
+                    return true;
+                }
+            } catch (error) {
+                console.log('📡 GitHub Pages metrics API not available');
+            }
+            return false;
+        }
+
+        function animateMetricUpdate(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.style.transform = 'scale(1.1)';
+                element.style.color = '#10b981';
+                setTimeout(() => {
+                    element.textContent = newValue;
+                    element.style.transform = 'scale(1)';
+                    element.style.color = '';
+                }, 200);
+            }
+        }
+
+        // =============================================
+        // UC-D002: LINE DETAILS MODAL
+        // =============================================
+
+        let currentLineData = null;
+
         function showLineDetails(lineId) {
+            // Find line data from production lines API
+            loadLineDetails(lineId);
+            
+            // Show modal
+            const modal = document.getElementById('lineDetailsModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function hideLineDetails() {
+            const modal = document.getElementById('lineDetailsModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            currentLineData = null;
+        }
+
+        async function loadLineDetails(lineId) {
+            try {
+                const response = await fetch('./api/v1/dashboard/production-lines.json');
+                if (response.ok) {
+                    const lines = await response.json();
+                    const line = lines.find(l => l.line_id === lineId);
+                    if (line) {
+                        populateLineModal(line);
+                        currentLineData = line;
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.log('📡 Line details API not available');
+            }
+            
+            // Fallback data
+            populateLineModal({
+                line_id: lineId,
+                line_name: `Линия ${lineId}`,
+                status: 'running',
+                current_order: 'ORD-250001',
+                progress_percent: 65,
+                time_remaining: '2ч 30мин осталось',
+                oee_percent: 89,
+                queue_count: 3,
+                operator: 'Иванов И.И.'
+            });
+        }
+
+        function populateLineModal(line) {
+            // Update modal title and status
+            document.getElementById('lineModalTitle').textContent = line.line_name;
+            const statusBadge = document.getElementById('lineModalStatus');
+            statusBadge.textContent = getStatusText(line.status);
+            statusBadge.className = `line-status-badge ${line.status}`;
+            
+            // Update details
+            document.getElementById('lineModalOrder').textContent = line.current_order || 'Нет заказа';
+            document.getElementById('lineModalProgress').style.width = `${line.progress_percent}%`;
+            document.getElementById('lineModalProgressText').textContent = line.time_remaining || `${line.progress_percent}%`;
+            document.getElementById('lineModalOperator').textContent = line.operator;
+            
+            // Update metrics
+            document.getElementById('lineModalOEE').textContent = `${line.oee_percent}%`;
+            document.getElementById('lineModalQueue').textContent = line.queue_count;
+            document.getElementById('lineModalSpeed').textContent = '120%'; // Mock data
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'running': 'Работает',
+                'idle': 'Простой',
+                'maintenance': 'Наладка',
+                'stopped': 'Остановлена'
+            };
+            return statusMap[status] || status;
+        }
+
+        // =============================================
+        // UC-D003: QUICK ACTIONS
+        // =============================================
+
+        function executeLineAction(action) {
+            if (!currentLineData) {
+                showToast('Данные линии не загружены', 'error');
+                return;
+            }
+            
+            const lineId = currentLineData.line_id;
+            const lineName = currentLineData.line_name;
+            
+            switch(action) {
+                case 'pause':
+                    showToast(`🏭 Линия "${lineName}" поставлена на паузу`, 'warning');
+                    break;
+                case 'priority':
+                    showToast(`🔼 Приоритет линии "${lineName}" изменен`, 'info');
+                    break;
+                case 'maintenance':
+                    showToast(`🔧 Линия "${lineName}" переведена в режим ТО`, 'warning');
+                    break;
+                default:
+                    showToast(`Действие "${action}" выполнено для линии "${lineName}"`, 'info');
+            }
+            
+            // Hide modal after action
+            setTimeout(() => {
+                hideLineDetails();
+            }, 1500);
+        }
+
+        function viewLineHistory() {
+            if (!currentLineData) return;
+            
+            showToast(`📊 История линии "${currentLineData.line_name}" будет доступна в следующей версии`, 'info');
+        }
+
+        // =============================================
+        // MPSYSTEM LINE ACTIONS (Legacy)
+        // =============================================
+
+        function showLineDetails_Legacy(lineId) {
             showToast(`Детали линии ${lineId} будут доступны в модальном окне`, 'info');
         }
 
@@ -1905,21 +2464,35 @@
             loadInventory();
             loadProduction();
             
-            // Load GitHub Pages API data if available
+            // UC-D001: Load initial dashboard data
+            await updateDashboardMetrics();
             await loadProductionLinesFromAPI();
             await loadCriticalAlertsFromAPI();
             
             // Auto-update time every second
             setInterval(updateCurrentTime, 1000);
             
-            // Auto-update dashboard every 30 seconds (as per ТЗ)
+            // UC-D001: Auto-update dashboard every 30 seconds (as per ТЗ requirement)
             setInterval(async function() {
-                if (document.querySelector('#dashboard.active')) {
-                    await updateDashboardStats();
+                const dashboardTab = document.querySelector('#dashboard.active');
+                if (dashboardTab) {
+                    console.log('🔄 UC-D001: Auto-updating dashboard (30s interval)');
+                    await updateDashboardMetrics();
                     await loadProductionLinesFromAPI();
                     await loadCriticalAlertsFromAPI();
                 }
             }, 30000);
+        });
+
+        // UC-D002: Close modals on outside click
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                if (e.target.id === 'lineDetailsModal') {
+                    hideLineDetails();
+                } else {
+                    e.target.classList.remove('active');
+                }
+            }
         });
 
         // Close modals on outside click
