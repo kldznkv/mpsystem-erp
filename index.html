@@ -23,16 +23,130 @@
             color: #1e293b;
             line-height: 1.6;
             font-size: 14px;
+            display: flex;
+            min-height: 100vh;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
 
-        /* ===== HEADER ===== */
-        .header {
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .logo-text .subtitle {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            display: block;
+            margin-top: 0.25rem;
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .status-indicator {
+            font-size: 0.8rem;
+        }
+
+        .status-indicator.online {
+            color: #10b981;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: none;
+            background: none;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-right: 3px solid white;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-text {
+            font-weight: 500;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            padding: 2rem;
+            max-width: none;
+        }
+
+        /* ===== IMPROVED LAYOUT ===== */
             background: white;
             border-bottom: 1px solid #e2e8f0;
             padding: 15px 0;
@@ -84,24 +198,132 @@
             font-size: 14px;
         }
 
-        .nav-tab:hover {
-            color: #0f172a;
-            background: #f1f5f9;
-        }
-
-        .nav-tab.active {
-            color: #3b82f6;
-            border-bottom-color: #3b82f6;
-            background: #eff6ff;
-        }
-
-        /* ===== MAIN CONTENT ===== */
-        .main-container {
-            padding: 20px 0;
-        }
-
+        /* ===== ENHANCED LAYOUT ===== */
         .tab-content {
             display: none;
+            width: 100%;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== ENHANCED CARDS ===== */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .card-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        /* ===== ENHANCED GRIDS ===== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* ===== ENHANCED TABLES ===== */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        table th {
+            background: #f8fafc;
+            padding: 1.25rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        table td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        table tr:hover {
+            background: #f8fafc;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ===== RESPONSIVE IMPROVEMENTS ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .content-wrapper {
+                padding: 1rem;
+            }
+
+            .metrics-grid,
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
         }
 
         .tab-content.active {
@@ -815,8 +1037,9 @@
         /* Orders Main Layout */
         .orders-main {
             display: grid;
-            grid-template-columns: 1fr 350px;
+            grid-template-columns: 1fr 400px;
             gap: 2rem;
+            min-height: 70vh;
         }
 
         .orders-table-section {
@@ -982,9 +1205,10 @@
 
         .planning-workspace {
             display: grid;
-            grid-template-columns: 300px 1fr 280px;
-            gap: 1.5rem;
-            min-height: 600px;
+            grid-template-columns: 380px 1fr 350px;
+            gap: 2rem;
+            min-height: 80vh;
+            max-height: 85vh;
         }
 
         /* Orders Queue Panel */
@@ -1738,54 +1962,61 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <a href="#" class="logo">
-                    <span>🏭</span>
-                    <span>MPSYSTEM</span>
-                </a>
-                <div class="user-info">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">🏭</span>
+                <div class="logo-text">
+                    <h1>MPSYSTEM</h1>
                     <span class="subtitle">Упаковочные материалы</span>
-                    <span class="status-indicator online" id="systemStatus">● Online</span>
-                    <span class="time" id="currentTime"></span>
                 </div>
             </div>
+            <div class="system-status">
+                <span class="status-indicator online" id="systemStatus">● Online</span>
+                <span class="time" id="currentTime"></span>
+            </div>
         </div>
-    </header>
 
-    <!-- Navigation -->
-    <nav class="nav-tabs container">
-        <button class="nav-tab active" onclick="showTab('dashboard')">
-            📊 Dashboard
-        </button>
-        <button class="nav-tab" onclick="showTab('planning')">
-            📋 Планирование
-        </button>
-        <button class="nav-tab" onclick="showTab('production')">
-            ⚙️ Производство
-        </button>
-        <button class="nav-tab" onclick="showTab('quality')">
-            🔬 Качество
-        </button>
-        <button class="nav-tab" onclick="showTab('warehouse')">
-            📦 Склад
-        </button>
-        <button class="nav-tab" onclick="showTab('orders')">
-            📑 Заказы
-        </button>
-        <button class="nav-tab" onclick="showTab('maintenance')">
-            🔧 ТО
-        </button>
-        <button class="nav-tab" onclick="showTab('analytics')">
-            📈 Аналитика
-        </button>
-    </nav>
+        <nav class="sidebar-nav">
+            <button class="nav-item active" onclick="showTab('dashboard')">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </button>
+            <button class="nav-item" onclick="showTab('planning')">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Планирование</span>
+            </button>
+            <button class="nav-item" onclick="showTab('production')">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Производство</span>
+            </button>
+            <button class="nav-item" onclick="showTab('quality')">
+                <span class="nav-icon">🔬</span>
+                <span class="nav-text">Качество</span>
+            </button>
+            <button class="nav-item" onclick="showTab('warehouse')">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">Склад</span>
+            </button>
+            <button class="nav-item" onclick="showTab('orders')">
+                <span class="nav-icon">📑</span>
+                <span class="nav-text">Заказы</span>
+            </button>
+            <button class="nav-item" onclick="showTab('maintenance')">
+                <span class="nav-icon">🔧</span>
+                <span class="nav-text">ТО</span>
+            </button>
+            <button class="nav-item" onclick="showTab('analytics')">
+                <span class="nav-icon">📈</span>
+                <span class="nav-text">Аналитика</span>
+            </button>
+        </nav>
+    </aside>
 
-    <!-- Main Content -->
-    <main class="container">
-        <div class="main-container">
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="content-wrapper">
             <!-- Dashboard Tab -->
                     <div id="dashboard" class="tab-content active">
             <!-- UC-D001: Верхний блок - Ключевые метрики (4 карточки) -->
@@ -3021,7 +3252,7 @@
             document.getElementById(tabName).classList.add('active');
 
             // Update navigation
-            document.querySelectorAll('.nav-tab').forEach(btn => {
+            document.querySelectorAll('.nav-item').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
