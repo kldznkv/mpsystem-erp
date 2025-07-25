@@ -717,6 +717,11 @@
             animation: fadeIn 0.3s ease;
         }
 
+        .modal.side-panel {
+            background: rgba(0,0,0,0.3);
+            z-index: 1001;
+        }
+
         .modal.active {
             display: flex;
             align-items: center;
@@ -729,10 +734,6 @@
             align-items: stretch;
         }
 
-        .modal.side-panel.active {
-            animation: slideInRight 0.3s ease;
-        }
-
         .modal-content {
             background: white;
             border-radius: 8px;
@@ -742,6 +743,7 @@
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border: 1px solid #e5e7eb;
+            position: relative;
         }
 
         /* Side panel content */
@@ -756,8 +758,15 @@
             border-top: none;
             border-bottom: none;
             box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            position: fixed;
+            right: 0;
+            top: 0;
             transform: translateX(100%);
-            animation: slideInRight 0.3s ease forwards;
+            transition: transform 0.3s ease;
+        }
+
+        .modal.side-panel.active .modal-content {
+            transform: translateX(0);
         }
 
         @keyframes slideInRight {
@@ -778,32 +787,79 @@
             }
         }
 
-        /* Side panel header with close button on left */
+        /* Side panel header with proper layout */
         .modal.side-panel .modal-header {
             border-bottom: 1px solid #e5e7eb;
             background: #f8fafc;
             padding: 1rem 1.5rem;
-            flex-direction: row-reverse;
+            display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .modal.side-panel .close {
-            order: -1;
-            margin-right: auto;
+        .modal.side-panel .modal-header h2,
+        .modal.side-panel .modal-header h3 {
+            margin: 0;
+            flex: 1;
+        }
+
+        /* Modal title area for complex headers */
+        .modal-title-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            flex: 1;
+        }
+
+        .modal-title-area h2,
+        .modal-title-area h3 {
+            margin: 0;
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        .line-status-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: #10b981;
+            color: white;
+            width: fit-content;
         }
 
         /* Side panel body with custom scroll */
         .modal.side-panel .modal-body {
             padding: 1.5rem;
             overflow-y: auto;
-            height: calc(100vh - 140px);
+            height: calc(100vh - 80px);
+            flex: 1;
         }
 
         .modal.side-panel .modal-footer {
             border-top: 1px solid #e5e7eb;
             background: white;
             padding: 1rem 1.5rem;
-            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+        /* Ensure side panel modal content uses flex layout */
+        .modal.side-panel .modal-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fix grid layouts in side panels */
+        .modal.side-panel .line-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal.side-panel .detail-section.full-width {
+            grid-column: 1 / -1;
         }
 
         .modal-header {
@@ -860,6 +916,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex-shrink: 0;
         }
 
         .modal-controls .btn {
@@ -869,17 +926,12 @@
             align-items: center;
             justify-content: center;
             font-size: 1rem;
+            padding: 0.25rem;
         }
 
         /* Side panel specific adjustments */
         .modal.side-panel .modal-controls {
-            order: -1;
-            margin-right: auto;
-        }
-
-        .modal.side-panel .modal-title,
-        .modal.side-panel h2 {
-            order: 1;
+            margin-left: auto;
         }
 
         /* ===== LINE DETAILS MODAL ===== */
@@ -3069,8 +3121,10 @@
     <div id="lineDetailsModal" class="modal">
         <div class="modal-content line-modal">
             <div class="modal-header">
-                <h2 id="lineModalTitle">Детали производственной линии</h2>
-                <div class="line-status-badge" id="lineModalStatus">Работает</div>
+                <div class="modal-title-area">
+                    <h2 id="lineModalTitle">Детали производственной линии</h2>
+                    <div class="line-status-badge" id="lineModalStatus">Работает</div>
+                </div>
                 <div class="modal-controls">
                     <button class="btn btn-sm btn-secondary" onclick="toggleModalType('lineDetailsModal')" title="Переключить вид">⇄</button>
                     <button class="close" onclick="hideLineDetails()">&times;</button>
@@ -3561,11 +3615,11 @@
             if (modal.classList.contains('side-panel')) {
                 const content = modal.querySelector('.modal-content');
                 if (content) {
-                    content.style.animation = 'slideOutRight 0.3s ease forwards';
+                    content.style.transform = 'translateX(100%)';
                     setTimeout(() => {
                         modal.classList.remove('active');
                         modal.classList.remove('side-panel');
-                        content.style.animation = '';
+                        content.style.transform = '';
                         document.body.style.overflow = '';
                     }, 300);
                     return;
