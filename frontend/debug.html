@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPSYSTEM Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .debug-section { 
+            border: 1px solid #ddd; 
+            margin: 20px 0; 
+            padding: 15px; 
+            background: #f9f9f9; 
+        }
+        .debug-section h3 { margin-top: 0; }
+        pre { background: #fff; padding: 10px; border: 1px solid #eee; overflow-x: auto; }
+        button { padding: 10px 20px; margin: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <h1>MPSYSTEM Debug Console</h1>
+
+    <div class="debug-section">
+        <h3>1. Configuration</h3>
+        <button onclick="checkConfig()">Check Config</button>
+        <pre id="config-result"></pre>
+    </div>
+
+    <div class="debug-section">
+        <h3>2. API Connection</h3>
+        <button onclick="testAPIConnection()">Test API Connection</button>
+        <pre id="api-result"></pre>
+    </div>
+
+    <div class="debug-section">
+        <h3>3. Mode Detection</h3>
+        <button onclick="checkMode()">Check Current Mode</button>
+        <pre id="mode-result"></pre>
+    </div>
+
+    <div class="debug-section">
+        <h3>4. Orders Data</h3>
+        <button onclick="loadOrdersDebug()">Load Orders (Debug)</button>
+        <pre id="orders-result"></pre>
+    </div>
+
+    <div class="debug-section">
+        <h3>5. Field Mapping Test</h3>
+        <button onclick="testFieldMapping()">Test Field Mapping</button>
+        <pre id="mapping-result"></pre>
+    </div>
+
+    <!-- Load the actual application scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/demo-data.js"></script>
+    <script>
+        // Debug functions
+        
+        function checkConfig() {
+            const result = document.getElementById('config-result');
+            result.innerHTML = `
+API_BASE_URL: ${CONFIG.API_BASE_URL}
+DEMO_MODE: ${CONFIG.DEMO_MODE}
+FORCE_DEMO_MODE: ${CONFIG.FORCE_DEMO_MODE}
+FORCE_API_MODE: ${CONFIG.FORCE_API_MODE || 'undefined'}
+API_CHECK_TIMEOUT: ${CONFIG.API_CHECK_TIMEOUT}
+
+API Endpoints:
+ORDERS: ${CONFIG.API_ENDPOINTS.ORDERS}
+HEALTH: ${CONFIG.API_ENDPOINTS.HEALTH}
+            `;
+        }
+
+        async function testAPIConnection() {
+            const result = document.getElementById('api-result');
+            result.innerHTML = 'Testing...';
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/health`);
+                const data = await response.json();
+                
+                result.innerHTML = `✅ API Connected Successfully
+Status: ${response.status}
+Response: ${JSON.stringify(data, null, 2)}`;
+                
+            } catch (error) {
+                result.innerHTML = `❌ API Connection Failed
+Error: ${error.message}
+Stack: ${error.stack}`;
+            }
+        }
+
+        async function checkMode() {
+            const result = document.getElementById('mode-result');
+            
+            // We need to load the ModeDetector from app.js
+            // For now, let's do a simple mode detection
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/health`, {
+                    method: 'GET',
+                    timeout: 3000
+                });
+                
+                if (response.ok) {
+                    result.innerHTML = `🔗 API Mode Detected
+API is available and responding
+Status: ${response.status}`;
+                } else {
+                    result.innerHTML = `🎭 Demo Mode (API returned ${response.status})`;
+                }
+                
+            } catch (error) {
+                result.innerHTML = `🎭 Demo Mode (API Error)
+Error: ${error.message}`;
+            }
+        }
+
+        async function loadOrdersDebug() {
+            const result = document.getElementById('orders-result');
+            result.innerHTML = 'Loading orders...';
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}${CONFIG.API_ENDPOINTS.ORDERS}?limit=3`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                result.innerHTML = `✅ Orders Loaded Successfully
+Total: ${data.total || 'unknown'}
+Loaded: ${data.items ? data.items.length : 0}
+
+Sample Data:
+${JSON.stringify(data, null, 2)}`;
+                
+            } catch (error) {
+                result.innerHTML = `❌ Orders Loading Failed
+Error: ${error.message}
+
+Falling back to demo data...
+${JSON.stringify(DEMO_ORDERS.slice(0, 2), null, 2)}`;
+            }
+        }
+
+        function testFieldMapping() {
+            const result = document.getElementById('mapping-result');
+            
+            // Test with demo data
+            const testOrder = DEMO_ORDERS[0];
+            
+            const mapping = {
+                'Demo Data Fields': {
+                    'client_name': testOrder.client_name,
+                    'product_name': testOrder.product_name,
+                    'due_date': testOrder.due_date
+                },
+                'Alternative Field Names': {
+                    'customer_name': testOrder.customer_name || 'not found',
+                    'customer': testOrder.customer || 'not found', 
+                    'client': testOrder.client || 'not found'
+                },
+                'Field Access Test': {
+                    'order.client_name': testOrder.client_name || 'UNDEFINED',
+                    'order.product_name': testOrder.product_name || 'UNDEFINED',
+                    'order.due_date': testOrder.due_date || 'UNDEFINED'
+                }
+            };
+            
+            result.innerHTML = JSON.stringify(mapping, null, 2);
+        }
+    </script>
+</body>
+</html>

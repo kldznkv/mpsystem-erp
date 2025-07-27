@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        button { padding: 10px 20px; margin: 10px 0; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>MPSYSTEM API Test</h1>
+    
+    <button onclick="testAPI()">Test API Connection</button>
+    <button onclick="loadOrders()">Load Orders</button>
+    
+    <div id="status"></div>
+    
+    <h2>Orders Data:</h2>
+    <div id="raw-data" style="background: #f5f5f5; padding: 10px; margin: 10px 0; white-space: pre-wrap;"></div>
+    
+    <table id="orders-table" style="display: none;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Number</th>
+                <th>Client Name</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Priority</th>
+            </tr>
+        </thead>
+        <tbody id="orders-tbody">
+        </tbody>
+    </table>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        
+        function showStatus(message, isError = false) {
+            const status = document.getElementById('status');
+            status.className = 'status ' + (isError ? 'error' : 'success');
+            status.textContent = message;
+        }
+        
+        async function testAPI() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                showStatus(`API Connected! Status: ${data.status}, Records: ${data.database.total_records}`);
+                console.log('Health check:', data);
+            } catch (error) {
+                showStatus(`API Error: ${error.message}`, true);
+                console.error('API Error:', error);
+            }
+        }
+        
+        async function loadOrders() {
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/orders/?limit=5`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                // Show raw data
+                document.getElementById('raw-data').textContent = JSON.stringify(data, null, 2);
+                
+                // Show in table
+                if (data.items && data.items.length > 0) {
+                    showOrdersTable(data.items);
+                    showStatus(`Loaded ${data.items.length} orders successfully`);
+                } else {
+                    showStatus('No orders found', true);
+                }
+                
+                console.log('Orders data:', data);
+                
+            } catch (error) {
+                showStatus(`Orders Error: ${error.message}`, true);
+                console.error('Orders Error:', error);
+            }
+        }
+        
+        function showOrdersTable(orders) {
+            const table = document.getElementById('orders-table');
+            const tbody = document.getElementById('orders-tbody');
+            
+            tbody.innerHTML = '';
+            
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.number || '-'}</td>
+                    <td><strong>${order.client_name || 'UNDEFINED'}</strong></td>
+                    <td><strong>${order.product_name || 'UNDEFINED'}</strong></td>
+                    <td>${order.quantity || '-'} ${order.unit || ''}</td>
+                    <td>${order.due_date || '-'}</td>
+                    <td>${order.status || '-'}</td>
+                    <td>${order.priority || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            table.style.display = 'table';
+        }
+    </script>
+</body>
+</html>
