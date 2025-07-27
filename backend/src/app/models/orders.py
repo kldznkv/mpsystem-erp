@@ -5,7 +5,7 @@ from datetime import datetime, date
 import uuid
 import enum
 
-from app.db.database import Base
+from app.db.base import BaseModel
 
 
 class OrderPriority(str, enum.Enum):
@@ -36,7 +36,7 @@ class OrderUnit(str, enum.Enum):
     TON = "ton"      # tons
 
 
-class Order(Base):
+class Order(BaseModel):
     """
     Order model for MPSYSTEM
     

@@ -1,10 +1,13 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Text, Integer, Float, DateTime, Boolean, ForeignKey, Enum as SQLEnum, JSON
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, TYPE_CHECKING
 
 from app.db.base import BaseModel
 from app.models.base import OrderStatus, OrderPriority, ProductionLineStatus
+
+if TYPE_CHECKING:
+    from app.models.warehouse import Material, Warehouse
 
 
 class Customer(BaseModel):
@@ -261,7 +264,3 @@ class ProductionJob(BaseModel):
     # Relationships
     production_order: Mapped["ProductionOrder"] = relationship(back_populates="production_jobs")
     production_line: Mapped["ProductionLine"] = relationship(back_populates="production_jobs")
-
-
-# Import to avoid circular imports
-from app.models.warehouse import Material, Warehouse

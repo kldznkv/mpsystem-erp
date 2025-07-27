@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = "your-secret-key-change-in-production"
+    ENVIRONMENT: str = "development"
     
     # Server
     SERVER_NAME: str = "MPSYSTEM Backend"
@@ -28,6 +29,7 @@ class Settings(BaseSettings):
     
     # Logging
     LOG_LEVEL: str = "INFO"
+    LOG_FORMAT: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     
     model_config = {
         "env_file": ".env",
