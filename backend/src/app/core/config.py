@@ -88,11 +88,11 @@ class Settings(BaseSettings):
     DB_POOL_TIMEOUT: int = int(os.getenv("DB_POOL_TIMEOUT", "30"))
     
     # API Rate Limiting
-    RATE_LIMIT_ENABLED: bool = self.ENVIRONMENT == "production"
+    RATE_LIMIT_ENABLED: bool = os.getenv("ENVIRONMENT", "development") == "production"
     RATE_LIMIT_PER_MINUTE: int = 60
     
     # Feature Flags
-    ENABLE_SWAGGER_UI: bool = self.DEBUG
+    ENABLE_SWAGGER_UI: bool = os.getenv("DEBUG", "true").lower() == "true"
     ENABLE_METRICS: bool = True
     
     model_config = {
