@@ -2,11 +2,10 @@
 Database initialization with sample data for MPSYSTEM ERP
 """
 
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
-import asyncio
 
-from app.db.database import engine, AsyncSessionLocal
+from app.db.database import engine, SessionLocal
 from app.db.base import Base
 from app.models.warehouse import Warehouse, Supplier, Material, Batch, InventoryItem
 from app.models.production import Customer, Product, ProductionLine
@@ -25,23 +24,22 @@ from app.services.orders import OrderService
 logger = logging.getLogger(__name__)
 
 
-async def init_database():
+def init_database():
     """Initialize database with tables and sample data"""
     
     # Create all tables
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    Base.metadata.create_all(bind=engine)
     
     print("✅ Database tables created")
     
     # Add sample data
-    async with AsyncSessionLocal() as session:
-        await create_sample_data(session)
+    with SessionLocal() as session:
+        create_sample_data(session)
     
     print("✅ Sample data loaded")
 
 
-async def create_sample_data(session: AsyncSession):
+def create_sample_data(session: Session):
     """Create sample data for development and testing"""
     
     # Create warehouses
@@ -74,7 +72,7 @@ async def create_sample_data(session: AsyncSession):
         session.add(warehouse)
         warehouses.append(warehouse)
     
-    await session.flush()  # Get IDs
+    session.flush()  # Get IDs
     
     # Create suppliers
     suppliers_data = [
@@ -132,7 +130,7 @@ async def create_sample_data(session: AsyncSession):
         session.add(supplier)
         suppliers.append(supplier)
     
-    await session.flush()
+    session.flush()
     
     # Create materials
     materials_data = [
@@ -200,7 +198,7 @@ async def create_sample_data(session: AsyncSession):
         session.add(material)
         materials.append(material)
     
-    await session.flush()
+    session.flush()
     
     # Create batches
     batches_data = [
@@ -238,7 +236,7 @@ async def create_sample_data(session: AsyncSession):
         session.add(batch)
         batches.append(batch)
     
-    await session.flush()
+    session.flush()
     
     # Create inventory items
     inventory_data = [
@@ -309,7 +307,7 @@ async def create_sample_data(session: AsyncSession):
         customer = Customer(**cust_data)
         session.add(customer)
     
-    await session.commit()
+    session.commit()
     print("✅ Sample data created successfully")
 
 
@@ -731,5 +729,5 @@ def create_all_sample_data(db: Session) -> dict:
 
 if __name__ == "__main__":
     print("🚀 Initializing MPSYSTEM ERP Database...")
-    asyncio.run(init_database())
+    init_database()
     print("🎉 Database initialization completed!")

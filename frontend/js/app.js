@@ -12,11 +12,21 @@ class ModeDetector {
     async detectApiMode() {
         console.log('🔍 Проверка доступности API...');
         
+        // Force API mode if configured (for debugging)
+        if (CONFIG.FORCE_API_MODE) {
+            console.log('🔗 Принудительный API MODE включен');
+            CONFIG.DEMO_MODE = false;
+            this.isApiAvailable = true;
+            this.updateModeIndicator('api');
+            return true;
+        }
+        
         // Force demo mode if configured
         if (CONFIG.FORCE_DEMO_MODE) {
             console.log('🎭 Принудительный DEMO MODE включен');
             CONFIG.DEMO_MODE = true;
             this.isApiAvailable = false;
+            this.updateModeIndicator('demo');
             return false;
         }
 
@@ -638,7 +648,7 @@ class ERPStorage {
         try {
             const order = this.addRecord('orders', {
                 order_number: this.generateOrderNumber(),
-                customer_name: orderData.customer_name || orderData.customer,
+                client_name: orderData.client_name || orderData.customer_name || orderData.customer,
                 product_name: orderData.product_name || orderData.product,
                 quantity: orderData.quantity,
                 order_date: new Date().toISOString().split('T')[0],
@@ -878,7 +888,7 @@ function loadOrders() {
     tbody.innerHTML = orders.map(order => `
         <tr>
             <td>${order.order_number || order.id}</td>
-            <td>${order.customer_name || order.customer || '-'}</td>
+            <td>${order.client_name || order.customer_name || order.customer || order.client || '-'}</td>
             <td>${order.product_name || order.product || '-'}</td>
             <td>${order.quantity || 0} кг</td>
             <td><span class="status-badge status-${getStatusClass(order.status)}">${getStatusLabel(order.status)}</span></td>
@@ -1499,10 +1509,30 @@ async function loadOrdersPage() {
             });
         }
         
+        // Normalize orders data (ensure consistent field names)
+        const normalizedOrders = (ordersResponse.items || []).map(order => ({
+            ...order,
+            // Ensure these fields are always available
+            client_name: order.client_name || order.customer_name || order.customer || order.client || 'Unknown Client',
+            product_name: order.product_name || order.product || 'Unknown Product',
+            due_date: order.due_date || order.delivery_date || order.dueDate || null
+        }));
+        
         // Update global orders data
-        window.ordersData = ordersResponse.items || [];
+        window.ordersData = normalizedOrders;
         ordersData = window.ordersData; // Обновляем локальную переменную
         filteredOrders = [...ordersData]; // Инициализируем фильтрованные данные
+        
+        // Debug logging
+        console.log('📦 Orders loaded:', ordersData.length, 'orders');
+        if (ordersData.length > 0) {
+            console.log('📋 First order sample:', {
+                id: ordersData[0].id,
+                client_name: ordersData[0].client_name,
+                product_name: ordersData[0].product_name,
+                due_date: ordersData[0].due_date
+            });
+        }
         
         // Update UI
         updateOrdersSummary();
@@ -1842,6 +1872,16 @@ function renderOrdersTable() {
     existingRows.forEach(row => row.remove());
     
     const orders = window.ordersData || [];
+    
+    // Debug logging
+    console.log('🎨 Rendering orders table:', orders.length, 'orders');
+    if (orders.length > 0) {
+        console.log('🎯 First order for rendering:', {
+            client_name: orders[0].client_name, 
+            product_name: orders[0].product_name,
+            due_date: orders[0].due_date
+        });
+    }
     
     // Update count
     if (ordersCount) {

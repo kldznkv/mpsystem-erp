@@ -66,15 +66,18 @@ app = FastAPI(
 )
 
 # Set up CORS middleware
-if settings.BACKEND_CORS_ORIGINS:
+cors_origins = settings.cors_origins
+if cors_origins:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
+        allow_origins=[str(origin) for origin in cors_origins],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    logger.info(f"CORS enabled for origins: {settings.BACKEND_CORS_ORIGINS}")
+    logger.info(f"CORS enabled for origins: {cors_origins}")
+else:
+    logger.warning("No CORS origins configured")
 
 # Include API router
 app.include_router(api_router, prefix=settings.API_V1_STR)
@@ -241,7 +244,7 @@ async def general_exception_handler(request: Request, exc: Exception):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
-        "main:app",
+        "app.main:app",
         host="0.0.0.0",
         port=8000,
         reload=settings.DEBUG,

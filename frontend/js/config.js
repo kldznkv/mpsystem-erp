@@ -5,14 +5,15 @@ const CONFIG = {
     DESCRIPTION: 'Веб-платформа для управления производством упаковочных материалов',
     
     // Working Mode Configuration
-    DEMO_MODE: null, // Will be auto-detected
+    DEMO_MODE: false, // Force API mode 
     FORCE_DEMO_MODE: false, // Set to true to force demo mode
-    API_CHECK_TIMEOUT: 3000, // 3 seconds for API availability check
+    FORCE_API_MODE: true, // Force API mode for debugging
+    API_CHECK_TIMEOUT: 5000, // 5 seconds for API availability check
     
     // API Configuration
     API_BASE_URL: window.location.hostname === 'localhost' ? 
         'http://localhost:8000' : 
-        'https://api.mpsystem.pl',
+        'https://mpsystem-backend.onrender.com',
     
     // API Endpoints
     API_ENDPOINTS: {
