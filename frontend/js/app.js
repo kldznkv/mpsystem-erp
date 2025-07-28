@@ -1510,7 +1510,7 @@ async function loadOrdersPage() {
         updateOrdersPagination(ordersResponse);
         
         const mode = modeDetector.isDemo() ? 'demo' : 'API';
-        notificationManager.success(`Загружено ${ordersResponse.items?.length || 0} заказов (${mode})`);
+        notificationManager.success(`Загружено ${ordersResponse.total || 0} заказов (${mode})`);
         
     } catch (error) {
         console.error('Error loading orders:', error);
@@ -1966,8 +1966,8 @@ function renderOrdersTable() {
             <td>
                 <a href="#" class="order-number-link" onclick="showOrderDetails('${order.id}')">${order.number}</a>
             </td>
-            <td>${order.client}</td>
-            <td>${order.product}</td>
+            <td>${order.client_name}</td>
+            <td>${order.product_name}</td>
             <td>${order.quantity} ${order.unit}</td>
             <td>${formatDate(order.dueDate)}</td>
             <td>
@@ -2032,7 +2032,7 @@ function applyOrderFilters() {
 
     filteredOrders = ordersData.filter(order => {
         if (status && order.status !== status) return false;
-        if (client && !order.client.toLowerCase().includes(client)) return false;
+        if (client && !order.client_name.toLowerCase().includes(client)) return false;
         if (search && !order.number.toLowerCase().includes(search)) return false;
         if (!selectedPriorities.includes(order.priority)) return false;
         
@@ -2085,8 +2085,8 @@ function showOrderTimeline(orderId) {
     timeline.innerHTML = `
         <div class="timeline-header">
             <h4>Заказ: ${order.number}</h4>
-            <p>Клиент: ${order.client}</p>
-            <p>Продукт: ${order.product}</p>
+            <p>Клиент: ${order.client_name}</p>
+            <p>Продукт: ${order.product_name}</p>
         </div>
         ${stages.map(stage => `
             <div class="timeline-stage ${stage.status}">
@@ -2322,8 +2322,8 @@ function renderOrdersQueue() {
             </div>
             
             <div class="queue-card-info">
-                <div><strong>${order.client}</strong></div>
-                <div>${order.product}</div>
+                <div><strong>${order.client_name}</strong></div>
+                <div>${order.product_name}</div>
                 <div>${order.quantity} ${order.unit}</div>
                 <div class="queue-deadline">⏰ ${formatDate(order.deadline)}</div>
                 <div>📏 ${order.width}мм × ${order.thickness}мкм</div>
@@ -2490,8 +2490,8 @@ function showPlanningModal(orderId, suggestedLineId = null) {
     // Заполняем информацию о заказе
     document.getElementById('planningOrderInfo').innerHTML = `
         <div><strong>Заказ:</strong> ${order.number}</div>
-        <div><strong>Клиент:</strong> ${order.client}</div>
-        <div><strong>Продукт:</strong> ${order.product}</div>
+        <div><strong>Клиент:</strong> ${order.client_name}</div>
+        <div><strong>Продукт:</strong> ${order.product_name}</div>
         <div><strong>Количество:</strong> ${order.quantity} ${order.unit}</div>
         <div><strong>Срок:</strong> ${formatDate(order.deadline)}</div>
         <div><strong>Приоритет:</strong> ${getPriorityLabel(order.priority)}</div>
@@ -4268,7 +4268,7 @@ function applyOrdersFilters() {
         }
 
         // Фильтр по клиенту
-        if (clientFilter && !order.client.toLowerCase().includes(clientFilter)) {
+        if (clientFilter && !order.client_name.toLowerCase().includes(clientFilter)) {
             return false;
         }
 
@@ -4279,7 +4279,7 @@ function applyOrdersFilters() {
 
         // Поиск по номеру заказа или продукту
         if (searchFilter) {
-            const searchText = `${order.number} ${order.product}`.toLowerCase();
+            const searchText = `${order.number} ${order.product_name}`.toLowerCase();
             if (!searchText.includes(searchFilter)) {
                 return false;
             }
@@ -4325,7 +4325,7 @@ function showOrderTimeline(orderId) {
         <div class="simple-timeline">
             <h4>Заказ: ${order.number}</h4>
             <div class="order-info" style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px;">
-                <strong>${order.client}</strong> - ${order.product}<br>
+                <strong>${order.client_name}</strong> - ${order.product_name}<br>
                 Количество: ${order.quantity} ${order.unit}<br>
                 Прогресс: ${order.progress}%
             </div>
